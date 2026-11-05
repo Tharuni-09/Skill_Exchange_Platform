@@ -1,0 +1,16 @@
+{
+  "name": "skill-exchange-platform",
+  "version": "1.0.0",
+  "description": "SkillSwap AI - Peer-to-peer skill exchange platform with adaptive assessment and authentication backend",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

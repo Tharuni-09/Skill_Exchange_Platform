@@ -1,6 +1,9 @@
 services:
   - type: web
     name: skillswap-ai
-    runtime: static
-    buildCommand: ""
-    staticPublishPath: .
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 3000

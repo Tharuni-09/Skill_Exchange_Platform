@@ -1,9 +1,16 @@
-FROM nginx:alpine
+FROM node:22-alpine
 
-# Copy static assets to nginx html directory
-COPY . /usr/share/nginx/html
+WORKDIR /app
 
-# Render detects EXPOSE instruction for port routing
-EXPOSE 80
+# Install dependencies
+COPY package*.json ./
+RUN npm install --omit=dev
 
-CMD ["nginx", "-g", "daemon off;"]
+# Copy application files
+COPY . .
+
+# Expose port
+EXPOSE 3000
+ENV PORT=3000
+
+CMD ["node", "server.js"]

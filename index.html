@@ -31,7 +31,24 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="/_sdk/eba18683f23e5798.resizing_sdk.js" type="text/javascript" integrity="sha512-E0UWUllhwPXaNJtjyTKXWKrIE+FruPfFpO4mRmMDP2LI+U9bOizy5npCq6xx/JyWcvSK7D3TFf2wFR2Mha9kbA=="></script>
  <script src="/_sdk/0e8d3a91e1c6f495.data_sdk.js" integrity="sha512-c00oDoGjsMgluCLLEyVl3suwEkgjOGGplVFbsilUoBg4aMKNmsL3mwsc9r0dPn95qiSZyjBousQXgROkAW7p/w=="></script></head>
- <body data-template-id="__page-root" class="min-h-screen bg-slate-950 text-white overflow-x-hidden"><!-- HERO -->
+ <body data-template-id="__page-root" class="min-h-screen bg-slate-950 text-white overflow-x-hidden">
+  <!-- TOP APP HEADER -->
+  <header id="app-header" class="flex items-center justify-between px-6 py-3 bg-slate-900/80 border-b border-slate-800 backdrop-blur sticky top-0 z-40">
+    <div class="flex items-center gap-2 cursor-pointer" onclick="showView('hero')">
+      <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+      <span class="font-bold tracking-wide text-indigo-400 text-lg">SkillSwap AI</span>
+    </div>
+    <div id="user-header-info" class="flex items-center gap-4 text-sm">
+      <div id="header-user-display" class="hidden flex items-center gap-2 text-slate-300">
+        <span class="w-7 h-7 rounded-full bg-indigo-600/60 border border-indigo-400 flex items-center justify-center text-xs font-bold text-white" id="header-user-avatar">U</span>
+        <span id="header-user-name" class="font-medium text-slate-200"></span>
+        <span id="header-user-role" class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-indigo-300"></span>
+      </div>
+      <button id="btn-header-auth" class="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition">Sign In</button>
+      <button id="btn-logout" class="hidden px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-red-500/20 text-slate-400 hover:text-red-400 text-xs font-semibold transition border border-slate-700">Logout</button>
+    </div>
+  </header>
+<!-- HERO -->
   <section id="view-hero" class="relative flex items-center justify-center" style="min-height: calc(100 * min(var(--vh, 1vh), 1vh))"><img data-template-id="hero-bg" class="canva-image absolute inset-0 w-full h-full object-cover opacity-30" loading="lazy">
    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/80 to-slate-950"></div>
    <div class="relative z-10 text-center px-6 max-w-3xl fade-in">
@@ -43,21 +60,69 @@
   </section><!-- USER INFO FORM -->
   <section id="view-form" class="hidden px-4 py-12" style="min-height: calc(100 * min(var(--vh, 1vh), 1vh))">
    <div class="max-w-lg mx-auto fade-in">
-    <h2 data-template-id="form-title" class="canva-text text-3xl font-bold text-center mb-2"></h2>
-    <p data-template-id="form-subtitle" class="canva-text text-slate-400 text-center mb-8"></p>
-    <form id="user-form" class="space-y-5 glass rounded-2xl p-8 glow">
-     <div><label data-template-id="label-name" class="canva-text block text-sm font-medium mb-1.5" for="inp-name"></label> <input id="inp-name" type="text" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition">
-     </div>
-     <div><label data-template-id="label-email" class="canva-text block text-sm font-medium mb-1.5" for="inp-email"></label> <input id="inp-email" type="email" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition">
-     </div>
-     <div><label data-template-id="label-role" class="canva-text block text-sm font-medium mb-1.5" for="inp-role"></label> <select id="inp-role" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition"> <option value="">Select role</option><option>Student</option><option>Professional</option><option>Freelancer</option><option>Researcher</option> </select>
-     </div>
-     <div class="grid grid-cols-2 gap-4">
-      <div><label data-template-id="label-stream" class="canva-text block text-sm font-medium mb-1.5" for="inp-stream"></label> <input id="inp-stream" type="text" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition">
+    <!-- Auth Mode Switcher -->
+    <div class="flex justify-center mb-6">
+      <div class="inline-flex p-1 rounded-xl glass border border-slate-700">
+        <button id="tab-btn-login" type="button" class="px-6 py-2 rounded-lg font-medium text-sm transition bg-indigo-600 text-white shadow">Sign In</button>
+        <button id="tab-btn-register" type="button" class="px-6 py-2 rounded-lg font-medium text-sm transition text-slate-400 hover:text-white">Sign Up</button>
       </div>
-      <div><label data-template-id="label-spec" class="canva-text block text-sm font-medium mb-1.5" for="inp-spec"></label> <input id="inp-spec" type="text" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition">
+    </div>
+    <div id="auth-alert" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
+
+    <!-- LOGIN FORM -->
+    <form id="login-form" class="space-y-5 glass rounded-2xl p-8 glow">
+      <h2 class="text-2xl font-bold text-center mb-1">Welcome Back</h2>
+      <p class="text-slate-400 text-sm text-center mb-6">Sign in with your email and password to access your dashboard</p>
+      <div>
+        <label class="block text-sm font-medium mb-1.5" for="login-email">Email Address</label>
+        <input id="login-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
       </div>
-     </div><button type="submit" data-template-id="form-submit" class="canva-button w-full py-3 rounded-xl font-semibold text-lg mt-4 btn-primary"></button>
+      <div>
+        <label class="block text-sm font-medium mb-1.5" for="login-pass">Password</label>
+        <input id="login-pass" type="password" required placeholder="••••••••" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+      </div>
+      <button type="submit" id="btn-login-submit" class="w-full py-3 rounded-xl font-semibold text-lg mt-4 btn-primary bg-indigo-600 hover:bg-indigo-500 text-white transition">Sign In</button>
+      <p class="text-center text-xs text-slate-400 mt-4">Don't have an account? <button type="button" id="link-to-register" class="text-indigo-400 hover:underline">Create an account</button></p>
+    </form>
+
+    <!-- SIGN UP FORM -->
+    <form id="user-form" class="hidden space-y-5 glass rounded-2xl p-8 glow">
+      <h2 class="text-2xl font-bold text-center mb-1">Create Account</h2>
+      <p class="text-slate-400 text-sm text-center mb-6">Register to track your scores, unlock referrals & join live peer sessions</p>
+      <div>
+        <label class="block text-sm font-medium mb-1.5" for="inp-name">Full Name</label>
+        <input id="inp-name" type="text" required placeholder="Tharuni" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1.5" for="inp-email">Email Address</label>
+        <input id="inp-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1.5" for="inp-pass">Password</label>
+        <input id="inp-pass" type="password" required minlength="4" placeholder="••••••••" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1.5" for="inp-role">Current Role</label>
+        <select id="inp-role" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+          <option value="">Select role</option>
+          <option value="Student">Student</option>
+          <option value="Professional">Professional</option>
+          <option value="Freelancer">Freelancer</option>
+          <option value="Researcher">Researcher</option>
+        </select>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-1.5" for="inp-stream">Stream / Field</label>
+          <input id="inp-stream" type="text" required placeholder="CS / Engineering" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5" for="inp-spec">Specialization</label>
+          <input id="inp-spec" type="text" required placeholder="AI / ML" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+        </div>
+      </div>
+      <button type="submit" id="btn-register-submit" class="w-full py-3 rounded-xl font-semibold text-lg mt-4 btn-primary bg-indigo-600 hover:bg-indigo-500 text-white transition">Register & Start Test</button>
+      <p class="text-center text-xs text-slate-400 mt-4">Already registered? <button type="button" id="link-to-login" class="text-indigo-400 hover:underline">Sign in here</button></p>
     </form>
    </div>
   </section><!-- ASSESSMENT -->
@@ -375,25 +440,77 @@
         if (id === 'referrals') renderReferrals();
     }
 
+    // Auth UI helpers
+    function updateUserUI(user) {
+        const display = document.getElementById('header-user-display');
+        const authBtn = document.getElementById('btn-header-auth');
+        const logoutBtn = document.getElementById('btn-logout');
+        if (user && user.email) {
+            display.classList.remove('hidden');
+            document.getElementById('header-user-name').textContent = user.name;
+            document.getElementById('header-user-role').textContent = user.role || 'Member';
+            document.getElementById('header-user-avatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+            authBtn.classList.add('hidden');
+            logoutBtn.classList.remove('hidden');
+        } else {
+            display.classList.add('hidden');
+            authBtn.classList.remove('hidden');
+            logoutBtn.classList.add('hidden');
+        }
+    }
+
+    function showAuthAlert(msg, isSuccess = false) {
+        const alert = document.getElementById('auth-alert');
+        alert.textContent = msg;
+        alert.className = `mb-4 p-3 rounded-lg text-sm text-center ${isSuccess ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`;
+        alert.classList.remove('hidden');
+    }
+
+    function switchAuthTab(tab) {
+        const loginBtn = document.getElementById('tab-btn-login');
+        const regBtn = document.getElementById('tab-btn-register');
+        const loginForm = document.getElementById('login-form');
+        const regForm = document.getElementById('user-form');
+        const alert = document.getElementById('auth-alert');
+        alert.classList.add('hidden');
+
+        if (tab === 'login') {
+            loginBtn.className = 'px-6 py-2 rounded-lg font-medium text-sm transition bg-indigo-600 text-white shadow';
+            regBtn.className = 'px-6 py-2 rounded-lg font-medium text-sm transition text-slate-400 hover:text-white';
+            loginForm.classList.remove('hidden');
+            regForm.classList.add('hidden');
+        } else {
+            regBtn.className = 'px-6 py-2 rounded-lg font-medium text-sm transition bg-indigo-600 text-white shadow';
+            loginBtn.className = 'px-6 py-2 rounded-lg font-medium text-sm transition text-slate-400 hover:text-white';
+            regForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        }
+    }
+
+    document.getElementById('tab-btn-login').addEventListener('click', () => switchAuthTab('login'));
+    document.getElementById('tab-btn-register').addEventListener('click', () => switchAuthTab('register'));
+    document.getElementById('link-to-register').addEventListener('click', (e) => { e.preventDefault(); switchAuthTab('register'); });
+    document.getElementById('link-to-login').addEventListener('click', (e) => { e.preventDefault(); switchAuthTab('login'); });
+
     // Nav
     document.getElementById('btn-start').addEventListener('click', () => {
-        // Check if returning user
-        const savedEmail = localStorage.getItem('skillswap_email');
-        if (savedEmail && allRecords.length) {
-            const userRecs = allRecords.filter(r => r.user_email === savedEmail);
-            if (userRecs.length) {
-                // Returning user - restore data and skip form
-                const last = userRecs[userRecs.length - 1];
-                userData = { name: last.user_name, email: last.user_email, role: last.user_role, stream: last.stream, spec: last.specialization };
-                startAssessment();
-                return;
-            }
+        if (userData.email) {
+            startAssessment();
+        } else {
+            showView('form');
         }
-        showView('form');
+    });
+
+    document.getElementById('btn-header-auth').addEventListener('click', () => showView('form'));
+    document.getElementById('btn-logout').addEventListener('click', () => {
+        userData = {};
+        localStorage.removeItem('skillswap_user');
+        localStorage.removeItem('skillswap_email');
+        updateUserUI(null);
+        showView('hero');
     });
 
     document.getElementById('btn-new-assess').addEventListener('click', () => {
-        // Returning user flow - skip form
         if (userData.email) {
             startAssessment();
         } else {
@@ -404,13 +521,85 @@
     document.getElementById('btn-to-dashboard').addEventListener('click', () => showView('dashboard'));
     document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => showView(b.dataset.nav)));
 
-    // Form
-    document.getElementById('user-form').addEventListener('submit', function(e) {
+    // Login Form Submit
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
         e.preventDefault();
-        userData = { name: document.getElementById('inp-name').value, email: document.getElementById('inp-email').value, role: document.getElementById('inp-role').value, stream: document.getElementById('inp-stream').value, spec: document.getElementById('inp-spec').value };
-        // Save email for returning user recognition
-        localStorage.setItem('skillswap_email', userData.email);
-        startAssessment();
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-pass').value;
+        const submitBtn = document.getElementById('btn-login-submit');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Signing in...';
+
+        try {
+            const resp = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await resp.json();
+            if (!resp.ok) {
+                showAuthAlert(data.error || 'Failed to login');
+            } else {
+                userData = data.user;
+                localStorage.setItem('skillswap_user', JSON.stringify(userData));
+                localStorage.setItem('skillswap_email', userData.email);
+                updateUserUI(userData);
+                await loadUserAssessments(userData.email);
+                showView('dashboard');
+            }
+        } catch (err) {
+            console.warn('Backend unavailable, using local session', err);
+            userData = { name: email.split('@')[0], email, role: 'Student', stream: 'CS', spec: 'General' };
+            localStorage.setItem('skillswap_user', JSON.stringify(userData));
+            localStorage.setItem('skillswap_email', userData.email);
+            updateUserUI(userData);
+            showView('dashboard');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Sign In';
+        }
+    });
+
+    // Sign Up Form Submit
+    document.getElementById('user-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const name = document.getElementById('inp-name').value.trim();
+        const email = document.getElementById('inp-email').value.trim();
+        const password = document.getElementById('inp-pass').value;
+        const role = document.getElementById('inp-role').value;
+        const stream = document.getElementById('inp-stream').value.trim();
+        const spec = document.getElementById('inp-spec').value.trim();
+        const submitBtn = document.getElementById('btn-register-submit');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating account...';
+
+        try {
+            const resp = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password, role, stream, specialization: spec })
+            });
+            const data = await resp.json();
+            if (!resp.ok) {
+                showAuthAlert(data.error || 'Registration failed');
+            } else {
+                userData = data.user;
+                localStorage.setItem('skillswap_user', JSON.stringify(userData));
+                localStorage.setItem('skillswap_email', userData.email);
+                updateUserUI(userData);
+                startAssessment();
+            }
+        } catch (err) {
+            console.warn('Backend unavailable, saving locally', err);
+            userData = { name, email, role, stream, spec };
+            localStorage.setItem('skillswap_user', JSON.stringify(userData));
+            localStorage.setItem('skillswap_email', userData.email);
+            updateUserUI(userData);
+            startAssessment();
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Register & Start Test';
+        }
     });
 
     function startAssessment() {
@@ -505,21 +694,44 @@
     }
 
     async function saveResult(overall, confidence, level, gaps) {
-        if (allRecords.length >= 999) return;
-        const userRecs = allRecords.filter(r => r.user_email === userData.email);
-        await window.dataSdk.create({
-            user_name: userData.name, user_email: userData.email, user_role: userData.role,
-            stream: userData.stream, specialization: userData.spec, predicted_level: level,
-            confidence, overall_score: overall,
+        const record = {
+            user_name: userData.name || 'Anonymous',
+            user_email: userData.email || 'guest@skillswap.ai',
+            user_role: userData.role || 'Student',
+            stream: userData.stream || 'CS',
+            specialization: userData.spec || 'General',
+            predicted_level: level,
+            confidence,
+            overall_score: overall,
             analytical_reasoning: Math.round((scores.analytical_reasoning/maxScores.analytical_reasoning)*100),
             problem_solving: Math.round((scores.problem_solving/maxScores.problem_solving)*100),
             decision_making: Math.round((scores.decision_making/maxScores.decision_making)*100),
             attention_consistency: Math.round((scores.attention_consistency/maxScores.attention_consistency)*100),
             knowledge_recall: Math.round((scores.knowledge_recall/maxScores.knowledge_recall)*100),
-            skill_gaps: gaps.join(', ') || 'None', assessment_date: new Date().toISOString(),
-            streaks: userRecs.length + 1, classes_taught: 0, classes_taken: 0, teaching_score: 0,
+            skill_gaps: gaps.join(', ') || 'None',
+            assessment_date: new Date().toISOString(),
             difficulty_level: currentDifficulty
-        });
+        };
+
+        try {
+            const resp = await fetch('/api/assessments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(record)
+            });
+            if (resp.ok) {
+                const data = await resp.json();
+                record.streaks = data.streaks || 1;
+            }
+        } catch (err) {
+            console.warn('Backend unavailable, saving locally', err);
+        }
+
+        allRecords.push(record);
+        if (window.dataSdk && window.dataSdk.create) {
+            try { await window.dataSdk.create(record); } catch(e) {}
+        }
+        renderHistory();
     }
 
     // Dashboard
@@ -565,9 +777,46 @@
         `).join('');
     }
 
+    async function loadUserAssessments(email) {
+        if (!email) return;
+        try {
+            const resp = await fetch(`/api/assessments?email=${encodeURIComponent(email)}`);
+            if (resp.ok) {
+                const res = await resp.json();
+                if (res.data && res.data.length) {
+                    allRecords = res.data;
+                    renderHistory();
+                    renderDashboard();
+                }
+            }
+        } catch(e) {
+            console.warn('Could not fetch user assessments from backend', e);
+        }
+    }
+
     // Leaderboard
-    function renderLeaderboard() {
-        document.getElementById('lb-list').innerHTML = dummyLeaderboard.map((u,i) => `
+    async function renderLeaderboard() {
+        const lbList = document.getElementById('lb-list');
+        try {
+            const resp = await fetch('/api/leaderboard');
+            if (resp.ok) {
+                const res = await resp.json();
+                if (res.data && res.data.length) {
+                    lbList.innerHTML = res.data.map((u, i) => `
+                        <div class="glass rounded-xl p-4 flex items-center gap-4 ${i<3?'glow':''}">
+                            <span class="mono text-lg font-bold w-8 text-center ${i===0?'text-yellow-400':i===1?'text-slate-300':i===2?'text-amber-600':'text-slate-500'}">#${i+1}</span>
+                            <div class="flex-1"><p class="font-semibold">${u.name}</p><p class="text-xs text-slate-400">${u.level || 'Member'} · 🔥 ${u.streak || 1} streak</p></div>
+                            <span class="mono text-xl font-bold text-indigo-400">${u.score}%</span>
+                        </div>
+                    `).join('');
+                    return;
+                }
+            }
+        } catch (e) {
+            console.warn('Leaderboard API unavailable, using fallback', e);
+        }
+
+        lbList.innerHTML = dummyLeaderboard.map((u,i) => `
             <div class="glass rounded-xl p-4 flex items-center gap-4 ${i<3?'glow':''}">
                 <span class="mono text-lg font-bold w-8 text-center ${i===0?'text-yellow-400':i===1?'text-slate-300':i===2?'text-amber-600':'text-slate-500'}">#${i+1}</span>
                 <div class="flex-1"><p class="font-semibold">${u.name}</p><p class="text-xs text-slate-400">${u.level} · 🔥 ${u.streak} streak</p></div>
@@ -687,9 +936,19 @@
     });
 
     async function initApp() {
+        const storedUser = localStorage.getItem('skillswap_user');
+        if (storedUser) {
+            try {
+                userData = JSON.parse(storedUser);
+                updateUserUI(userData);
+                await loadUserAssessments(userData.email);
+            } catch(e) {}
+        } else {
+            updateUserUI(null);
+        }
+
         if (window.dataSdk && window.dataSdk.init) {
-            const res = await window.dataSdk.init(handler);
-            if (!res.isOk) { /* SDK init fallback */ }
+            try { await window.dataSdk.init(handler); } catch (e) {}
         }
         if (window.lucide && window.lucide.createIcons) {
             lucide.createIcons();
