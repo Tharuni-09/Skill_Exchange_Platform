@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="en">
+ <head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260817-05-91af805","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Bricolage Grotesque":"YAFyMcdwzpc,0","Canva Sans":"YAFLd8sKbwc,2","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YAFdJksXcAk,0","Libre Baskerville":"YACgEUFdPdA,0","Manrope":"YAHO2b2feC4,0","Merriweather":"YACgEXvHxxs,0","Montserrat":"YADLjI9qxTA,0","Nunito":"YACgEX8C5Gg,0","Oleo Script":"YACgEQQ14jI,0","Phantom Sans":"YAHO2E8Pb88,0","Playfair Display":"YACgEYmuCJE,0","Poppins":"YAFdJjbTu24,1","Press Start 2P":"YAFyGr-8pmQ,0","Quicksand":"YADWjpfPmdk,0","Raleway":"YACgEVg3xZg,0","Segoe UI":"YAHNdRD1Klw,0","Source Sans 3":"YAG4lO1Mj10,0","Spectral":"YAHO2rVUHIM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Ubuntu":"YACgERDU--Q,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0","ui-monospace":"YADlN8CFZ8Q,0","ui-sans-serif":"YACkoN-xg4g,0"}}');</script><script src="/_sdk/7949ff62d67710d5.telemetry_sdk.js" integrity="sha512-KIvXA82Di44YY/RH9/63A9MuTuavYgDFG8PfErJn7Wli4K0LAOk+coo/aPXk3+ZNL96nHh9VYD4PE+fLes+laQ=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillSwap AI</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root { --vh: 1vh; }
+    body { font-family: 'DM Sans', sans-serif; }
+    .mono { font-family: 'Space Mono', monospace; }
+    .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(99, 102, 241, 0.2); }
+    .glow { box-shadow: 0 0 30px rgba(99, 102, 241, 0.15); }
+    .score-ring { background: conic-gradient(#6366f1 calc(var(--score) * 3.6deg), rgba(99,102,241,0.1) 0); }
+    .fade-in { animation: fadeIn 0.4s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.3); } 50% { box-shadow: 0 0 40px rgba(99,102,241,0.6); } }
+    .btn-primary { animation: pulse-glow 2s infinite; }
+    .btn-primary:hover { animation: none; box-shadow: 0 0 50px rgba(99,102,241,0.5); }
+    .progress-bar { transition: width 0.3s ease; }
+    .option-btn { transition: all 0.2s; }
+    .option-btn:hover { border-color: #6366f1; background: rgba(99,102,241,0.1); }
+    .option-btn.selected { border-color: #6366f1; background: rgba(99,102,241,0.2); }
+    .nav-btn { transition: all 0.2s; }
+    .nav-btn.active { color: #818cf8; border-color: #6366f1; }
+    .nav-btn:not(.active) { color: #64748b; border-color: transparent; }
+  </style>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="/_sdk/eba18683f23e5798.resizing_sdk.js" type="text/javascript" integrity="sha512-E0UWUllhwPXaNJtjyTKXWKrIE+FruPfFpO4mRmMDP2LI+U9bOizy5npCq6xx/JyWcvSK7D3TFf2wFR2Mha9kbA=="></script>
+ <script src="/_sdk/0e8d3a91e1c6f495.data_sdk.js" integrity="sha512-c00oDoGjsMgluCLLEyVl3suwEkgjOGGplVFbsilUoBg4aMKNmsL3mwsc9r0dPn95qiSZyjBousQXgROkAW7p/w=="></script></head>
+ <body data-template-id="__page-root" class="min-h-screen bg-slate-950 text-white overflow-x-hidden"><!-- HERO -->
+  <section id="view-hero" class="relative flex items-center justify-center" style="min-height: calc(100 * min(var(--vh, 1vh), 1vh))"><img data-template-id="hero-bg" class="canva-image absolute inset-0 w-full h-full object-cover opacity-30" loading="lazy">
+   <div class="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/80 to-slate-950"></div>
+   <div class="relative z-10 text-center px-6 max-w-3xl fade-in">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-6"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> <span data-template-id="hero-badge" class="canva-tag text-xs uppercase tracking-widest"></span>
+    </div>
+    <h1 data-template-id="hero-title" class="canva-text text-5xl md:text-6xl font-bold leading-tight mb-4"></h1>
+    <p data-template-id="hero-subtitle" class="canva-text text-lg text-slate-300 mb-8 max-w-xl mx-auto"></p><button id="btn-start" data-template-id="hero-cta" class="canva-button btn-primary px-8 py-3.5 rounded-xl font-semibold text-lg"></button>
+   </div>
+  </section><!-- USER INFO FORM -->
+  <section id="view-form" class="hidden px-4 py-12" style="min-height: calc(100 * min(var(--vh, 1vh), 1vh))">
+   <div class="max-w-lg mx-auto fade-in">
+    <h2 data-template-id="form-title" class="canva-text text-3xl font-bold text-center mb-2"></h2>
+    <p data-template-id="form-subtitle" class="canva-text text-slate-400 text-center mb-8"></p>
+    <form id="user-form" class="space-y-5 glass rounded-2xl p-8 glow">
+     <div><label data-template-id="label-name" class="canva-text block text-sm font-medium mb-1.5" for="inp-name"></label> <input id="inp-name" type="text" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition">
+     </div>
+     <div><label data-template-id="label-email" class="canva-text block text-sm font-medium mb-1.5" for="inp-email"></label> <input id="inp-email" type="email" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition">
+     </div>
+     <div><label data-template-id="label-role" class="canva-text block text-sm font-medium mb-1.5" for="inp-role"></label> <select id="inp-role" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition"> <option value="">Select role</option><option>Student</option><option>Professional</option><option>Freelancer</option><option>Researcher</option> </select>
+     </div>
+     <div class="grid grid-cols-2 gap-4">
+      <div><label data-template-id="label-stream" class="canva-text block text-sm font-medium mb-1.5" for="inp-stream"></label> <input id="inp-stream" type="text" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition">
+      </div>
+      <div><label data-template-id="label-spec" class="canva-text block text-sm font-medium mb-1.5" for="inp-spec"></label> <input id="inp-spec" type="text" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition">
+      </div>
+     </div><button type="submit" data-template-id="form-submit" class="canva-button w-full py-3 rounded-xl font-semibold text-lg mt-4 btn-primary"></button>
+    </form>
+   </div>
+  </section><!-- ASSESSMENT -->
+  <section id="view-assessment" class="hidden px-4 py-12" style="min-height: calc(100 * min(var(--vh, 1vh), 1vh))">
+   <div class="max-w-2xl mx-auto fade-in">
+    <div class="flex items-center justify-between mb-6">
+     <h2 data-template-id="assess-title" class="canva-text text-2xl font-bold"></h2>
+     <div class="flex items-center gap-2 mono text-indigo-300"><i data-lucide="clock" style="width:18px;height:18px"></i><span id="timer">00:00</span>
+     </div>
+    </div>
+    <div class="mb-2 text-sm text-slate-400" id="difficulty-badge"></div>
+    <div class="mb-4">
+     <div class="flex justify-between text-sm text-slate-400 mb-1"><span>Question <span id="q-current">1</span>/10</span><span id="q-domain" class="text-indigo-300"></span>
+     </div>
+     <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+      <div id="progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 progress-bar" style="width:10%"></div>
+     </div>
+    </div>
+    <div class="glass rounded-2xl p-8 glow">
+     <p id="q-text" class="text-lg font-medium mb-6"></p>
+     <div id="q-options" class="space-y-3"></div>
+    </div><button id="btn-next" disabled class="mt-6 w-full py-3 rounded-xl font-semibold bg-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-indigo-500 transition">Next</button>
+   </div>
+  </section><!-- RESULTS -->
+  <section id="view-results" class="hidden px-4 py-12">
+   <div class="max-w-5xl mx-auto fade-in">
+    <div class="text-center mb-10">
+     <h2 data-template-id="results-title" class="canva-text text-3xl font-bold mb-2"></h2>
+     <p data-template-id="results-subtitle" class="canva-text text-slate-400"></p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 mb-10">
+     <div class="glass rounded-2xl p-6 flex flex-col items-center justify-center glow">
+      <div id="score-ring" class="score-ring w-36 h-36 rounded-full flex items-center justify-center" style="--score:0">
+       <div class="w-28 h-28 rounded-full bg-slate-950 flex items-center justify-center"><span id="overall-score" class="mono text-3xl font-bold text-indigo-300">0</span>
+       </div>
+      </div>
+      <p data-template-id="score-label" class="canva-text mt-4 text-sm text-slate-400"></p>
+      <p id="predicted-level" class="mono text-indigo-400 font-bold mt-1"></p>
+     </div>
+     <div class="glass rounded-2xl p-6 glow md:col-span-2">
+      <canvas id="radar-chart"></canvas>
+     </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6 mb-10">
+     <div class="glass rounded-2xl p-6 glow">
+      <h3 data-template-id="bar-title" class="canva-text font-semibold mb-4"></h3>
+      <canvas id="bar-chart"></canvas>
+     </div>
+     <div class="glass rounded-2xl p-6 glow">
+      <h3 data-template-id="gaps-title" class="canva-text font-semibold mb-4"></h3>
+      <div id="skill-gaps" class="space-y-3"></div>
+      <h3 data-template-id="recs-title" class="canva-text font-semibold mt-6 mb-3"></h3>
+      <div id="recommendations" class="space-y-2"></div>
+     </div>
+    </div>
+    <div class="text-center"><button id="btn-to-dashboard" data-template-id="goto-dashboard-btn" class="canva-button px-8 py-3 rounded-xl font-semibold btn-primary"></button>
+    </div>
+   </div>
+  </section><!-- DASHBOARD -->
+  <section id="view-dashboard" class="hidden px-4 py-8 pb-24">
+   <div class="max-w-5xl mx-auto fade-in">
+    <div class="flex items-center justify-between mb-8">
+     <h2 data-template-id="dash-title" class="canva-text text-3xl font-bold"></h2><button id="btn-new-assess" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-medium transition">+ New Assessment</button>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+     <div class="glass rounded-xl p-4 glow text-center">
+      <p class="text-3xl font-bold mono text-orange-400" id="stat-streak">0</p>
+      <p data-template-id="stat-streak-label" class="canva-text text-xs text-slate-400 mt-1"></p>
+     </div>
+     <div class="glass rounded-xl p-4 glow text-center">
+      <p class="text-3xl font-bold mono text-emerald-400" id="stat-taught">0</p>
+      <p data-template-id="stat-taught-label" class="canva-text text-xs text-slate-400 mt-1"></p>
+     </div>
+     <div class="glass rounded-xl p-4 glow text-center">
+      <p class="text-3xl font-bold mono text-blue-400" id="stat-taken">0</p>
+      <p data-template-id="stat-taken-label" class="canva-text text-xs text-slate-400 mt-1"></p>
+     </div>
+     <div class="glass rounded-xl p-4 glow text-center">
+      <p class="text-3xl font-bold mono text-purple-400" id="stat-tscore">0</p>
+      <p data-template-id="stat-tscore-label" class="canva-text text-xs text-slate-400 mt-1"></p>
+     </div>
+    </div>
+    <h3 data-template-id="dash-upcoming-title" class="canva-text text-lg font-semibold mb-4"></h3>
+    <div id="dash-upcoming" class="space-y-3 mb-8"></div>
+    <h3 data-template-id="dash-recent-title" class="canva-text text-lg font-semibold mb-4"></h3>
+    <div id="dash-recent" class="glass rounded-xl p-5 glow"></div>
+   </div>
+  </section><!-- MARKETPLACE -->
+  <section id="view-marketplace" class="hidden px-4 py-8 pb-24">
+   <div class="max-w-5xl mx-auto fade-in">
+    <h2 data-template-id="market-title" class="canva-text text-3xl font-bold mb-2"></h2>
+    <p data-template-id="market-subtitle" class="canva-text text-slate-400 mb-6"></p>
+    <div class="flex gap-2 mb-6 overflow-x-auto" id="market-filters"></div>
+    <div id="market-list" class="grid md:grid-cols-2 gap-4"></div>
+   </div>
+  </section><!-- LEADERBOARD -->
+  <section id="view-leaderboard" class="hidden px-4 py-8 pb-24">
+   <div class="max-w-3xl mx-auto fade-in">
+    <h2 data-template-id="lb-title" class="canva-text text-3xl font-bold mb-6"></h2>
+    <div id="lb-list" class="space-y-3"></div>
+   </div>
+  </section><!-- REFERRALS -->
+  <section id="view-referrals" class="hidden px-4 py-8 pb-24">
+   <div class="max-w-4xl mx-auto fade-in">
+    <h2 data-template-id="ref-title" class="canva-text text-3xl font-bold mb-2"></h2>
+    <p data-template-id="ref-subtitle" class="canva-text text-slate-400 mb-6"></p>
+    <div id="ref-list" class="grid md:grid-cols-2 gap-4"></div>
+   </div>
+  </section><!-- HISTORY -->
+  <section id="view-history" class="hidden px-4 py-8 pb-24">
+   <div class="max-w-4xl mx-auto fade-in">
+    <h2 data-template-id="history-title" class="canva-text text-3xl font-bold mb-8"></h2>
+    <div id="history-list" class="space-y-4"></div>
+    <p id="history-empty" data-template-id="history-empty" class="canva-text text-center text-slate-500 py-12 hidden"></p>
+   </div>
+  </section><!-- BOTTOM NAV -->
+  <nav id="bottom-nav" class="hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur border-t border-slate-800 z-50">
+   <div class="max-w-lg mx-auto flex justify-around py-2"><button class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1.5 border-t-2 active" data-nav="dashboard"><i data-lucide="layout-dashboard" style="width:20px;height:20px"></i><span class="text-[10px]">Dashboard</span></button> <button class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1.5 border-t-2" data-nav="marketplace"><i data-lucide="store" style="width:20px;height:20px"></i><span class="text-[10px]">Marketplace</span></button> <button class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1.5 border-t-2" data-nav="leaderboard"><i data-lucide="trophy" style="width:20px;height:20px"></i><span class="text-[10px]">Leaderboard</span></button> <button class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1.5 border-t-2" data-nav="referrals"><i data-lucide="briefcase" style="width:20px;height:20px"></i><span class="text-[10px]">Referrals</span></button> <button class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1.5 border-t-2" data-nav="history"><i data-lucide="history" style="width:20px;height:20px"></i><span class="text-[10px]">History</span></button>
+   </div>
+  </nav>
+  <script src="/_sdk/a051f9537983733d.editing_sdk.js" integrity="sha512-IWn3eBHnVt7zQ0Rp79J72qSgJoLbskCA9lcfY4retf+5km4LjuhSHpvx+182KCHmEZ6EbJtWqVsybpV8Sd8PQQ=="></script>
+  <script src="/_sdk/0e8d3a91e1c6f495.data_sdk.js" integrity="sha512-c00oDoGjsMgluCLLEyVl3suwEkgjOGGplVFbsilUoBg4aMKNmsL3mwsc9r0dPn95qiSZyjBousQXgROkAW7p/w=="></script>
+  <script>
+(function() {
+    // --- Question Banks by Stream and Difficulty ---
+    const questionBanks = {
+        // Generic fallback
+        _default: {
+            easy: [
+                { domain:'analytical_reasoning', text:'Which number completes the pattern: 2, 4, 6, 8, ?', options:['9','10','11','12'], answer:1 },
+                { domain:'analytical_reasoning', text:'If A > B and B > C, then:', options:['C > A','A > C','A = C','Cannot determine'], answer:1 },
+                { domain:'problem_solving', text:'What is 15% of 200?', options:['25','30','35','20'], answer:1 },
+                { domain:'problem_solving', text:'A clock shows 3:15. What is the angle between the hands?', options:['0°','7.5°','90°','45°'], answer:1 },
+                { domain:'decision_making', text:'You find a wallet on the street. Best action?', options:['Keep it','Turn it in to police','Ignore it','Take the cash only'], answer:1 },
+                { domain:'decision_making', text:'Your teammate is struggling. You should:', options:['Ignore them','Offer to help','Report them','Do their work'], answer:1 },
+                { domain:'attention_consistency', text:'Which is the odd one out: Dog, Cat, Fish, Chair?', options:['Dog','Cat','Fish','Chair'], answer:3 },
+                { domain:'attention_consistency', text:'Count the vowels in "ENCYCLOPEDIA":', options:['5','6','7','4'], answer:1 },
+                { domain:'knowledge_recall', text:'What does HTML stand for?', options:['Hyper Text Markup Language','High Tech Modern Language','Hyper Transfer Markup Language','Home Tool Markup Language'], answer:0 },
+                { domain:'knowledge_recall', text:'Which planet is closest to the Sun?', options:['Venus','Earth','Mercury','Mars'], answer:2 },
+            ],
+            medium: [
+                { domain:'analytical_reasoning', text:'If all roses are flowers and some flowers fade quickly, which statement must be true?', options:['All roses fade quickly','Some roses may fade quickly','No roses fade quickly','Roses are not flowers'], answer:1 },
+                { domain:'analytical_reasoning', text:'What comes next: 2, 6, 12, 20, 30, ?', options:['40','42','36','38'], answer:1 },
+                { domain:'problem_solving', text:'A farmer has 17 sheep. All but 9 die. How many are left?', options:['8','9','17','0'], answer:1 },
+                { domain:'problem_solving', text:'You have a 3L and a 5L jug. How do you measure exactly 4L?', options:['Fill 5L, pour into 3L, empty 3L, pour remainder, fill 5L, pour into 3L','Fill 3L twice into 5L','Impossible','Fill 5L, pour out 1L'], answer:0 },
+                { domain:'decision_making', text:'Your team disagrees on a deadline. Best first action?', options:['Impose your deadline','Gather each person\'s constraints','Escalate to management','Ignore the conflict'], answer:1 },
+                { domain:'decision_making', text:'A project is over budget by 20%. Priority action?', options:['Cut team size immediately','Identify non-critical scope to defer','Request more budget without analysis','Continue as planned'], answer:1 },
+                { domain:'attention_consistency', text:'Which word does NOT belong: Apple, Banana, Carrot, Mango?', options:['Apple','Banana','Carrot','Mango'], answer:2 },
+                { domain:'attention_consistency', text:'In the sequence ABCABDABCABE, what comes next?', options:['ABC','ABD','ABF','ABE'], answer:0 },
+                { domain:'knowledge_recall', text:'Which data structure uses FIFO principle?', options:['Stack','Queue','Tree','Graph'], answer:1 },
+                { domain:'knowledge_recall', text:'HTTP status code 404 means?', options:['Server error','Unauthorized','Not found','Redirect'], answer:2 },
+            ],
+            hard: [
+                { domain:'analytical_reasoning', text:'If no A is B, all B is C, and some C is D, which MUST be true?', options:['Some D is A','No A is C','Some C is not A','All D is B'], answer:2 },
+                { domain:'analytical_reasoning', text:'Find the next: 1, 1, 2, 3, 5, 8, 13, ?', options:['18','20','21','26'], answer:2 },
+                { domain:'problem_solving', text:'N queens on an NxN board: minimum N where solution exists?', options:['1','2','3','4'], answer:3 },
+                { domain:'problem_solving', text:'Time complexity of merge sort?', options:['O(n²)','O(n log n)','O(n)','O(log n)'], answer:1 },
+                { domain:'decision_making', text:'Two equally qualified candidates, one internal one external. Budget is tight. Key factor?', options:['Flip a coin','Evaluate culture fit and growth potential','Always pick internal','Always pick external'], answer:1 },
+                { domain:'decision_making', text:'Your startup must pivot or shut down in 30 days. First step?', options:['Shut down immediately','Validate 2-3 pivot hypotheses with customers','Copy a competitor','Raise emergency funding without a plan'], answer:1 },
+                { domain:'attention_consistency', text:'How many times does the letter "e" appear in this sentence: "Nevertheless she persevered"?', options:['5','6','7','8'], answer:2 },
+                { domain:'attention_consistency', text:'If COMPUTER = 111, PRINTER = ?, using A=1,B=2...', options:['92','99','100','96'], answer:1 },
+                { domain:'knowledge_recall', text:'CAP theorem states a distributed system cannot simultaneously guarantee:', options:['Consistency, Availability, Partition tolerance','Concurrency, Atomicity, Performance','Caching, Authentication, Privacy','Compression, Access, Parallelism'], answer:0 },
+                { domain:'knowledge_recall', text:'What is the Halting Problem?', options:['Determining if a program will finish','A CPU scheduling issue','A deadlock scenario','A memory leak type'], answer:0 },
+            ]
+        },
+        // CS / Engineering stream
+        cs: {
+            easy: [
+                { domain:'analytical_reasoning', text:'What is the binary representation of 10?', options:['1010','1001','1100','1000'], answer:0 },
+                { domain:'analytical_reasoning', text:'Which sorting algorithm is simplest to implement?', options:['Quick Sort','Merge Sort','Bubble Sort','Heap Sort'], answer:2 },
+                { domain:'problem_solving', text:'What does a compiler do?', options:['Runs code line by line','Converts source to machine code','Debugs code','Formats code'], answer:1 },
+                { domain:'problem_solving', text:'RAM is what type of memory?', options:['Permanent','Volatile','Read-only','Sequential'], answer:1 },
+                { domain:'decision_making', text:'Your code has a bug before deadline. You should:', options:['Submit with bug','Debug systematically','Rewrite everything','Ask someone to do it'], answer:1 },
+                { domain:'decision_making', text:'Choose between two frameworks for a project:', options:['Pick the newest one','Evaluate based on project requirements','Always use what you know','Pick randomly'], answer:1 },
+                { domain:'attention_consistency', text:'In HTML, which tag is self-closing?', options:['<div>','<p>','<img>','<span>'], answer:2 },
+                { domain:'attention_consistency', text:'Which is NOT a programming language?', options:['Python','Java','HTML','C++'], answer:2 },
+                { domain:'knowledge_recall', text:'What does CPU stand for?', options:['Central Processing Unit','Computer Personal Unit','Central Program Utility','Core Processing Unit'], answer:0 },
+                { domain:'knowledge_recall', text:'What is an API?', options:['A programming language','Application Programming Interface','A database type','A hardware component'], answer:1 },
+            ],
+            medium: [
+                { domain:'analytical_reasoning', text:'Big-O of binary search?', options:['O(n)','O(log n)','O(n²)','O(1)'], answer:1 },
+                { domain:'analytical_reasoning', text:'A complete binary tree with 7 nodes has depth:', options:['2','3','4','1'], answer:0 },
+                { domain:'problem_solving', text:'How to reverse a linked list in O(n) time?', options:['Use recursion with O(n) space','Iterate with 3 pointers','Sort then reverse','Copy to array'], answer:1 },
+                { domain:'problem_solving', text:'Best approach for finding duplicates in an array?', options:['Nested loops O(n²)','Hash set O(n)','Sort first O(n log n)','All work, hash set is optimal'], answer:3 },
+                { domain:'decision_making', text:'SQL vs NoSQL for a social media app with varied data:', options:['Always SQL','Always NoSQL','NoSQL for flexibility, SQL for transactions','Flat files'], answer:2 },
+                { domain:'decision_making', text:'Microservices vs monolith for a 3-person startup?', options:['Always microservices','Start monolith, split later','Always serverless','Depends on funding'], answer:1 },
+                { domain:'attention_consistency', text:'What will `console.log(typeof null)` output?', options:['"null"','"undefined"','"object"','Error'], answer:2 },
+                { domain:'attention_consistency', text:'In Git, what does `rebase` do vs `merge`?', options:['Same thing','Replays commits on top of another branch','Deletes commits','Creates a tag'], answer:1 },
+                { domain:'knowledge_recall', text:'Which protocol does HTTPS use for encryption?', options:['SSH','TLS/SSL','FTP','SMTP'], answer:1 },
+                { domain:'knowledge_recall', text:'REST API uses which protocol?', options:['FTP','HTTP','SMTP','TCP directly'], answer:1 },
+            ],
+            hard: [
+                { domain:'analytical_reasoning', text:'Amortized time complexity of dynamic array append?', options:['O(n)','O(1)','O(log n)','O(n²)'], answer:1 },
+                { domain:'analytical_reasoning', text:'Minimum spanning tree of a graph with negative edges:', options:['Not possible','Use Kruskal/Prim as normal','Only Dijkstra works','Requires Bellman-Ford'], answer:1 },
+                { domain:'problem_solving', text:'Solve the dining philosophers problem without deadlock:', options:['Let them starve','Resource hierarchy ordering','Ignore the problem','Use polling'], answer:1 },
+                { domain:'problem_solving', text:'Optimal approach for LRU cache implementation?', options:['Array only','HashMap + Doubly Linked List','Binary tree','Stack'], answer:1 },
+                { domain:'decision_making', text:'System handles 10K req/s, need 100K. First step?', options:['Buy bigger server','Profile bottlenecks, then scale horizontally','Rewrite in a faster language','Add more RAM'], answer:1 },
+                { domain:'decision_making', text:'Data breach detected. Immediate priority?', options:['Hide it','Contain the breach and assess scope','Blame the team','Shut down all servers permanently'], answer:1 },
+                { domain:'attention_consistency', text:'What is the output of: `[1,2,3].map(parseInt)`?', options:['[1,2,3]','[1,NaN,NaN]','[1,NaN,NaN] due to radix','Error'], answer:2 },
+                { domain:'attention_consistency', text:'In a 64-bit system, what is the max addressable memory?', options:['4 GB','16 EB','2 TB','8 GB'], answer:1 },
+                { domain:'knowledge_recall', text:'CAP theorem states a distributed system cannot simultaneously guarantee:', options:['Consistency, Availability, Partition tolerance','Concurrency, Atomicity, Performance','Caching, Authentication, Privacy','Compression, Access, Parallelism'], answer:0 },
+                { domain:'knowledge_recall', text:'Raft consensus algorithm is used for:', options:['Sorting','Distributed leader election and log replication','Garbage collection','Load balancing'], answer:1 },
+            ]
+        },
+        // Commerce / Business stream
+        commerce: {
+            easy: [
+                { domain:'analytical_reasoning', text:'If revenue is ₹1000 and cost is ₹700, profit is:', options:['₹200','₹300','₹400','₹700'], answer:1 },
+                { domain:'analytical_reasoning', text:'Which is a current asset?', options:['Land','Building','Cash','Machinery'], answer:2 },
+                { domain:'problem_solving', text:'A product costs ₹80 and sells for ₹100. Profit margin?', options:['20%','25%','80%','10%'], answer:0 },
+                { domain:'problem_solving', text:'If demand increases and supply stays same, price will:', options:['Decrease','Stay same','Increase','Become zero'], answer:2 },
+                { domain:'decision_making', text:'Your business is losing money. First step?', options:['Close immediately','Analyze which areas are unprofitable','Borrow more','Ignore it'], answer:1 },
+                { domain:'decision_making', text:'Two suppliers: cheaper but unreliable vs costlier but reliable:', options:['Always cheapest','Evaluate total cost including delays','Flip a coin','Use both equally'], answer:1 },
+                { domain:'attention_consistency', text:'Which is NOT a type of tax?', options:['GST','Income Tax','Dividend','Corporate Tax'], answer:2 },
+                { domain:'attention_consistency', text:'Balance sheet must always:', options:['Show profit','Balance (Assets = Liabilities + Equity)','Be one page','Show revenue'], answer:1 },
+                { domain:'knowledge_recall', text:'GDP stands for:', options:['Gross Domestic Product','General Development Plan','Grand Data Processing','Growth Domestic Percentage'], answer:0 },
+                { domain:'knowledge_recall', text:'Who is the father of Economics?', options:['Karl Marx','Adam Smith','John Keynes','Milton Friedman'], answer:1 },
+            ],
+            medium: [
+                { domain:'analytical_reasoning', text:'Company A has P/E of 25, Company B has P/E of 10. Which appears overvalued?', options:['A','B','Both same','Cannot tell'], answer:0 },
+                { domain:'analytical_reasoning', text:'If inflation is 5% and nominal return is 8%, real return is approximately:', options:['3%','13%','5%','8%'], answer:0 },
+                { domain:'problem_solving', text:'Break-even point formula:', options:['Revenue - Cost','Fixed Costs / (Price - Variable Cost)','Profit / Sales','Total Cost / Units'], answer:1 },
+                { domain:'problem_solving', text:'NPV is positive. Should you invest?', options:['No','Yes, it adds value','Need more info always','Only if IRR > 50%'], answer:1 },
+                { domain:'decision_making', text:'Market is saturated. Best growth strategy?', options:['Lower prices indefinitely','Diversify or find new markets','Do nothing','Copy competitors exactly'], answer:1 },
+                { domain:'decision_making', text:'Cash flow is negative but profit is positive. Likely cause?', options:['Accounting error','High receivables / inventory buildup','Impossible scenario','Tax fraud'], answer:1 },
+                { domain:'attention_consistency', text:'Which financial statement shows cash movements?', options:['Balance Sheet','Income Statement','Cash Flow Statement','Trial Balance'], answer:2 },
+                { domain:'attention_consistency', text:'Depreciation is a:', options:['Cash expense','Non-cash expense','Revenue','Liability'], answer:1 },
+                { domain:'knowledge_recall', text:'SEBI regulates:', options:['Banking','Insurance','Securities market','Foreign trade'], answer:2 },
+                { domain:'knowledge_recall', text:'What is working capital?', options:['Long-term investments','Current Assets - Current Liabilities','Total equity','Fixed assets'], answer:1 },
+            ],
+            hard: [
+                { domain:'analytical_reasoning', text:'A firm with high operating leverage will have:', options:['Stable earnings','Earnings highly sensitive to revenue changes','No fixed costs','Low break-even'], answer:1 },
+                { domain:'analytical_reasoning', text:'Modigliani-Miller theorem (no taxes) states capital structure:', options:['Matters greatly','Is irrelevant to firm value','Should be all debt','Should be all equity'], answer:1 },
+                { domain:'problem_solving', text:'Calculate WACC given: 60% equity at 12%, 40% debt at 6%, tax 30%:', options:['8.88%','9.6%','7.2%','10.8%'], answer:0 },
+                { domain:'problem_solving', text:'Optimal inventory order quantity uses which model?', options:['CAPM','EOQ','Black-Scholes','Monte Carlo'], answer:1 },
+                { domain:'decision_making', text:'Hostile takeover bid received. Board should first:', options:['Accept immediately','Evaluate if offer is fair to shareholders','Reject without analysis','Resign'], answer:1 },
+                { domain:'decision_making', text:'Currency hedging: when is it most critical?', options:['Never','When you have large foreign receivables/payables','Only for fun','During domestic transactions'], answer:1 },
+                { domain:'attention_consistency', text:'Which ratio measures short-term liquidity best?', options:['Debt-to-Equity','Quick Ratio','Return on Assets','P/E Ratio'], answer:1 },
+                { domain:'attention_consistency', text:'Goodwill appears on balance sheet when:', options:['Company is profitable','Acquisition price exceeds net asset value','Always','Company has brand name'], answer:1 },
+                { domain:'knowledge_recall', text:'Black-Scholes model is used for:', options:['Bond pricing','Option pricing','GDP calculation','Tax planning'], answer:1 },
+                { domain:'knowledge_recall', text:'Basel III norms relate to:', options:['Trade regulations','Bank capital adequacy','Environmental standards','Labor laws'], answer:1 },
+            ]
+        }
+    };
+
+    // Map user stream input to question bank key
+    function getStreamKey(stream) {
+        const s = (stream || '').toLowerCase();
+        if (s.includes('cs') || s.includes('computer') || s.includes('engineer') || s.includes('it') || s.includes('software') || s.includes('tech')) return 'cs';
+        if (s.includes('commerce') || s.includes('business') || s.includes('finance') || s.includes('account') || s.includes('mba') || s.includes('economics') || s.includes('bcom')) return 'commerce';
+        return '_default';
+    }
+
+    // Determine difficulty based on past scores
+    function getDifficulty(userRecords) {
+        if (userRecords.length === 0) return 'medium'; // first test
+        const lastScore = userRecords[userRecords.length - 1].overall_score;
+        if (lastScore > 70) return 'hard';
+        if (lastScore >= 40) return 'medium';
+        return 'easy';
+    }
+
+    const dummyClasses = [
+        { id:1, teacher:'Priya Sharma', domain:'Analytical Reasoning', title:'Pattern Recognition Mastery', time:'Today, 4:00 PM', slots:3, zoom:'https://zoom.us' },
+        { id:2, teacher:'Arjun Patel', domain:'Problem Solving', title:'Algorithm Thinking Workshop', time:'Tomorrow, 10:00 AM', slots:5, zoom:'https://zoom.us' },
+        { id:3, teacher:'Neha Gupta', domain:'Decision Making', title:'Critical Decisions Under Pressure', time:'Wed, 2:00 PM', slots:2, zoom:'https://zoom.us' },
+        { id:4, teacher:'Rahul Verma', domain:'Knowledge Recall', title:'Data Structures Deep Dive', time:'Thu, 11:00 AM', slots:7, zoom:'https://zoom.us' },
+        { id:5, teacher:'Ananya Singh', domain:'Attention Consistency', title:'Focus & Flow State Training', time:'Fri, 3:30 PM', slots:4, zoom:'https://zoom.us' },
+        { id:6, teacher:'Vikram Joshi', domain:'Problem Solving', title:'Real-World Case Studies', time:'Sat, 9:00 AM', slots:6, zoom:'https://zoom.us' },
+    ];
+
+    const dummyLeaderboard = [
+        { name:'Priya Sharma', score:94, level:'Expert', streak:12 },
+        { name:'Arjun Patel', score:88, level:'Expert', streak:9 },
+        { name:'Neha Gupta', score:82, level:'Advanced', streak:7 },
+        { name:'Vikram Joshi', score:78, level:'Advanced', streak:5 },
+        { name:'Ananya Singh', score:75, level:'Advanced', streak:4 },
+        { name:'Rahul Verma', score:71, level:'Intermediate', streak:3 },
+        { name:'Kavya Reddy', score:65, level:'Intermediate', streak:2 },
+        { name:'Aditya Kumar', score:60, level:'Intermediate', streak:1 },
+    ];
+
+    const dummyReferrals = [
+        { company:'Google India', role:'Associate SWE', minScore:80, skills:['Problem Solving','Analytical Reasoning'], logo:'🟢' },
+        { company:'Microsoft', role:'Product Analyst', minScore:70, skills:['Decision Making','Knowledge Recall'], logo:'🔵' },
+        { company:'Flipkart', role:'Data Analyst Intern', minScore:60, skills:['Analytical Reasoning','Attention'], logo:'🟡' },
+        { company:'Razorpay', role:'Backend Engineer', minScore:75, skills:['Problem Solving','Knowledge Recall'], logo:'🟣' },
+        { company:'Zerodha', role:'Quant Analyst', minScore:85, skills:['Analytical Reasoning','Problem Solving'], logo:'🔴' },
+        { company:'Swiggy', role:'ML Engineer', minScore:70, skills:['Problem Solving','Attention'], logo:'🟠' },
+    ];
+
+    let currentView = 'hero';
+    let userData = {};
+    let currentQ = 0;
+    let selectedAnswer = -1;
+    let scores = {};
+    let maxScores = { analytical_reasoning:2, problem_solving:2, decision_making:2, attention_consistency:2, knowledge_recall:2 };
+    let timerInterval, startTime;
+    let allRecords = [];
+    let lastResult = null;
+    let activeQuestions = [];
+    let currentDifficulty = 'medium';
+
+    const allViews = ['hero','form','assessment','results','dashboard','marketplace','leaderboard','referrals','history'];
+
+    function showView(id) {
+        allViews.forEach(v => document.getElementById('view-'+v).classList.toggle('hidden', v !== id));
+        const navViews = ['dashboard','marketplace','leaderboard','referrals','history'];
+        document.getElementById('bottom-nav').classList.toggle('hidden', !navViews.includes(id));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.nav === id));
+        currentView = id;
+        if (id === 'dashboard') renderDashboard();
+        if (id === 'marketplace') renderMarketplace();
+        if (id === 'leaderboard') renderLeaderboard();
+        if (id === 'referrals') renderReferrals();
+    }
+
+    // Nav
+    document.getElementById('btn-start').addEventListener('click', () => {
+        // Check if returning user
+        const savedEmail = localStorage.getItem('skillswap_email');
+        if (savedEmail && allRecords.length) {
+            const userRecs = allRecords.filter(r => r.user_email === savedEmail);
+            if (userRecs.length) {
+                // Returning user - restore data and skip form
+                const last = userRecs[userRecs.length - 1];
+                userData = { name: last.user_name, email: last.user_email, role: last.user_role, stream: last.stream, spec: last.specialization };
+                startAssessment();
+                return;
+            }
+        }
+        showView('form');
+    });
+
+    document.getElementById('btn-new-assess').addEventListener('click', () => {
+        // Returning user flow - skip form
+        if (userData.email) {
+            startAssessment();
+        } else {
+            showView('form');
+        }
+    });
+
+    document.getElementById('btn-to-dashboard').addEventListener('click', () => showView('dashboard'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => showView(b.dataset.nav)));
+
+    // Form
+    document.getElementById('user-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        userData = { name: document.getElementById('inp-name').value, email: document.getElementById('inp-email').value, role: document.getElementById('inp-role').value, stream: document.getElementById('inp-stream').value, spec: document.getElementById('inp-spec').value };
+        // Save email for returning user recognition
+        localStorage.setItem('skillswap_email', userData.email);
+        startAssessment();
+    });
+
+    function startAssessment() {
+        currentQ = 0;
+        scores = { analytical_reasoning:0, problem_solving:0, decision_making:0, attention_consistency:0, knowledge_recall:0 };
+
+        // Get user's past records to determine difficulty
+        const userRecs = allRecords.filter(r => r.user_email === userData.email);
+        currentDifficulty = getDifficulty(userRecs);
+
+        // Select questions based on stream and difficulty
+        const streamKey = getStreamKey(userData.stream);
+        const bank = questionBanks[streamKey] || questionBanks._default;
+        activeQuestions = [...(bank[currentDifficulty] || bank.medium)];
+
+        // Show difficulty badge
+        document.getElementById('difficulty-badge').textContent = `Difficulty: ${currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1)} | Stream: ${userData.stream}`;
+
+        showView('assessment');
+        startTime = Date.now();
+        timerInterval = setInterval(updateTimer, 1000);
+        renderQuestion();
+    }
+
+    function updateTimer() {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        document.getElementById('timer').textContent = String(Math.floor(elapsed/60)).padStart(2,'0') + ':' + String(elapsed%60).padStart(2,'0');
+    }
+
+    function renderQuestion() {
+        const q = activeQuestions[currentQ];
+        document.getElementById('q-current').textContent = currentQ + 1;
+        document.getElementById('q-domain').textContent = q.domain.replace(/_/g,' ');
+        document.getElementById('progress-bar').style.width = ((currentQ+1)*10)+'%';
+        document.getElementById('q-text').textContent = q.text;
+        const optCont = document.getElementById('q-options');
+        optCont.innerHTML = '';
+        selectedAnswer = -1;
+        document.getElementById('btn-next').disabled = true;
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'option-btn w-full text-left px-5 py-3.5 rounded-xl border border-slate-700 transition';
+            btn.textContent = opt;
+            btn.addEventListener('click', () => { selectedAnswer = i; document.getElementById('btn-next').disabled = false; document.querySelectorAll('.option-btn').forEach((b,idx) => b.classList.toggle('selected', idx===i)); });
+            optCont.appendChild(btn);
+        });
+    }
+
+    document.getElementById('btn-next').addEventListener('click', () => {
+        if (selectedAnswer === activeQuestions[currentQ].answer) scores[activeQuestions[currentQ].domain]++;
+        currentQ++;
+        if (currentQ >= activeQuestions.length) { clearInterval(timerInterval); finishAssessment(); }
+        else renderQuestion();
+    });
+
+    function finishAssessment() {
+        const totalTime = (Date.now() - startTime) / 1000;
+        const total = Object.values(scores).reduce((a,b)=>a+b,0);
+        const maxTotal = Object.values(maxScores).reduce((a,b)=>a+b,0);
+        const overall = Math.round((total/maxTotal)*100);
+        const confidence = Math.min(100, Math.round(Math.max(20, 100 - totalTime/2 + overall*0.3)));
+        const level = overall >= 80 ? 'Expert' : overall >= 60 ? 'Advanced' : overall >= 40 ? 'Intermediate' : 'Beginner';
+        const gaps = [];
+        Object.entries(scores).forEach(([k,v]) => { if ((v/maxScores[k])*100 < 60) gaps.push(k.replace(/_/g,' ')); });
+
+        lastResult = { overall, confidence, level, gaps };
+        showResults(overall, confidence, level, gaps);
+        saveResult(overall, confidence, level, gaps);
+    }
+
+    function showResults(overall, confidence, level, gaps) {
+        showView('results');
+        document.getElementById('overall-score').textContent = overall;
+        document.getElementById('score-ring').style.setProperty('--score', overall);
+        document.getElementById('predicted-level').textContent = level;
+
+        const radarCtx = document.getElementById('radar-chart').getContext('2d');
+        if (window._radarChart) window._radarChart.destroy();
+        window._radarChart = new Chart(radarCtx, { type:'radar', data:{ labels:['Analytical','Problem Solving','Decision Making','Attention','Knowledge'], datasets:[{ label:'Score %', data:Object.keys(scores).map(k=>Math.round((scores[k]/maxScores[k])*100)), backgroundColor:'rgba(99,102,241,0.2)', borderColor:'#6366f1', pointBackgroundColor:'#6366f1' }] }, options:{ scales:{ r:{ beginAtZero:true, max:100, grid:{color:'rgba(148,163,184,0.1)'}, ticks:{display:false}, pointLabels:{color:'#94a3b8',font:{size:11}} } }, plugins:{legend:{display:false}} } });
+
+        const barCtx = document.getElementById('bar-chart').getContext('2d');
+        if (window._barChart) window._barChart.destroy();
+        window._barChart = new Chart(barCtx, { type:'bar', data:{ labels:['Analytical','Problem Solving','Decision','Attention','Knowledge'], datasets:[{ data:Object.keys(scores).map(k=>Math.round((scores[k]/maxScores[k])*100)), backgroundColor:['#6366f1','#8b5cf6','#a78bfa','#c4b5fd','#818cf8'] }] }, options:{ indexAxis:'y', scales:{ x:{max:100,grid:{color:'rgba(148,163,184,0.1)'},ticks:{color:'#94a3b8'}}, y:{grid:{display:false},ticks:{color:'#94a3b8'}} }, plugins:{legend:{display:false}} } });
+
+        const gapsCont = document.getElementById('skill-gaps');
+        gapsCont.innerHTML = gaps.length ? gaps.map(g=>`<div class="flex items-center gap-2 text-amber-400"><i data-lucide="alert-triangle" style="width:16px;height:16px"></i><span class="capitalize">${g}</span></div>`).join('') : '<p class="text-emerald-400">No significant gaps detected!</p>';
+        const recsCont = document.getElementById('recommendations');
+        const recs = gaps.length ? gaps.map(g=>`Practice more ${g} exercises`) : ['Keep challenging yourself with advanced problems'];
+        recsCont.innerHTML = recs.map(r=>`<div class="flex items-center gap-2 text-slate-300"><i data-lucide="lightbulb" style="width:16px;height:16px;color:#fbbf24"></i><span>${r}</span></div>`).join('');
+        lucide.createIcons();
+    }
+
+    async function saveResult(overall, confidence, level, gaps) {
+        if (allRecords.length >= 999) return;
+        const userRecs = allRecords.filter(r => r.user_email === userData.email);
+        await window.dataSdk.create({
+            user_name: userData.name, user_email: userData.email, user_role: userData.role,
+            stream: userData.stream, specialization: userData.spec, predicted_level: level,
+            confidence, overall_score: overall,
+            analytical_reasoning: Math.round((scores.analytical_reasoning/maxScores.analytical_reasoning)*100),
+            problem_solving: Math.round((scores.problem_solving/maxScores.problem_solving)*100),
+            decision_making: Math.round((scores.decision_making/maxScores.decision_making)*100),
+            attention_consistency: Math.round((scores.attention_consistency/maxScores.attention_consistency)*100),
+            knowledge_recall: Math.round((scores.knowledge_recall/maxScores.knowledge_recall)*100),
+            skill_gaps: gaps.join(', ') || 'None', assessment_date: new Date().toISOString(),
+            streaks: userRecs.length + 1, classes_taught: 0, classes_taken: 0, teaching_score: 0,
+            difficulty_level: currentDifficulty
+        });
+    }
+
+    // Dashboard
+    function renderDashboard() {
+        const userRecs = allRecords.filter(r => r.user_email === userData.email);
+        document.getElementById('stat-streak').textContent = userRecs.length;
+        document.getElementById('stat-taught').textContent = '3';
+        document.getElementById('stat-taken').textContent = '7';
+        document.getElementById('stat-tscore').textContent = '4.6';
+
+        const upcoming = document.getElementById('dash-upcoming');
+        upcoming.innerHTML = dummyClasses.slice(0,3).map(c => `
+            <div class="glass rounded-xl p-4 flex items-center justify-between">
+                <div><p class="font-medium">${c.title}</p><p class="text-sm text-slate-400">${c.teacher} · ${c.time}</p></div>
+                <a href="${c.zoom}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-medium transition">Join Zoom</a>
+            </div>
+        `).join('');
+
+        const recent = document.getElementById('dash-recent');
+        const last = userRecs[userRecs.length - 1];
+        if (last) {
+            recent.innerHTML = `<div class="flex items-center justify-between"><div><p class="font-semibold">${last.user_name}</p><p class="text-sm text-slate-400">${last.stream} · ${last.specialization} · ${last.difficulty_level || 'medium'} difficulty</p></div><div class="flex items-center gap-3"><span class="mono text-2xl font-bold text-indigo-400">${last.overall_score}%</span><span class="px-2 py-1 rounded-full text-xs font-medium ${last.predicted_level==='Expert'?'bg-emerald-500/20 text-emerald-400':last.predicted_level==='Advanced'?'bg-blue-500/20 text-blue-400':'bg-amber-500/20 text-amber-400'}">${last.predicted_level}</span></div></div>`;
+        } else {
+            recent.innerHTML = '<p class="text-slate-500 text-center">Take your first assessment to see results.</p>';
+        }
+    }
+
+    // Marketplace
+    let marketFilter = 'All';
+    function renderMarketplace() {
+        const domains = ['All', ...new Set(dummyClasses.map(c=>c.domain))];
+        const filters = document.getElementById('market-filters');
+        filters.innerHTML = domains.map(d => `<button class="px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap transition ${d===marketFilter?'border-indigo-500 bg-indigo-500/20 text-indigo-300':'border-slate-700 text-slate-400 hover:border-indigo-400'}" data-filter="${d}">${d}</button>`).join('');
+        filters.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { marketFilter = b.dataset.filter; renderMarketplace(); }));
+        const filtered = marketFilter === 'All' ? dummyClasses : dummyClasses.filter(c => c.domain === marketFilter);
+        document.getElementById('market-list').innerHTML = filtered.map(c => `
+            <div class="glass rounded-xl p-5 glow">
+                <div class="flex justify-between items-start mb-3"><span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300">${c.domain}</span><span class="text-xs text-slate-500">${c.slots} slots left</span></div>
+                <h4 class="font-semibold mb-1">${c.title}</h4>
+                <p class="text-sm text-slate-400 mb-3">by ${c.teacher} · ${c.time}</p>
+                <a href="${c.zoom}" target="_blank" rel="noopener noreferrer" class="inline-block px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-medium transition">Join Zoom →</a>
+            </div>
+        `).join('');
+    }
+
+    // Leaderboard
+    function renderLeaderboard() {
+        document.getElementById('lb-list').innerHTML = dummyLeaderboard.map((u,i) => `
+            <div class="glass rounded-xl p-4 flex items-center gap-4 ${i<3?'glow':''}">
+                <span class="mono text-lg font-bold w-8 text-center ${i===0?'text-yellow-400':i===1?'text-slate-300':i===2?'text-amber-600':'text-slate-500'}">#${i+1}</span>
+                <div class="flex-1"><p class="font-semibold">${u.name}</p><p class="text-xs text-slate-400">${u.level} · 🔥 ${u.streak} streak</p></div>
+                <span class="mono text-xl font-bold text-indigo-400">${u.score}%</span>
+            </div>
+        `).join('');
+    }
+
+    // Referrals
+    function renderReferrals() {
+        const myScore = lastResult ? lastResult.overall : (allRecords.filter(r=>r.user_email===userData.email).length ? allRecords.filter(r=>r.user_email===userData.email).slice(-1)[0].overall_score : 0);
+        document.getElementById('ref-list').innerHTML = dummyReferrals.map(r => {
+            const eligible = myScore >= r.minScore;
+            return `
+                <div class="glass rounded-xl p-5 glow ${eligible?'':'opacity-60'}">
+                    <div class="flex items-center gap-3 mb-3"><span class="text-2xl">${r.logo}</span><div><p class="font-semibold">${r.company}</p><p class="text-sm text-slate-400">${r.role}</p></div></div>
+                    <p class="text-xs text-slate-500 mb-2">Min Score: ${r.minScore}% · ${r.skills.join(', ')}</p>
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-medium ${eligible?'bg-emerald-500/20 text-emerald-400':'bg-red-500/20 text-red-400'}">${eligible?'✓ Eligible':'✗ Need '+r.minScore+'%'}</span>
+                </div>`;
+        }).join('');
+    }
+
+    // History
+    function renderHistory() {
+        const list = document.getElementById('history-list');
+        const empty = document.getElementById('history-empty');
+        const userRecs = userData.email ? allRecords.filter(r => r.user_email === userData.email) : allRecords;
+        if (!userRecs.length) { list.innerHTML = ''; empty.classList.remove('hidden'); return; }
+        empty.classList.add('hidden');
+        list.innerHTML = userRecs.slice().reverse().map(r => `
+            <div class="glass rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div><p class="font-semibold">${r.user_name} <span class="text-slate-500 text-sm font-normal">${r.user_role}</span></p><p class="text-sm text-slate-400">${r.stream} · ${r.specialization} · <span class="text-indigo-300">${r.difficulty_level || 'medium'}</span></p></div>
+                <div class="flex items-center gap-4"><span class="mono text-2xl font-bold text-indigo-400">${r.overall_score}%</span><span class="px-3 py-1 rounded-full text-xs font-medium ${r.predicted_level==='Expert'?'bg-emerald-500/20 text-emerald-400':r.predicted_level==='Advanced'?'bg-blue-500/20 text-blue-400':r.predicted_level==='Intermediate'?'bg-amber-500/20 text-amber-400':'bg-red-500/20 text-red-400'}">${r.predicted_level}</span><span class="text-xs text-slate-500">${new Date(r.assessment_date).toLocaleDateString('en-IN')}</span></div>
+            </div>
+        `).join('');
+    }
+
+    // Data SDK
+    const handler = {
+        onDataChanged(data) {
+            allRecords = data;
+            renderHistory();
+            // Auto-restore user if returning
+            const savedEmail = localStorage.getItem('skillswap_email');
+            if (savedEmail && !userData.email) {
+                const userRecs = data.filter(r => r.user_email === savedEmail);
+                if (userRecs.length) {
+                    const last = userRecs[userRecs.length - 1];
+                    userData = { name: last.user_name, email: last.user_email, role: last.user_role, stream: last.stream, spec: last.specialization };
+                }
+            }
+        }
+    };
+
+    // Standalone fallback for Canva dataSdk
+    if (!window.dataSdk) {
+        window.dataSdk = {
+            async init(h) {
+                const stored = localStorage.getItem('skillswap_records');
+                const data = stored ? JSON.parse(stored) : [];
+                if (h && h.onDataChanged) h.onDataChanged(data);
+                return { isOk: true };
+            },
+            async create(record) {
+                const stored = localStorage.getItem('skillswap_records');
+                const data = stored ? JSON.parse(stored) : [];
+                data.push(record);
+                localStorage.setItem('skillswap_records', JSON.stringify(data));
+                if (handler && handler.onDataChanged) handler.onDataChanged(data);
+                return { isOk: true };
+            }
+        };
+    }
+
+    // Populate UI text labels if empty
+    const defaultTexts = {
+        'hero-badge': 'AI-Powered Skill Assessment',
+        'hero-title': 'SkillSwap AI',
+        'hero-subtitle': 'Adaptive assessments, real-time analytics, peer learning & job referrals tailored to your skills.',
+        'hero-cta': 'Get Started',
+        'form-title': 'Create Your Profile',
+        'form-subtitle': 'Enter your details to generate customized assessment questions',
+        'label-name': 'Full Name',
+        'label-email': 'Email Address',
+        'label-role': 'Role',
+        'label-stream': 'Stream / Field (e.g., CS, Commerce)',
+        'label-spec': 'Specialization',
+        'form-submit': 'Begin Assessment',
+        'assess-title': 'Skill Assessment',
+        'results-title': 'Assessment Results',
+        'results-subtitle': 'Here is your skill breakdown and personalized analysis',
+        'score-label': 'Overall Score',
+        'bar-title': 'Domain Breakdown',
+        'gaps-title': 'Identified Skill Gaps',
+        'recs-title': 'Recommended Next Steps',
+        'goto-dashboard-btn': 'Go to Dashboard',
+        'dash-title': 'Student Dashboard',
+        'stat-streak-label': 'Assessments Taken',
+        'stat-taught-label': 'Classes Taught',
+        'stat-taken-label': 'Classes Attended',
+        'stat-tscore-label': 'Teaching Rating',
+        'dash-upcoming-title': 'Upcoming Live Sessions',
+        'dash-recent-title': 'Recent Assessment',
+        'market-title': 'Peer Learning Marketplace',
+        'market-subtitle': 'Exchange skills and join peer-led live sessions',
+        'lb-title': 'Top Learners Leaderboard',
+        'ref-title': 'Job & Internship Referrals',
+        'ref-subtitle': 'Opportunities unlocked based on your assessment scores',
+        'history-title': 'Assessment History',
+        'history-empty': 'No assessment records yet. Take an assessment to see results here.'
+    };
+    Object.entries(defaultTexts).forEach(([id, text]) => {
+        const el = document.querySelector(`[data-template-id="${id}"]`);
+        if (el && !el.textContent.trim()) {
+            el.textContent = text;
+        }
+    });
+
+    async function initApp() {
+        if (window.dataSdk && window.dataSdk.init) {
+            const res = await window.dataSdk.init(handler);
+            if (!res.isOk) { /* SDK init fallback */ }
+        }
+        if (window.lucide && window.lucide.createIcons) {
+            lucide.createIcons();
+        }
+    }
+    initApp();
+})();
+  </script>
+ </body>
+</html>

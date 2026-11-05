@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: skillswap-ai
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .
