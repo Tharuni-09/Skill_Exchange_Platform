@@ -43,8 +43,10 @@
         <span class="w-7 h-7 rounded-full bg-indigo-600/60 border border-indigo-400 flex items-center justify-center text-xs font-bold text-white" id="header-user-avatar">U</span>
         <span id="header-user-name" class="font-medium text-slate-200"></span>
         <span id="header-user-role" class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-indigo-300"></span>
+      <div id="header-auth-buttons" class="flex items-center gap-2">
+        <button id="btn-header-login" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition border border-slate-700">Log In</button>
+        <button id="btn-header-register" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition shadow-sm">Sign Up</button>
       </div>
-      <button id="btn-header-auth" class="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition">Sign In</button>
       <button id="btn-logout" class="hidden px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-red-500/20 text-slate-400 hover:text-red-400 text-xs font-semibold transition border border-slate-700">Logout</button>
     </div>
   </header>
@@ -57,101 +59,169 @@
     <h1 data-template-id="hero-title" class="canva-text text-5xl md:text-6xl font-bold leading-tight mb-4"></h1>
     <p data-template-id="hero-subtitle" class="canva-text text-lg text-slate-300 mb-8 max-w-xl mx-auto"></p><button id="btn-start" data-template-id="hero-cta" class="canva-button btn-primary px-8 py-3.5 rounded-xl font-semibold text-lg"></button>
    </div>
-  </section><!-- USER INFO FORM -->
-  <section id="view-form" class="hidden px-4 py-12" style="min-height: calc(100 * min(var(--vh, 1vh), 1vh))">
-   <div class="max-w-lg mx-auto fade-in">
-    <!-- Auth Mode Switcher -->
-    <div class="flex justify-center mb-6">
-      <div class="inline-flex p-1 rounded-xl glass border border-slate-700">
-        <button id="tab-btn-login" type="button" class="px-6 py-2 rounded-lg font-medium text-sm transition bg-indigo-600 text-white shadow">Sign In</button>
-        <button id="tab-btn-register" type="button" class="px-6 py-2 rounded-lg font-medium text-sm transition text-slate-400 hover:text-white">Sign Up</button>
+  </section>
+
+  <!-- DEDICATED LOGIN PAGE -->
+  <section id="view-login" class="hidden px-4 py-12" style="min-height: calc(100 * min(var(--vh, 1vh), 1vh))">
+   <div class="max-w-md mx-auto fade-in">
+    <div id="login-alert" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
+    <div class="glass rounded-2xl p-8 glow border border-indigo-500/20">
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-600/20 text-indigo-400 mb-3">
+          <i data-lucide="log-in" style="width:24px;height:24px"></i>
+        </div>
+        <h2 class="text-2xl font-bold">Sign In to SkillSwap</h2>
+        <p class="text-slate-400 text-sm mt-1">Enter your credentials to access your dashboard & tests</p>
+      </div>
+
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1.5 text-slate-300" for="login-email">Email Address</label>
+          <input id="login-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5 text-slate-300" for="login-pass">Password</label>
+          <input id="login-pass" type="password" required placeholder="••••••••" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+        </div>
+        <button type="submit" id="btn-login-submit" class="w-full py-3 rounded-xl font-semibold text-base mt-2 btn-primary bg-indigo-600 hover:bg-indigo-500 text-white transition">Sign In</button>
+      </form>
+
+      <div class="mt-6 pt-6 border-t border-slate-800 text-center">
+        <p class="text-xs text-slate-400">Don't have an account? <button type="button" id="link-to-register" class="text-indigo-400 font-medium hover:underline">Create a free account (Sign Up)</button></p>
       </div>
     </div>
-    <div id="auth-alert" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
-
-    <!-- LOGIN FORM -->
-    <form id="login-form" class="space-y-5 glass rounded-2xl p-8 glow">
-      <h2 class="text-2xl font-bold text-center mb-1">Welcome Back</h2>
-      <p class="text-slate-400 text-sm text-center mb-6">Sign in with your email and password to access your dashboard</p>
-      <div>
-        <label class="block text-sm font-medium mb-1.5" for="login-email">Email Address</label>
-        <input id="login-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
-      </div>
-      <div>
-        <label class="block text-sm font-medium mb-1.5" for="login-pass">Password</label>
-        <input id="login-pass" type="password" required placeholder="••••••••" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
-      </div>
-      <button type="submit" id="btn-login-submit" class="w-full py-3 rounded-xl font-semibold text-lg mt-4 btn-primary bg-indigo-600 hover:bg-indigo-500 text-white transition">Sign In</button>
-      <p class="text-center text-xs text-slate-400 mt-4">Don't have an account? <button type="button" id="link-to-register" class="text-indigo-400 hover:underline">Create an account</button></p>
-    </form>
-
-    <!-- SIGN UP FORM -->
-    <form id="user-form" class="hidden space-y-5 glass rounded-2xl p-8 glow">
-      <h2 class="text-2xl font-bold text-center mb-1">Create Account</h2>
-      <p class="text-slate-400 text-sm text-center mb-6">Register to track your scores, unlock referrals & join live peer sessions</p>
-      <div>
-        <label class="block text-sm font-medium mb-1.5" for="inp-name">Full Name</label>
-        <input id="inp-name" type="text" required placeholder="Tharuni" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
-      </div>
-      <div>
-        <label class="block text-sm font-medium mb-1.5" for="inp-email">Email Address</label>
-        <input id="inp-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
-      </div>
-      <div>
-        <label class="block text-sm font-medium mb-1.5" for="inp-pass">Password</label>
-        <input id="inp-pass" type="password" required minlength="4" placeholder="••••••••" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
-      </div>
-      <div>
-        <label class="block text-sm font-medium mb-1.5" for="inp-role">Current Role</label>
-        <select id="inp-role" required class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
-          <option value="">Select role</option>
-          <option value="Student">Student</option>
-          <option value="Professional">Professional</option>
-          <option value="Freelancer">Freelancer</option>
-          <option value="Researcher">Researcher</option>
-        </select>
-      </div>
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium mb-1.5" for="inp-stream">Stream / Field</label>
-          <input id="inp-stream" type="text" required placeholder="CS / Engineering" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
-        </div>
-        <div>
-          <label class="block text-sm font-medium mb-1.5" for="inp-spec">Specialization</label>
-          <input id="inp-spec" type="text" required placeholder="AI / ML" class="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
-        </div>
-      </div>
-      <button type="submit" id="btn-register-submit" class="w-full py-3 rounded-xl font-semibold text-lg mt-4 btn-primary bg-indigo-600 hover:bg-indigo-500 text-white transition">Register & Start Test</button>
-      <p class="text-center text-xs text-slate-400 mt-4">Already registered? <button type="button" id="link-to-login" class="text-indigo-400 hover:underline">Sign in here</button></p>
-    </form>
    </div>
-  </section><!-- ASSESSMENT -->
+  </section>
+
+  <!-- DEDICATED SIGN UP / REGISTER PAGE -->
+  <section id="view-register" class="hidden px-4 py-12" style="min-height: calc(100 * min(var(--vh, 1vh), 1vh))">
+   <div class="max-w-lg mx-auto fade-in">
+    <div id="register-alert" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
+    <div class="glass rounded-2xl p-8 glow border border-indigo-500/20">
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-600/20 text-indigo-400 mb-3">
+          <i data-lucide="user-plus" style="width:24px;height:24px"></i>
+        </div>
+        <h2 class="text-2xl font-bold">Create Your Account</h2>
+        <p class="text-slate-400 text-sm mt-1">Set up your profile to receive AI adaptive assessments & peer referrals</p>
+      </div>
+
+      <form id="user-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1.5 text-slate-300" for="inp-name">Full Name</label>
+          <input id="inp-name" type="text" required placeholder="e.g. Tharuni" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5 text-slate-300" for="inp-email">Email Address</label>
+          <input id="inp-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5 text-slate-300" for="inp-pass">Password</label>
+          <input id="inp-pass" type="password" required minlength="4" placeholder="••••••••" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5 text-slate-300" for="inp-role">Current Role</label>
+          <select id="inp-role" required class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+            <option value="">Select your role</option>
+            <option value="Student">Student</option>
+            <option value="Professional">Professional</option>
+            <option value="Freelancer">Freelancer</option>
+            <option value="Researcher">Researcher</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-1.5 text-slate-300" for="inp-stream">Stream / Branch</label>
+            <input id="inp-stream" type="text" required placeholder="CS / Engineering" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1.5 text-slate-300" for="inp-spec">Specialization</label>
+            <input id="inp-spec" type="text" required placeholder="AI / Full Stack" class="w-full bg-slate-800/70 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-indigo-500 transition text-white">
+          </div>
+        </div>
+        <button type="submit" id="btn-register-submit" class="w-full py-3 rounded-xl font-semibold text-base mt-2 btn-primary bg-indigo-600 hover:bg-indigo-500 text-white transition">Sign Up & Start AI Test</button>
+      </form>
+
+      <div class="mt-6 pt-6 border-t border-slate-800 text-center">
+        <p class="text-xs text-slate-400">Already have an account? <button type="button" id="link-to-login" class="text-indigo-400 font-medium hover:underline">Sign In here</button></p>
+      </div>
+    </div>
+   </div>
+  </section>
+
+  <!-- ASSESSMENT WITH AI EXAMINER -->
   <section id="view-assessment" class="hidden px-4 py-12" style="min-height: calc(100 * min(var(--vh, 1vh), 1vh))">
    <div class="max-w-2xl mx-auto fade-in">
-    <div class="flex items-center justify-between mb-6">
-     <h2 data-template-id="assess-title" class="canva-text text-2xl font-bold"></h2>
-     <div class="flex items-center gap-2 mono text-indigo-300"><i data-lucide="clock" style="width:18px;height:18px"></i><span id="timer">00:00</span>
+    <!-- AI Status Banner -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+     <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border border-indigo-500/30 text-xs text-indigo-300">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span>🤖 <b>AI Examiner Active</b> · Gemini 2.5 Flash</span>
+     </div>
+     <div class="flex items-center gap-2 mono text-indigo-300 text-sm glass px-3 py-1 rounded-lg">
+      <i data-lucide="clock" style="width:16px;height:16px"></i>
+      <span id="timer">00:00</span>
      </div>
     </div>
-    <div class="mb-2 text-sm text-slate-400" id="difficulty-badge"></div>
-    <div class="mb-4">
-     <div class="flex justify-between text-sm text-slate-400 mb-1"><span>Question <span id="q-current">1</span>/10</span><span id="q-domain" class="text-indigo-300"></span>
-     </div>
-     <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-      <div id="progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 progress-bar" style="width:10%"></div>
-     </div>
+
+    <div class="flex items-center justify-between mb-2">
+      <div class="text-xs text-indigo-300 font-medium px-2.5 py-1 rounded bg-indigo-500/10 border border-indigo-500/20" id="difficulty-badge">Adaptive Difficulty</div>
+      <div class="text-xs text-slate-400 font-mono">Question <span id="q-current" class="text-indigo-400 font-bold">1</span>/<span id="q-total">5</span></div>
     </div>
-    <div class="glass rounded-2xl p-8 glow">
-     <p id="q-text" class="text-lg font-medium mb-6"></p>
-     <div id="q-options" class="space-y-3"></div>
-    </div><button id="btn-next" disabled class="mt-6 w-full py-3 rounded-xl font-semibold bg-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-indigo-500 transition">Next</button>
+
+    <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-6">
+      <div id="progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 progress-bar" style="width:20%"></div>
+    </div>
+
+    <!-- AI Thinking State Loader -->
+    <div id="ai-loading-box" class="hidden glass rounded-2xl p-10 glow text-center my-6">
+      <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+      <p id="ai-loading-title" class="text-base font-semibold text-indigo-300">AI Examiner Thinking...</p>
+      <p id="ai-loading-desc" class="text-xs text-slate-400 mt-1">Generating adaptive challenge for your specialization...</p>
+    </div>
+
+    <!-- Question Card -->
+    <div id="ai-question-card" class="glass rounded-2xl p-8 glow">
+      <div class="flex items-center justify-between mb-4">
+        <span id="q-domain" class="text-xs uppercase tracking-wider text-indigo-400 font-semibold px-2 py-0.5 rounded bg-indigo-500/10">Domain</span>
+      </div>
+      <p id="q-text" class="text-lg font-medium leading-relaxed mb-6 text-slate-100"></p>
+      <div id="q-options" class="space-y-3"></div>
+
+      <!-- Submit Answer Button -->
+      <button id="btn-submit-answer" disabled class="mt-6 w-full py-3.5 rounded-xl font-semibold bg-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-indigo-500 transition text-white shadow-lg shadow-indigo-600/30">Submit Answer to AI Agent →</button>
+    </div>
+
+    <!-- AI Instant Verification & Feedback Card -->
+    <div id="ai-feedback-card" class="hidden mt-6 glass rounded-2xl p-6 glow border border-indigo-500/30 fade-in">
+      <div class="flex items-center justify-between mb-3">
+        <div id="ai-result-badge" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold"></div>
+        <span class="text-xs text-slate-400 font-mono" id="ai-score-delta">+100 pts</span>
+      </div>
+      <h4 class="text-sm font-semibold text-indigo-300 mb-1">🤖 AI Examiner Feedback:</h4>
+      <p id="ai-feedback-text" class="text-sm text-slate-300 leading-relaxed mb-4"></p>
+      <button id="btn-ai-continue" class="w-full py-3 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30">Continue to Next Question →</button>
+    </div>
    </div>
   </section><!-- RESULTS -->
   <section id="view-results" class="hidden px-4 py-12">
    <div class="max-w-5xl mx-auto fade-in">
-    <div class="text-center mb-10">
+    <div class="text-center mb-8">
+     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs text-indigo-300 mb-3 border border-indigo-500/30">
+       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+       <span>Verified by SkillSwap AI Examiner Agent</span>
+     </div>
      <h2 data-template-id="results-title" class="canva-text text-3xl font-bold mb-2"></h2>
      <p data-template-id="results-subtitle" class="canva-text text-slate-400"></p>
+    </div>
+
+    <!-- AI Mentor Evaluation Summary Card -->
+    <div class="glass rounded-2xl p-6 glow mb-8 border border-indigo-500/30 fade-in">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="text-2xl">🤖</span>
+        <h3 class="text-lg font-bold text-indigo-300">AI Examiner Diagnostic & Growth Trajectory</h3>
+      </div>
+      <p id="ai-eval-summary" class="text-slate-300 text-sm leading-relaxed"></p>
     </div>
     <div class="grid md:grid-cols-3 gap-6 mb-10">
      <div class="glass rounded-2xl p-6 flex flex-col items-center justify-center glow">
@@ -426,83 +496,83 @@
     let activeQuestions = [];
     let currentDifficulty = 'medium';
 
-    const allViews = ['hero','form','assessment','results','dashboard','marketplace','leaderboard','referrals','history'];
+    const allViews = ['hero','login','register','assessment','results','dashboard','marketplace','leaderboard','referrals','history'];
 
     function showView(id) {
-        allViews.forEach(v => document.getElementById('view-'+v).classList.toggle('hidden', v !== id));
+        allViews.forEach(v => {
+            const el = document.getElementById('view-' + v);
+            if (el) el.classList.toggle('hidden', v !== id);
+        });
         const navViews = ['dashboard','marketplace','leaderboard','referrals','history'];
-        document.getElementById('bottom-nav').classList.toggle('hidden', !navViews.includes(id));
+        const bottomNav = document.getElementById('bottom-nav');
+        if (bottomNav) bottomNav.classList.toggle('hidden', !navViews.includes(id));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.nav === id));
         currentView = id;
         if (id === 'dashboard') renderDashboard();
         if (id === 'marketplace') renderMarketplace();
         if (id === 'leaderboard') renderLeaderboard();
         if (id === 'referrals') renderReferrals();
+        if (id === 'history') renderHistory();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // Auth UI helpers
     function updateUserUI(user) {
         const display = document.getElementById('header-user-display');
-        const authBtn = document.getElementById('btn-header-auth');
+        const authButtons = document.getElementById('header-auth-buttons');
         const logoutBtn = document.getElementById('btn-logout');
         if (user && user.email) {
-            display.classList.remove('hidden');
-            document.getElementById('header-user-name').textContent = user.name;
-            document.getElementById('header-user-role').textContent = user.role || 'Member';
-            document.getElementById('header-user-avatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
-            authBtn.classList.add('hidden');
-            logoutBtn.classList.remove('hidden');
+            if (display) display.classList.remove('hidden');
+            const nameEl = document.getElementById('header-user-name');
+            const roleEl = document.getElementById('header-user-role');
+            const avatarEl = document.getElementById('header-user-avatar');
+            if (nameEl) nameEl.textContent = user.name;
+            if (roleEl) roleEl.textContent = user.role || 'Student';
+            if (avatarEl) avatarEl.textContent = (user.name || 'U').charAt(0).toUpperCase();
+            if (authButtons) authButtons.classList.add('hidden');
+            if (logoutBtn) logoutBtn.classList.remove('hidden');
         } else {
-            display.classList.add('hidden');
-            authBtn.classList.remove('hidden');
-            logoutBtn.classList.add('hidden');
+            if (display) display.classList.add('hidden');
+            if (authButtons) authButtons.classList.remove('hidden');
+            if (logoutBtn) logoutBtn.classList.add('hidden');
         }
     }
 
-    function showAuthAlert(msg, isSuccess = false) {
-        const alert = document.getElementById('auth-alert');
+    function showAuthAlert(targetId, msg, isSuccess = false) {
+        const alert = document.getElementById(targetId);
+        if (!alert) return;
         alert.textContent = msg;
         alert.className = `mb-4 p-3 rounded-lg text-sm text-center ${isSuccess ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`;
         alert.classList.remove('hidden');
     }
 
-    function switchAuthTab(tab) {
-        const loginBtn = document.getElementById('tab-btn-login');
-        const regBtn = document.getElementById('tab-btn-register');
-        const loginForm = document.getElementById('login-form');
-        const regForm = document.getElementById('user-form');
-        const alert = document.getElementById('auth-alert');
-        alert.classList.add('hidden');
+    // Header & Navigation Listeners
+    const btnHeaderLogin = document.getElementById('btn-header-login');
+    if (btnHeaderLogin) btnHeaderLogin.addEventListener('click', () => showView('login'));
 
-        if (tab === 'login') {
-            loginBtn.className = 'px-6 py-2 rounded-lg font-medium text-sm transition bg-indigo-600 text-white shadow';
-            regBtn.className = 'px-6 py-2 rounded-lg font-medium text-sm transition text-slate-400 hover:text-white';
-            loginForm.classList.remove('hidden');
-            regForm.classList.add('hidden');
+    const btnHeaderRegister = document.getElementById('btn-header-register');
+    if (btnHeaderRegister) btnHeaderRegister.addEventListener('click', () => showView('register'));
+
+    const linkToRegister = document.getElementById('link-to-register');
+    if (linkToRegister) linkToRegister.addEventListener('click', () => showView('register'));
+
+    const linkToLogin = document.getElementById('link-to-login');
+    if (linkToLogin) linkToLogin.addEventListener('click', () => showView('login'));
+
+    const btnHeroLogin = document.getElementById('btn-hero-login');
+    if (btnHeroLogin) btnHeroLogin.addEventListener('click', () => showView('login'));
+
+    const btnStart = document.getElementById('btn-start');
+    if (btnStart) btnStart.addEventListener('click', () => {
+        if (userData && userData.email) {
+            startAiAssessment();
         } else {
-            regBtn.className = 'px-6 py-2 rounded-lg font-medium text-sm transition bg-indigo-600 text-white shadow';
-            loginBtn.className = 'px-6 py-2 rounded-lg font-medium text-sm transition text-slate-400 hover:text-white';
-            regForm.classList.remove('hidden');
-            loginForm.classList.add('hidden');
-        }
-    }
-
-    document.getElementById('tab-btn-login').addEventListener('click', () => switchAuthTab('login'));
-    document.getElementById('tab-btn-register').addEventListener('click', () => switchAuthTab('register'));
-    document.getElementById('link-to-register').addEventListener('click', (e) => { e.preventDefault(); switchAuthTab('register'); });
-    document.getElementById('link-to-login').addEventListener('click', (e) => { e.preventDefault(); switchAuthTab('login'); });
-
-    // Nav
-    document.getElementById('btn-start').addEventListener('click', () => {
-        if (userData.email) {
-            startAssessment();
-        } else {
-            showView('form');
+            showView('register');
         }
     });
 
-    document.getElementById('btn-header-auth').addEventListener('click', () => showView('form'));
-    document.getElementById('btn-logout').addEventListener('click', () => {
+    const btnLogout = document.getElementById('btn-logout');
+    if (btnLogout) btnLogout.addEventListener('click', () => {
         userData = {};
         localStorage.removeItem('skillswap_user');
         localStorage.removeItem('skillswap_email');
@@ -510,19 +580,22 @@
         showView('hero');
     });
 
-    document.getElementById('btn-new-assess').addEventListener('click', () => {
-        if (userData.email) {
-            startAssessment();
+    const btnNewAssess = document.getElementById('btn-new-assess');
+    if (btnNewAssess) btnNewAssess.addEventListener('click', () => {
+        if (userData && userData.email) {
+            startAiAssessment();
         } else {
-            showView('form');
+            showView('login');
         }
     });
 
-    document.getElementById('btn-to-dashboard').addEventListener('click', () => showView('dashboard'));
+    const btnToDashboard = document.getElementById('btn-to-dashboard');
+    if (btnToDashboard) btnToDashboard.addEventListener('click', () => showView('dashboard'));
     document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => showView(b.dataset.nav)));
 
-    // Login Form Submit
-    document.getElementById('login-form').addEventListener('submit', async function(e) {
+    // Login Form Submission
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         const email = document.getElementById('login-email').value.trim();
         const password = document.getElementById('login-pass').value;
@@ -538,7 +611,7 @@
             });
             const data = await resp.json();
             if (!resp.ok) {
-                showAuthAlert(data.error || 'Failed to login');
+                showAuthAlert('login-alert', data.error || 'Invalid credentials');
             } else {
                 userData = data.user;
                 localStorage.setItem('skillswap_user', JSON.stringify(userData));
@@ -548,8 +621,8 @@
                 showView('dashboard');
             }
         } catch (err) {
-            console.warn('Backend unavailable, using local session', err);
-            userData = { name: email.split('@')[0], email, role: 'Student', stream: 'CS', spec: 'General' };
+            console.warn('Backend offline, using fallback auth', err);
+            userData = { name: email.split('@')[0], email, role: 'Student', stream: 'CS', spec: 'AI' };
             localStorage.setItem('skillswap_user', JSON.stringify(userData));
             localStorage.setItem('skillswap_email', userData.email);
             updateUserUI(userData);
@@ -560,8 +633,9 @@
         }
     });
 
-    // Sign Up Form Submit
-    document.getElementById('user-form').addEventListener('submit', async function(e) {
+    // Sign Up Form Submission
+    const userForm = document.getElementById('user-form');
+    if (userForm) userForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         const name = document.getElementById('inp-name').value.trim();
         const email = document.getElementById('inp-email').value.trim();
@@ -581,157 +655,463 @@
             });
             const data = await resp.json();
             if (!resp.ok) {
-                showAuthAlert(data.error || 'Registration failed');
+                showAuthAlert('register-alert', data.error || 'Registration failed');
             } else {
                 userData = data.user;
                 localStorage.setItem('skillswap_user', JSON.stringify(userData));
                 localStorage.setItem('skillswap_email', userData.email);
                 updateUserUI(userData);
-                startAssessment();
+                startAiAssessment();
             }
         } catch (err) {
-            console.warn('Backend unavailable, saving locally', err);
+            console.warn('Backend offline, saving locally', err);
             userData = { name, email, role, stream, spec };
             localStorage.setItem('skillswap_user', JSON.stringify(userData));
             localStorage.setItem('skillswap_email', userData.email);
             updateUserUI(userData);
-            startAssessment();
+            startAiAssessment();
         } finally {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Register & Start Test';
+            submitBtn.textContent = 'Sign Up & Start AI Test';
         }
     });
 
-    function startAssessment() {
-        currentQ = 0;
-        scores = { analytical_reasoning:0, problem_solving:0, decision_making:0, attention_consistency:0, knowledge_recall:0 };
+    // --- AI AGENT ASSESSMENT ENGINE ---
+    let aiCurrentQuestion = null;
+    let aiNextQuestion = null;
+    let aiAnswersHistory = [];
+    const aiTotalQuestions = 5;
+    let currentQNumber = 1;
+    let selectedOptionIndex = -1;
+    let selectedOptionText = '';
 
-        // Get user's past records to determine difficulty
-        const userRecs = allRecords.filter(r => r.user_email === userData.email);
-        currentDifficulty = getDifficulty(userRecs);
+    async function startAiAssessment() {
+        currentQNumber = 1;
+        aiAnswersHistory = [];
+        aiCurrentQuestion = null;
+        aiNextQuestion = null;
+        selectedOptionIndex = -1;
+        selectedOptionText = '';
 
-        // Select questions based on stream and difficulty
-        const streamKey = getStreamKey(userData.stream);
-        const bank = questionBanks[streamKey] || questionBanks._default;
-        activeQuestions = [...(bank[currentDifficulty] || bank.medium)];
-
-        // Show difficulty badge
-        document.getElementById('difficulty-badge').textContent = `Difficulty: ${currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1)} | Stream: ${userData.stream}`;
+        const totalEl = document.getElementById('q-total');
+        if (totalEl) totalEl.textContent = aiTotalQuestions;
 
         showView('assessment');
         startTime = Date.now();
+        if (timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(updateTimer, 1000);
-        renderQuestion();
-    }
 
-    function updateTimer() {
-        const elapsed = Math.floor((Date.now() - startTime) / 1000);
-        document.getElementById('timer').textContent = String(Math.floor(elapsed/60)).padStart(2,'0') + ':' + String(elapsed%60).padStart(2,'0');
-    }
-
-    function renderQuestion() {
-        const q = activeQuestions[currentQ];
-        document.getElementById('q-current').textContent = currentQ + 1;
-        document.getElementById('q-domain').textContent = q.domain.replace(/_/g,' ');
-        document.getElementById('progress-bar').style.width = ((currentQ+1)*10)+'%';
-        document.getElementById('q-text').textContent = q.text;
-        const optCont = document.getElementById('q-options');
-        optCont.innerHTML = '';
-        selectedAnswer = -1;
-        document.getElementById('btn-next').disabled = true;
-        q.options.forEach((opt, i) => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'option-btn w-full text-left px-5 py-3.5 rounded-xl border border-slate-700 transition';
-            btn.textContent = opt;
-            btn.addEventListener('click', () => { selectedAnswer = i; document.getElementById('btn-next').disabled = false; document.querySelectorAll('.option-btn').forEach((b,idx) => b.classList.toggle('selected', idx===i)); });
-            optCont.appendChild(btn);
-        });
-    }
-
-    document.getElementById('btn-next').addEventListener('click', () => {
-        if (selectedAnswer === activeQuestions[currentQ].answer) scores[activeQuestions[currentQ].domain]++;
-        currentQ++;
-        if (currentQ >= activeQuestions.length) { clearInterval(timerInterval); finishAssessment(); }
-        else renderQuestion();
-    });
-
-    function finishAssessment() {
-        const totalTime = (Date.now() - startTime) / 1000;
-        const total = Object.values(scores).reduce((a,b)=>a+b,0);
-        const maxTotal = Object.values(maxScores).reduce((a,b)=>a+b,0);
-        const overall = Math.round((total/maxTotal)*100);
-        const confidence = Math.min(100, Math.round(Math.max(20, 100 - totalTime/2 + overall*0.3)));
-        const level = overall >= 80 ? 'Expert' : overall >= 60 ? 'Advanced' : overall >= 40 ? 'Intermediate' : 'Beginner';
-        const gaps = [];
-        Object.entries(scores).forEach(([k,v]) => { if ((v/maxScores[k])*100 < 60) gaps.push(k.replace(/_/g,' ')); });
-
-        lastResult = { overall, confidence, level, gaps };
-        showResults(overall, confidence, level, gaps);
-        saveResult(overall, confidence, level, gaps);
-    }
-
-    function showResults(overall, confidence, level, gaps) {
-        showView('results');
-        document.getElementById('overall-score').textContent = overall;
-        document.getElementById('score-ring').style.setProperty('--score', overall);
-        document.getElementById('predicted-level').textContent = level;
-
-        const radarCtx = document.getElementById('radar-chart').getContext('2d');
-        if (window._radarChart) window._radarChart.destroy();
-        window._radarChart = new Chart(radarCtx, { type:'radar', data:{ labels:['Analytical','Problem Solving','Decision Making','Attention','Knowledge'], datasets:[{ label:'Score %', data:Object.keys(scores).map(k=>Math.round((scores[k]/maxScores[k])*100)), backgroundColor:'rgba(99,102,241,0.2)', borderColor:'#6366f1', pointBackgroundColor:'#6366f1' }] }, options:{ scales:{ r:{ beginAtZero:true, max:100, grid:{color:'rgba(148,163,184,0.1)'}, ticks:{display:false}, pointLabels:{color:'#94a3b8',font:{size:11}} } }, plugins:{legend:{display:false}} } });
-
-        const barCtx = document.getElementById('bar-chart').getContext('2d');
-        if (window._barChart) window._barChart.destroy();
-        window._barChart = new Chart(barCtx, { type:'bar', data:{ labels:['Analytical','Problem Solving','Decision','Attention','Knowledge'], datasets:[{ data:Object.keys(scores).map(k=>Math.round((scores[k]/maxScores[k])*100)), backgroundColor:['#6366f1','#8b5cf6','#a78bfa','#c4b5fd','#818cf8'] }] }, options:{ indexAxis:'y', scales:{ x:{max:100,grid:{color:'rgba(148,163,184,0.1)'},ticks:{color:'#94a3b8'}}, y:{grid:{display:false},ticks:{color:'#94a3b8'}} }, plugins:{legend:{display:false}} } });
-
-        const gapsCont = document.getElementById('skill-gaps');
-        gapsCont.innerHTML = gaps.length ? gaps.map(g=>`<div class="flex items-center gap-2 text-amber-400"><i data-lucide="alert-triangle" style="width:16px;height:16px"></i><span class="capitalize">${g}</span></div>`).join('') : '<p class="text-emerald-400">No significant gaps detected!</p>';
-        const recsCont = document.getElementById('recommendations');
-        const recs = gaps.length ? gaps.map(g=>`Practice more ${g} exercises`) : ['Keep challenging yourself with advanced problems'];
-        recsCont.innerHTML = recs.map(r=>`<div class="flex items-center gap-2 text-slate-300"><i data-lucide="lightbulb" style="width:16px;height:16px;color:#fbbf24"></i><span>${r}</span></div>`).join('');
-        lucide.createIcons();
-    }
-
-    async function saveResult(overall, confidence, level, gaps) {
-        const record = {
-            user_name: userData.name || 'Anonymous',
-            user_email: userData.email || 'guest@skillswap.ai',
-            user_role: userData.role || 'Student',
-            stream: userData.stream || 'CS',
-            specialization: userData.spec || 'General',
-            predicted_level: level,
-            confidence,
-            overall_score: overall,
-            analytical_reasoning: Math.round((scores.analytical_reasoning/maxScores.analytical_reasoning)*100),
-            problem_solving: Math.round((scores.problem_solving/maxScores.problem_solving)*100),
-            decision_making: Math.round((scores.decision_making/maxScores.decision_making)*100),
-            attention_consistency: Math.round((scores.attention_consistency/maxScores.attention_consistency)*100),
-            knowledge_recall: Math.round((scores.knowledge_recall/maxScores.knowledge_recall)*100),
-            skill_gaps: gaps.join(', ') || 'None',
-            assessment_date: new Date().toISOString(),
-            difficulty_level: currentDifficulty
-        };
+        setAiLoading(true, 'AI Examiner Generating Test...', `Crafting tailored questions for ${userData.stream || 'Technology'} (${userData.spec || 'General'})...`);
 
         try {
-            const resp = await fetch('/api/assessments', {
+            const resp = await fetch('/api/ai/start-session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(record)
+                body: JSON.stringify({
+                    stream: userData.stream || 'Computer Science',
+                    specialization: userData.spec || 'General',
+                    role: userData.role || 'Student',
+                    difficulty: 'medium'
+                })
             });
-            if (resp.ok) {
-                const data = await resp.json();
-                record.streaks = data.streaks || 1;
+            const data = await resp.json();
+            if (data.question) {
+                aiCurrentQuestion = data.question;
+                renderAiQuestion(aiCurrentQuestion);
             }
         } catch (err) {
-            console.warn('Backend unavailable, saving locally', err);
+            console.error('Failed to start AI session:', err);
+            aiCurrentQuestion = {
+                questionNumber: 1,
+                domain: 'analytical_reasoning',
+                domainTitle: 'Analytical Reasoning',
+                difficulty: 'medium',
+                text: 'What algorithm is typically best suited for finding shortest paths in non-negative weighted graphs?',
+                options: ["Dijkstra's Algorithm", "Binary Search", "Bubble Sort", "Depth First Search"],
+                answer: 0,
+                explanation: "Dijkstra's algorithm finds shortest paths from a source to all other vertices with non-negative edge weights."
+            };
+            renderAiQuestion(aiCurrentQuestion);
+        } finally {
+            setAiLoading(false);
+        }
+    }
+
+    function setAiLoading(isLoading, title = 'AI Examiner Thinking...', desc = 'Analyzing context...') {
+        const loader = document.getElementById('ai-loading-box');
+        const qCard = document.getElementById('ai-question-card');
+        const fbCard = document.getElementById('ai-feedback-card');
+        const loadTitle = document.getElementById('ai-loading-title');
+        const loadDesc = document.getElementById('ai-loading-desc');
+
+        if (isLoading) {
+            if (loader) loader.classList.remove('hidden');
+            if (qCard) qCard.classList.add('hidden');
+            if (fbCard) fbCard.classList.add('hidden');
+            if (loadTitle) loadTitle.textContent = title;
+            if (loadDesc) loadDesc.textContent = desc;
+        } else {
+            if (loader) loader.classList.add('hidden');
+            if (qCard) qCard.classList.remove('hidden');
+        }
+    }
+
+    function renderAiQuestion(q) {
+        selectedOptionIndex = -1;
+        selectedOptionText = '';
+
+        const curEl = document.getElementById('q-current');
+        if (curEl) curEl.textContent = currentQNumber;
+
+        const domEl = document.getElementById('q-domain');
+        if (domEl) domEl.textContent = q.domainTitle || (q.domain ? q.domain.replace(/_/g, ' ') : 'Analytical');
+
+        const diffEl = document.getElementById('difficulty-badge');
+        if (diffEl) diffEl.textContent = `Difficulty: ${(q.difficulty || 'adaptive').toUpperCase()} | ${userData.stream || 'Tech'}`;
+
+        const progEl = document.getElementById('progress-bar');
+        if (progEl) progEl.style.width = Math.round((currentQNumber / aiTotalQuestions) * 100) + '%';
+
+        const textEl = document.getElementById('q-text');
+        if (textEl) textEl.textContent = q.text;
+
+        const optCont = document.getElementById('q-options');
+        if (optCont) {
+            optCont.innerHTML = '';
+            (q.options || []).forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'option-btn w-full text-left px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/40 hover:bg-indigo-600/10 hover:border-indigo-500/60 transition text-slate-200';
+                btn.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
+                btn.addEventListener('click', () => {
+                    selectedOptionIndex = idx;
+                    selectedOptionText = opt;
+                    const submitBtn = document.getElementById('btn-submit-answer');
+                    if (submitBtn) submitBtn.disabled = false;
+                    document.querySelectorAll('.option-btn').forEach((b, i) => {
+                        b.classList.toggle('selected', i === idx);
+                        if (i === idx) {
+                            b.className = 'option-btn w-full text-left px-5 py-3.5 rounded-xl border-2 border-indigo-500 bg-indigo-500/20 text-white font-medium transition';
+                        } else {
+                            b.className = 'option-btn w-full text-left px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/40 text-slate-300 transition';
+                        }
+                    });
+                });
+                optCont.appendChild(btn);
+            });
         }
 
-        allRecords.push(record);
-        if (window.dataSdk && window.dataSdk.create) {
-            try { await window.dataSdk.create(record); } catch(e) {}
+        const submitBtn = document.getElementById('btn-submit-answer');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submit Answer to AI Agent →';
         }
-        renderHistory();
+
+        const fbCard = document.getElementById('ai-feedback-card');
+        if (fbCard) fbCard.classList.add('hidden');
+    }
+
+    // Submit Answer to AI Agent for Real-Time Verification
+    const btnSubmitAnswer = document.getElementById('btn-submit-answer');
+    if (btnSubmitAnswer) btnSubmitAnswer.addEventListener('click', async () => {
+        if (selectedOptionIndex < 0 || !aiCurrentQuestion) return;
+
+        btnSubmitAnswer.disabled = true;
+        btnSubmitAnswer.textContent = '🤖 AI Verifying Answer...';
+
+        try {
+            const resp = await fetch('/api/ai/verify-answer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    currentQuestionNumber: currentQNumber,
+                    totalQuestions: aiTotalQuestions,
+                    stream: userData.stream || 'Computer Science',
+                    specialization: userData.spec || 'General',
+                    questionText: aiCurrentQuestion.text,
+                    selectedOptionText: selectedOptionText,
+                    selectedOptionIndex: selectedOptionIndex,
+                    correctOptionIndex: aiCurrentQuestion.answer,
+                    domain: aiCurrentQuestion.domain || 'analytical_reasoning',
+                    pastHistory: aiAnswersHistory
+                })
+            });
+
+            const data = await resp.json();
+            aiNextQuestion = data.nextQuestion;
+
+            aiAnswersHistory.push({
+                questionNumber: currentQNumber,
+                domain: aiCurrentQuestion.domain,
+                selectedOptionText,
+                isCorrect: data.isCorrect,
+                score: data.score,
+                feedback: data.feedback
+            });
+
+            // Display AI Feedback Card
+            const fbCard = document.getElementById('ai-feedback-card');
+            const resBadge = document.getElementById('ai-result-badge');
+            const deltaEl = document.getElementById('ai-score-delta');
+            const textEl = document.getElementById('ai-feedback-text');
+            const contBtn = document.getElementById('btn-ai-continue');
+
+            if (resBadge) {
+                if (data.isCorrect) {
+                    resBadge.className = 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                    resBadge.innerHTML = '✓ Correct Answer';
+                    if (deltaEl) {
+                        deltaEl.textContent = '+100 pts';
+                        deltaEl.className = 'text-xs text-emerald-400 font-mono font-bold';
+                    }
+                } else {
+                    resBadge.className = 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30';
+                    resBadge.innerHTML = '💡 Concept Feedback';
+                    if (deltaEl) {
+                        deltaEl.textContent = '+0 pts';
+                        deltaEl.className = 'text-xs text-slate-500 font-mono';
+                    }
+                }
+            }
+
+            if (textEl) textEl.textContent = data.feedback || aiCurrentQuestion.explanation || 'Answer reviewed by AI.';
+
+            if (contBtn) {
+                if (currentQNumber >= aiTotalQuestions) {
+                    contBtn.textContent = 'Generate Final AI Evaluation 🏆';
+                    contBtn.className = 'w-full py-3 rounded-xl font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30';
+                } else {
+                    contBtn.textContent = `Continue to Question ${currentQNumber + 1} →`;
+                    contBtn.className = 'w-full py-3 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30';
+                }
+            }
+
+            if (fbCard) {
+                fbCard.classList.remove('hidden');
+                fbCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        } catch (err) {
+            console.error('Verify error:', err);
+            const isMatch = selectedOptionIndex === aiCurrentQuestion.answer;
+            aiAnswersHistory.push({
+                questionNumber: currentQNumber,
+                domain: aiCurrentQuestion.domain,
+                selectedOptionText,
+                isCorrect: isMatch,
+                score: isMatch ? 100 : 0,
+                feedback: aiCurrentQuestion.explanation || 'Answer evaluated.'
+            });
+
+            const fbCard = document.getElementById('ai-feedback-card');
+            if (fbCard) fbCard.classList.remove('hidden');
+        } finally {
+            btnSubmitAnswer.textContent = 'Answer Submitted ✓';
+        }
+    });
+
+    // Continue to next question or finalize
+    const btnAiContinue = document.getElementById('btn-ai-continue');
+    if (btnAiContinue) btnAiContinue.addEventListener('click', async () => {
+        if (currentQNumber >= aiTotalQuestions) {
+            await finalizeAiAssessment();
+        } else {
+            currentQNumber++;
+            if (aiNextQuestion) {
+                aiCurrentQuestion = aiNextQuestion;
+                renderAiQuestion(aiCurrentQuestion);
+            } else {
+                setAiLoading(true, 'AI Examiner Generating Next Question...', 'Adjusting difficulty level based on your answer...');
+                try {
+                    const resp = await fetch('/api/ai/start-session', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            stream: userData.stream || 'Computer Science',
+                            specialization: userData.spec || 'General',
+                            role: userData.role || 'Student',
+                            difficulty: 'medium'
+                        })
+                    });
+                    const data = await resp.json();
+                    aiCurrentQuestion = data.question;
+                    renderAiQuestion(aiCurrentQuestion);
+                } catch(e) {
+                    renderAiQuestion({
+                        questionNumber: currentQNumber,
+                        domain: 'problem_solving',
+                        domainTitle: 'Problem Solving',
+                        difficulty: 'medium',
+                        text: 'Which practice best prevents race conditions in concurrent execution?',
+                        options: ['Locks and mutexes', 'Infinite loops', 'Ignoring threads', 'Global variables'],
+                        answer: 0,
+                        explanation: 'Synchronization primitives like locks or mutexes ensure mutual exclusion.'
+                    });
+                } finally {
+                    setAiLoading(false);
+                }
+            }
+        }
+    });
+
+    // Finalize assessment with AI Agent
+    async function finalizeAiAssessment() {
+        if (timerInterval) clearInterval(timerInterval);
+        setAiLoading(true, '🤖 AI Examiner Computing Comprehensive Diagnostic...', 'Evaluating reasoning accuracy, skill competencies, and diagnosing gaps...');
+
+        try {
+            const resp = await fetch('/api/ai/finalize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user: userData,
+                    answersHistory: aiAnswersHistory
+                })
+            });
+
+            const data = await resp.json();
+            const evaluation = data.evaluation;
+            showAiResults(evaluation);
+        } catch (err) {
+            console.error('Finalize error:', err);
+            const correctCount = aiAnswersHistory.filter(a => a.isCorrect).length;
+            const overall = Math.round((correctCount / Math.max(1, aiAnswersHistory.length)) * 100);
+            const fallbackEval = {
+                overallScore: overall,
+                predictedLevel: overall >= 80 ? 'Expert' : overall >= 60 ? 'Advanced' : overall >= 40 ? 'Intermediate' : 'Beginner',
+                confidenceScore: 85,
+                domainScores: {
+                    analytical_reasoning: overall,
+                    problem_solving: overall,
+                    decision_making: overall,
+                    attention_consistency: overall,
+                    knowledge_recall: overall
+                },
+                skillGaps: overall < 70 ? ['Core Problem Solving', 'Systems Design'] : ['Advanced Optimization'],
+                recommendations: ['Review advanced topics', 'Join peer workshops in marketplace'],
+                aiSummary: 'Completed AI-proctored adaptive assessment with solid engagement.'
+            };
+            showAiResults(fallbackEval);
+        } finally {
+            setAiLoading(false);
+        }
+    }
+
+    function showAiResults(evaluation) {
+        showView('results');
+
+        const overall = evaluation.overallScore || 0;
+        const level = evaluation.predictedLevel || 'Intermediate';
+
+        const overallEl = document.getElementById('overall-score');
+        if (overallEl) overallEl.textContent = overall;
+
+        const ringEl = document.getElementById('score-ring');
+        if (ringEl) ringEl.style.setProperty('--score', overall);
+
+        const levelEl = document.getElementById('predicted-level');
+        if (levelEl) levelEl.textContent = level;
+
+        const summaryEl = document.getElementById('ai-eval-summary');
+        if (summaryEl) summaryEl.textContent = evaluation.aiSummary || 'AI Examiner analysis complete.';
+
+        const domScores = evaluation.domainScores || {};
+        const radarValues = [
+            domScores.analytical_reasoning || overall,
+            domScores.problem_solving || overall,
+            domScores.decision_making || overall,
+            domScores.attention_consistency || overall,
+            domScores.knowledge_recall || overall
+        ];
+
+        // Radar Chart
+        const radarCanvas = document.getElementById('radar-chart');
+        if (radarCanvas) {
+            const radarCtx = radarCanvas.getContext('2d');
+            if (window._radarChart) window._radarChart.destroy();
+            window._radarChart = new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Analytical', 'Problem Solving', 'Decision Making', 'Attention', 'Knowledge'],
+                    datasets: [{
+                        label: 'Proficiency %',
+                        data: radarValues,
+                        backgroundColor: 'rgba(99, 102, 241, 0.25)',
+                        borderColor: '#6366f1',
+                        pointBackgroundColor: '#818cf8',
+                        pointBorderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(148, 163, 184, 0.15)' },
+                            angleLines: { color: 'rgba(148, 163, 184, 0.15)' },
+                            ticks: { display: false },
+                            pointLabels: { color: '#cbd5e1', font: { size: 11, weight: '600' } }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Bar Chart
+        const barCanvas = document.getElementById('bar-chart');
+        if (barCanvas) {
+            const barCtx = barCanvas.getContext('2d');
+            if (window._barChart) window._barChart.destroy();
+            window._barChart = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Analytical', 'Problem Solving', 'Decision', 'Attention', 'Knowledge'],
+                    datasets: [{
+                        data: radarValues,
+                        backgroundColor: ['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd', '#818cf8'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    scales: {
+                        x: { max: 100, grid: { color: 'rgba(148,163,184,0.1)' }, ticks: { color: '#94a3b8' } },
+                        y: { grid: { display: false }, ticks: { color: '#cbd5e1', font: { weight: '600' } } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Skill Gaps
+        const gapsCont = document.getElementById('skill-gaps');
+        const gaps = evaluation.skillGaps || [];
+        if (gapsCont) {
+            gapsCont.innerHTML = gaps.length ? gaps.map(g => `
+                <div class="flex items-center gap-2 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm">
+                    <i data-lucide="alert-triangle" style="width:16px;height:16px;color:#fbbf24"></i>
+                    <span>${g}</span>
+                </div>
+            `).join('') : '<p class="text-emerald-400 text-sm">✓ No critical gaps detected! Outstanding execution.</p>';
+        }
+
+        // Recommendations
+        const recsCont = document.getElementById('recommendations');
+        const recs = evaluation.recommendations || ['Continue solving advanced scenario challenges'];
+        if (recsCont) {
+            recsCont.innerHTML = recs.map(r => `
+                <div class="flex items-start gap-2.5 p-2 rounded-lg bg-slate-800/50 border border-slate-700/60 text-slate-300 text-sm">
+                    <i data-lucide="lightbulb" style="width:16px;height:16px;color:#fbbf24" class="mt-0.5 shrink-0"></i>
+                    <span>${r}</span>
+                </div>
+            `).join('');
+        }
+
+        if (window.lucide && window.lucide.createIcons) lucide.createIcons();
+
+        // Refresh records in history & dashboard
+        loadUserAssessments(userData.email);
     }
 
     // Dashboard
