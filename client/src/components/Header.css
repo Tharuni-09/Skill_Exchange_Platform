@@ -9,13 +9,13 @@
 }
 
 .header-inner {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 0 20px;
   height: 64px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
 }
 
 /* Logo */
@@ -45,25 +45,77 @@
 }
 
 .nav-link {
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: 8px;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
   transition: all var(--transition);
+  white-space: nowrap;
 }
 .nav-link:hover, .nav-link.active {
   background: rgba(99,102,241,0.15);
   color: var(--primary-light);
 }
 
+.nav-link.highlight-nav {
+  color: #f59e0b;
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.25);
+  font-weight: 600;
+}
+.nav-link.highlight-nav:hover, .nav-link.highlight-nav.active {
+  background: rgba(245,158,11,0.2);
+  border-color: #f59e0b;
+  color: #fbbf24;
+}
+
 /* Header Actions */
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin-left: auto;
+}
+
+.user-menu-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Streak badge */
+.header-streak-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(245,158,11,0.15);
+  border: 1px solid rgba(245,158,11,0.35);
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #f59e0b;
+  cursor: default;
+  transition: transform var(--transition);
+}
+.header-streak-badge:hover {
+  transform: scale(1.05);
+}
+.streak-count {
+  font-weight: 800;
+}
+
+.dropdown-streak {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #f59e0b;
+  background: rgba(245,158,11,0.15);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 4px;
 }
 
 /* User Badge */
@@ -126,7 +178,7 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  min-width: 240px;
+  min-width: 250px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -163,7 +215,6 @@
 .dropdown-email {
   font-size: 12px;
   color: var(--text-secondary);
-  margin-top: 2px;
 }
 
 .dropdown-divider {
@@ -197,7 +248,12 @@
   color: var(--danger);
 }
 
-@media (max-width: 768px) {
+.logged-out-actions {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
   .desktop-nav { display: none; }
   .user-info { display: none; }
   .user-badge { padding: 6px 8px; }

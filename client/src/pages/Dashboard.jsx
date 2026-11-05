@@ -14,12 +14,19 @@ const DOMAIN_ICONS = {
 export default function Dashboard() {
   const { user } = useAuth();
   const [history, setHistory] = useState([]);
+  const [streakData, setStreakData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/assessments?email=${encodeURIComponent(user.email)}`)
-      .then(r => r.json())
-      .then(data => { setHistory(Array.isArray(data) ? data : []); setLoading(false); })
+    Promise.all([
+      fetch(`/api/assessments?email=${encodeURIComponent(user.email)}`).then(r => r.json()),
+      fetch(`/api/user/streak?email=${encodeURIComponent(user.email)}`).then(r => r.json())
+    ])
+      .then(([histData, sData]) => {
+        setHistory(Array.isArray(histData) ? histData : []);
+        setStreakData(sData);
+        setLoading(false);
+      })
       .catch(() => setLoading(false));
   }, [user.email]);
 
@@ -28,6 +35,8 @@ export default function Dashboard() {
   const avgScore  = history.length > 0
     ? Math.round(history.reduce((a, h) => a + h.overall_score, 0) / history.length)
     : 0;
+
+  const currentStreak = streakData?.streak || user?.streak || (history.length > 0 ? Math.max(1, history.length) : 1);
 
   return (
     <div className="dashboard-page">
@@ -42,12 +51,74 @@ export default function Dashboard() {
               {user.role} · {user.stream || 'General'} {user.specialization ? `· ${user.specialization}` : ''}
             </p>
           </div>
-          <Link to="/assessment" className="btn btn-primary">
-            🧠 New Assessment
-          </Link>
+          <div className="dash-welcome-actions">
+            <Link to="/assessment" className="btn btn-primary">
+              🧠 Take Assessment
+            </Link>
+          </div>
         </div>
 
-        {/* Stats */}
+        {/* Gamified Streak Widget */}
+        <div className="streak-hero-card card fade-in">
+          <div className="shc-left">
+            <div className="streak-flame-wrapper">
+              <span className="streak-flame-icon">🔥</span>
+            </div>
+            <div>
+              <div className="shc-header">
+                <span className="shc-num">{currentStreak}</span>
+                <span className="shc-unit">Day Streak</span>
+                <span className="streak-multiplier-badge">{streakData?.streakMultiplier || '1.0x'} Boost</span>
+              </div>
+              <p className="shc-desc">
+                {currentStreak >= 7
+                  ? "Unstoppable! You're in the top 5% most consistent candidates on the platform."
+                  : currentStreak >= 3
+                  ? "Great momentum! Take daily assessments or attend classes to keep your streak alive."
+                  : "Complete today's ML assessment or attend a masterclass to build your streak!"}
+              </p>
+            </div>
+          </div>
+
+          {/* 7-day activity map */}
+          <div className="shc-week-tracker">
+            <span className="swt-title">This Week's Activity</span>
+            <div className="swt-dots">
+              {(streakData?.weekMap || [
+                { day: 'Mon', active: true },
+                { day: 'Tue', active: true },
+                { day: 'Wed', active: true },
+                { day: 'Thu', active: false },
+                { day: 'Fri', active: false },
+                { day: 'Sat', active: false },
+                { day: 'Sun', active: false }
+              ]).map((d, i) => (
+                <div key={i} className={`swt-day-col ${d.active ? 'active' : ''}`}>
+                  <div className="swt-dot">{d.active ? '🔥' : '•'}</div>
+                  <span className="swt-label">{d.day}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Milestone Badges */}
+        {streakData?.badges && (
+          <div className="streak-badges-row card">
+            <span className="sbr-title">Streak Milestone Badges:</span>
+            <div className="sbr-list">
+              {streakData.badges.map(b => (
+                <div key={b.title} className={`streak-badge-chip ${b.unlocked ? 'unlocked' : 'locked'}`}>
+                  <span>{b.icon}</span>
+                  <span>{b.title}</span>
+                  {b.unlocked ? <span className="sb-check">✓</span> : <span className="sb-req">({b.target}d)</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Stats Grid */}
         <div className="dash-stats-grid">
           <div className="dash-stat card">
             <span className="dash-stat-icon">📊</span>
@@ -77,8 +148,8 @@ export default function Dashboard() {
         ) : latest ? (
           <div className="dash-latest card fade-in">
             <div className="dash-section-header">
-              <h2>Latest Assessment</h2>
-              <span className="badge badge-primary">{latest.predicted_level}</span>
+              <h2>Latest ML Assessment Breakdown</h2>
+              <span className="badge badge-primary">{latest.predicted_level} Level</span>
             </div>
 
             <div className="latest-overview">
@@ -116,26 +187,44 @@ export default function Dashboard() {
           <div className="dash-empty card">
             <div className="empty-icon">📋</div>
             <h3>No assessments yet</h3>
-            <p>Take your first assessment to see your skill analysis here.</p>
+            <p>Take your first adaptive ML assessment to unlock your skill card and opportunities.</p>
             <Link to="/assessment" className="btn btn-primary" style={{ marginTop: 20 }}>
               Start First Assessment →
             </Link>
           </div>
         )}
 
-        {/* Quick links */}
+        {/* Quick Links Grid */}
         <div className="dash-quick-links">
           <Link to="/assessment" className="quick-link card">
             <span className="ql-icon">🧠</span>
             <span className="ql-label">Take Assessment</span>
+            <span className="ql-sub">10 adaptive questions</span>
+          </Link>
+          <Link to="/classes" className="quick-link card">
+            <span className="ql-icon">🎓</span>
+            <span className="ql-label">Live Masterclasses</span>
+            <span className="ql-sub">8+ industry classes</span>
+          </Link>
+          <Link to="/opportunities" className="quick-link card">
+            <span className="ql-icon">💼</span>
+            <span className="ql-label">Opportunities</span>
+            <span className="ql-sub">Apply with ML Score</span>
+          </Link>
+          <Link to="/candidates" className="quick-link card highlight-card">
+            <span className="ql-icon">🏢</span>
+            <span className="ql-label">Candidate Directory</span>
+            <span className="ql-sub">Recruiter screening view</span>
           </Link>
           <Link to="/leaderboard" className="quick-link card">
             <span className="ql-icon">🏆</span>
             <span className="ql-label">Leaderboard</span>
+            <span className="ql-sub">Top peer ranks</span>
           </Link>
           <Link to="/history" className="quick-link card">
             <span className="ql-icon">📋</span>
             <span className="ql-label">View History</span>
+            <span className="ql-sub">Past attempts</span>
           </Link>
         </div>
       </div>

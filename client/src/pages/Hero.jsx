@@ -4,10 +4,12 @@ import { useAuth } from '../context/AuthContext';
 import './Hero.css';
 
 const FEATURES = [
-  { icon: '🧠', title: 'AI-Powered Assessment', desc: 'Adaptive ML engine selects questions based on your stream and skill level, providing personalized difficulty.' },
-  { icon: '📊', title: 'Deep Analytics', desc: 'Radar charts, domain scores, skill gaps, and performance trends give you a complete skill picture.' },
-  { icon: '🏆', title: 'Live Leaderboard', desc: 'Compare your scores with peers and track your rank. Compete to become the top performer.' },
-  { icon: '📋', title: 'Assessment History', desc: 'Track your improvement over time with complete history of all your assessments and scores.' }
+  { icon: '🧠', title: 'Adaptive ML Assessment', desc: 'Custom machine learning engine assesses 5 core cognitive & technical domains without third-party APIs.' },
+  { icon: '🔥', title: 'Daily Learning Streaks', desc: 'Build consistency, earn milestone badges, boost your streak multiplier, and prove your dedication to recruiters.' },
+  { icon: '🎓', title: 'Peer & Expert Masterclasses', desc: 'Attend interactive live classes on Algorithms, React, Machine Learning, System Design, and DevOps.' },
+  { icon: '💼', title: 'Verified Career Opportunities', desc: 'Apply to top tech internships and full-time roles with your verified ML assessment benchmark score.' },
+  { icon: '🏢', title: 'Recruiter Talent Suite', desc: 'Companies can filter candidates by verified ML score, stream, specialization, and learning streaks.' },
+  { icon: '📊', title: 'Deep Skill Radar & Analytics', desc: 'Comprehensive domain analytics, skill gap identification, and personalized improvement roadmap.' }
 ];
 
 const DOMAINS = [
@@ -28,28 +30,35 @@ export default function Hero() {
         <div className="hero-bg-blur" />
         <div className="hero-content">
           <div className="hero-badge">
-            <span>🤖</span> ML-Powered Skill Assessment
+            <span>🔥</span> Learn • Assess • Get Hired
           </div>
           <h1 className="hero-title">
-            Discover Your True<br />
-            <span className="text-gradient">Skill Level</span>
+            Adaptive Skill Assessment &<br />
+            <span className="text-gradient">Career Talent Platform</span>
           </h1>
           <p className="hero-subtitle">
-            Take an adaptive assessment powered by a custom ML engine.<br />
-            Get personalized insights, skill gap analysis, and your predicted career level.
+            Assess your capabilities using our custom ML engine, join live masterclasses, keep your learning streak alive, and get discovered by top tech employers.
           </p>
           <div className="hero-cta">
             {user ? (
-              <Link to="/assessment" className="btn btn-primary hero-btn">
-                🧠 Start Assessment
-              </Link>
+              <>
+                <Link to="/assessment" className="btn btn-primary hero-btn">
+                  🧠 Start ML Assessment
+                </Link>
+                <Link to="/classes" className="btn btn-secondary hero-btn">
+                  🎓 Browse Classes
+                </Link>
+                <Link to="/opportunities" className="btn btn-secondary hero-btn">
+                  💼 Opportunities
+                </Link>
+              </>
             ) : (
               <>
                 <Link to="/register" className="btn btn-primary hero-btn">
-                  Get Started Free
+                  Join Free Today
                 </Link>
-                <Link to="/login" className="btn btn-secondary hero-btn">
-                  Log In
+                <Link to="/candidates" className="btn btn-secondary hero-btn">
+                  🏢 For Employers / Companies
                 </Link>
               </>
             )}
@@ -72,19 +81,19 @@ export default function Hero() {
         <div className="page-container stats-grid">
           <div className="stat-card">
             <div className="stat-number text-gradient">40+</div>
-            <div className="stat-label">Curated Questions</div>
+            <div className="stat-label">ML Assessment Questions</div>
           </div>
           <div className="stat-card">
-            <div className="stat-number text-gradient">5</div>
-            <div className="stat-label">Skill Domains</div>
+            <div className="stat-number text-gradient">8+</div>
+            <div className="stat-label">Live Masterclasses</div>
           </div>
           <div className="stat-card">
-            <div className="stat-number text-gradient">4</div>
-            <div className="stat-label">Proficiency Levels</div>
+            <div className="stat-number text-gradient">🔥 30d</div>
+            <div className="stat-label">Gamified Streaks</div>
           </div>
           <div className="stat-card">
             <div className="stat-number text-gradient">100%</div>
-            <div className="stat-label">Free to Use</div>
+            <div className="stat-label">Verified Recruiter Access</div>
           </div>
         </div>
       </section>
@@ -92,7 +101,7 @@ export default function Hero() {
       {/* Features */}
       <section className="features-section">
         <div className="page-container">
-          <h2 className="section-title" style={{ textAlign: 'center' }}>Why SkillSwap?</h2>
+          <h2 className="section-title" style={{ textAlign: 'center' }}>Complete Skill Ecosystem</h2>
           <div className="features-grid">
             {FEATURES.map(f => (
               <div key={f.title} className="feature-card card fade-in">
@@ -105,12 +114,28 @@ export default function Hero() {
         </div>
       </section>
 
+      {/* Recruiter Callout */}
+      <section className="recruiter-callout-section">
+        <div className="page-container">
+          <div className="recruiter-banner card">
+            <div className="rb-text">
+              <span className="badge badge-warning">🏢 Recruiter Portal</span>
+              <h2>Hiring Engineers? Filter Candidates by Verified Streaks & ML Scores</h2>
+              <p>Search pre-screened talent across Computer Science, IT, Electronics, and Management. Inspect real domain performances and consistency streaks.</p>
+            </div>
+            <Link to="/candidates" className="btn btn-primary" style={{ padding: '14px 28px' }}>
+              Open Candidate Directory →
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Banner */}
       {!user && (
         <section className="cta-banner">
           <div className="page-container cta-content">
-            <h2>Ready to know your skill level?</h2>
-            <p>Create a free account and take your first assessment in under 5 minutes.</p>
+            <h2>Ready to discover your verified skill level?</h2>
+            <p>Create your free account, take the assessment, and start your learning streak today.</p>
             <Link to="/register" className="btn btn-primary">Create Free Account →</Link>
           </div>
         </section>

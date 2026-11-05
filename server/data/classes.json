@@ -1,0 +1,252 @@
+{
+  "classes": [
+    {
+      "id": "cls_001",
+      "title": "Mastering Advanced Data Structures & Graph Algorithms",
+      "category": "Computer Science",
+      "stream": "CS",
+      "instructor": {
+        "name": "Dr. Arvind Ramesh",
+        "role": "Ex-Google Staff Engineer",
+        "avatar": "AR",
+        "rating": 4.9
+      },
+      "level": "Advanced",
+      "difficulty": "Hard",
+      "schedule": "Every Tue & Thu • 6:30 PM IST",
+      "days": ["Tuesday", "Thursday"],
+      "timeSlot": "18:30",
+      "duration": "6 Weeks (24 Hours)",
+      "enrolledCount": 142,
+      "maxCapacity": 180,
+      "skillPoints": 250,
+      "zoom": {
+        "joinUrl": "https://zoom.us/j/84920193847?pwd=U2tpbGxTd2FwQWR2RFNB",
+        "meetingId": "849 2019 3847",
+        "passcode": "SKILL2026",
+        "isLive": true,
+        "statusText": "🔴 LIVE NOW (Session #4: Dijkstra & Bellman-Ford)"
+      },
+      "tags": ["Graphs", "DP", "Trees", "System Optimization"],
+      "description": "Deep dive into shortest path algorithms, topological sorting, segment trees, and dynamic programming patterns tested by top tier tech companies.",
+      "prerequisites": "Basic understanding of arrays, linked lists, and recursion."
+    },
+    {
+      "id": "cls_002",
+      "title": "Full-Stack React & Node.js Production Architecture",
+      "category": "Web Development",
+      "stream": "IT",
+      "instructor": {
+        "name": "Pooja Hegde",
+        "role": "Lead Architect at Razorpay",
+        "avatar": "PH",
+        "rating": 4.8
+      },
+      "level": "Intermediate",
+      "difficulty": "Medium",
+      "schedule": "Every Sat & Sun • 11:00 AM IST",
+      "days": ["Saturday", "Sunday"],
+      "timeSlot": "11:00",
+      "duration": "4 Weeks (16 Hours)",
+      "enrolledCount": 210,
+      "maxCapacity": 250,
+      "skillPoints": 180,
+      "zoom": {
+        "joinUrl": "https://zoom.us/j/93201928471?pwd=UmVhY3RQcm9kdWN0aW9u",
+        "meetingId": "932 0192 8471",
+        "passcode": "REACT99",
+        "isLive": false,
+        "statusText": "Next live class on Saturday at 11:00 AM"
+      },
+      "tags": ["React 19", "Node.js", "PostgreSQL", "Docker", "REST API"],
+      "description": "Build resilient full-stack applications with state management, caching, database indexing, and automated CI/CD deployments.",
+      "prerequisites": "JavaScript fundamentals and ES6 syntax."
+    },
+    {
+      "id": "cls_003",
+      "title": "Practical Machine Learning & Feature Engineering",
+      "category": "AI & Data Science",
+      "stream": "CS",
+      "instructor": {
+        "name": "Kiran S.",
+        "role": "AI Researcher & Kaggle Grandmaster",
+        "avatar": "KS",
+        "rating": 5.0
+      },
+      "level": "Intermediate",
+      "difficulty": "Medium",
+      "schedule": "Mon & Wed • 7:00 PM IST",
+      "days": ["Monday", "Wednesday"],
+      "timeSlot": "19:00",
+      "duration": "5 Weeks (20 Hours)",
+      "enrolledCount": 185,
+      "maxCapacity": 200,
+      "skillPoints": 220,
+      "zoom": {
+        "joinUrl": "https://zoom.us/j/74839201928?pwd=TUxTd2FwS2FnZ2xl",
+        "meetingId": "748 3920 1928",
+        "passcode": "ML2026",
+        "isLive": false,
+        "statusText": "Next live class on Monday at 7:00 PM"
+      },
+      "tags": ["Python", "Scikit-Learn", "Feature Selection", "Model Evaluation"],
+      "description": "Hands-on model building from raw datasets: data cleaning, regression, classification, cross-validation, and metrics.",
+      "prerequisites": "Python basics and linear algebra fundamentals."
+    },
+    {
+      "id": "cls_004",
+      "title": "Scalable System Design & Microservices for High Traffic",
+      "category": "System Architecture",
+      "stream": "CS",
+      "instructor": {
+        "name": "Siddharth Verma",
+        "role": "Principal Engineer at Swiggy",
+        "avatar": "SV",
+        "rating": 4.9
+      },
+      "level": "Expert",
+      "difficulty": "Hard",
+      "schedule": "Every Sunday • 4:00 PM IST",
+      "days": ["Sunday"],
+      "timeSlot": "16:00",
+      "duration": "4 Weeks (12 Hours)",
+      "enrolledCount": 98,
+      "maxCapacity": 120,
+      "skillPoints": 300,
+      "zoom": {
+        "joinUrl": "https://zoom.us/j/81920394857?pwd=U3lzdGVtRGVzaWduU3dpZ2d5",
+        "meetingId": "819 2039 4857",
+        "passcode": "SCALE100K",
+        "isLive": false,
+        "statusText": "Next live class on Sunday at 4:00 PM"
+      },
+      "tags": ["Kafka", "Redis", "Load Balancing", "CAP Theorem", "Sharding"],
+      "description": "Learn to design systems handling 100k+ requests per second: caching strategies, database partitioning, event queues, and fault tolerance.",
+      "prerequisites": "Backend development experience and network basics."
+    },
+    {
+      "id": "cls_005",
+      "title": "Embedded Systems & IoT Hardware Prototyping",
+      "category": "Hardware & IoT",
+      "stream": "ECE",
+      "instructor": {
+        "name": "Prof. Meera Nambiar",
+        "role": "Robotics Consultant at ISRO Collab",
+        "avatar": "MN",
+        "rating": 4.7
+      },
+      "level": "Beginner",
+      "difficulty": "Easy",
+      "schedule": "Fri & Sat • 5:00 PM IST",
+      "days": ["Friday", "Saturday"],
+      "timeSlot": "17:00",
+      "duration": "3 Weeks (12 Hours)",
+      "enrolledCount": 75,
+      "maxCapacity": 100,
+      "skillPoints": 150,
+      "zoom": {
+        "joinUrl": "https://zoom.us/j/62910293847?pwd=RW1iZWRkZWRJb1Q=",
+        "meetingId": "629 1029 3847",
+        "passcode": "IOT2026",
+        "isLive": false,
+        "statusText": "Next live class on Friday at 5:00 PM"
+      },
+      "tags": ["ESP32", "Arduino", "Sensors", "MQTT", "C++"],
+      "description": "Introduction to microcontrollers, serial communication (I2C, SPI), sensor interfacing, and transmitting data over Wi-Fi/MQTT.",
+      "prerequisites": "Basic electronics and C syntax."
+    },
+    {
+      "id": "cls_006",
+      "title": "Cloud Native DevOps: Kubernetes, Terraform & AWS",
+      "category": "Cloud & DevOps",
+      "stream": "IT",
+      "instructor": {
+        "name": "Rohan Deshmukh",
+        "role": "DevOps Lead at Stripe",
+        "avatar": "RD",
+        "rating": 4.9
+      },
+      "level": "Advanced",
+      "difficulty": "Hard",
+      "schedule": "Tue & Thu • 8:00 PM IST",
+      "days": ["Tuesday", "Thursday"],
+      "timeSlot": "20:00",
+      "duration": "5 Weeks (20 Hours)",
+      "enrolledCount": 160,
+      "maxCapacity": 180,
+      "skillPoints": 260,
+      "zoom": {
+        "joinUrl": "https://zoom.us/j/51829304918?pwd=RGV2T3BzU3RyaXBl",
+        "meetingId": "518 2930 4918",
+        "passcode": "K8SCLOUD",
+        "isLive": false,
+        "statusText": "Next live class on Tuesday at 8:00 PM"
+      },
+      "tags": ["AWS", "Kubernetes", "Terraform", "GitHub Actions", "Prometheus"],
+      "description": "Deploy immutable infrastructure with Terraform, orchestrate multi-container pods with Kubernetes, and monitor cluster health.",
+      "prerequisites": "Linux CLI knowledge and Docker container basics."
+    },
+    {
+      "id": "cls_007",
+      "title": "Product Management & Data-Driven Decision Making",
+      "category": "Management",
+      "stream": "Management",
+      "instructor": {
+        "name": "Ananya Roy",
+        "role": "Director of Product at Zerodha",
+        "avatar": "AR",
+        "rating": 4.8
+      },
+      "level": "Intermediate",
+      "difficulty": "Medium",
+      "schedule": "Wed & Sat • 6:00 PM IST",
+      "days": ["Wednesday", "Saturday"],
+      "timeSlot": "18:00",
+      "duration": "4 Weeks (16 Hours)",
+      "enrolledCount": 115,
+      "maxCapacity": 150,
+      "skillPoints": 190,
+      "zoom": {
+        "joinUrl": "https://zoom.us/j/41920394812?pwd=UHJvZHVjdE1hbmFnZQ==",
+        "meetingId": "419 2039 4812",
+        "passcode": "PROD2026",
+        "isLive": false,
+        "statusText": "Next live class on Wednesday at 6:00 PM"
+      },
+      "tags": ["A/B Testing", "User Journeys", "KPI Metrics", "Roadmapping"],
+      "description": "Learn framework-driven product management: prioritization (RICE), funnel analytics, cohort analysis, and executive communication.",
+      "prerequisites": "Curiosity about tech products and business analytics."
+    },
+    {
+      "id": "cls_008",
+      "title": "Modern UI/UX Design Systems & Figma Masterclass",
+      "category": "Design",
+      "stream": "Other",
+      "instructor": {
+        "name": "Tanmay Joshi",
+        "role": "Principal Designer at CRED",
+        "avatar": "TJ",
+        "rating": 4.9
+      },
+      "level": "Beginner",
+      "difficulty": "Easy",
+      "schedule": "Thu & Sun • 5:30 PM IST",
+      "days": ["Thursday", "Sunday"],
+      "timeSlot": "17:30",
+      "duration": "3 Weeks (12 Hours)",
+      "enrolledCount": 140,
+      "maxCapacity": 160,
+      "skillPoints": 140,
+      "zoom": {
+        "joinUrl": "https://zoom.us/j/31920394857?pwd=RmlnbWFEZXNpZ24=",
+        "meetingId": "319 2039 4857",
+        "passcode": "FIGMA99",
+        "isLive": false,
+        "statusText": "Next live class on Thursday at 5:30 PM"
+      },
+      "tags": ["Figma", "Design Tokens", "Typography", "Micro-interactions"],
+      "description": "Design sleek web and mobile interfaces using Figma components, auto-layout, interactive prototyping, and accessible color systems.",
+      "prerequisites": "None. Suitable for all beginners."
+    }
+  ]
+}
