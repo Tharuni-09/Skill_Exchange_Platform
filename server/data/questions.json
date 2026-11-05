@@ -1,0 +1,434 @@
+{
+  "questions": [
+    {
+      "id": "ar_001",
+      "domain": "analytical_reasoning",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "If all roses are flowers and some flowers fade quickly, which statement must be true?",
+      "options": ["All roses fade quickly", "Some roses may fade quickly", "No roses fade quickly", "Roses are not flowers"],
+      "answer": 1,
+      "explanation": "We can only conclude that SOME roses may fade quickly — the subset of flowers that fade quickly might or might not include roses."
+    },
+    {
+      "id": "ar_002",
+      "domain": "analytical_reasoning",
+      "difficulty": "medium",
+      "streams": ["all"],
+      "text": "A sequence: 2, 6, 18, 54, ? — What is the next number?",
+      "options": ["108", "162", "216", "72"],
+      "answer": 1,
+      "explanation": "Each term is multiplied by 3: 2×3=6, 6×3=18, 18×3=54, 54×3=162."
+    },
+    {
+      "id": "ar_003",
+      "domain": "analytical_reasoning",
+      "difficulty": "hard",
+      "streams": ["all"],
+      "text": "In a group of 100 people, 60 like tea, 50 like coffee, and 30 like both. How many like neither?",
+      "options": ["10", "20", "30", "40"],
+      "answer": 1,
+      "explanation": "Union = 60+50-30 = 80. Neither = 100-80 = 20."
+    },
+    {
+      "id": "ar_004",
+      "domain": "analytical_reasoning",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "Which shape has the most sides: pentagon, hexagon, octagon, or heptagon?",
+      "options": ["Pentagon", "Hexagon", "Heptagon", "Octagon"],
+      "answer": 3,
+      "explanation": "Octagon has 8 sides, which is more than pentagon (5), hexagon (6), or heptagon (7)."
+    },
+    {
+      "id": "ar_005",
+      "domain": "analytical_reasoning",
+      "difficulty": "medium",
+      "streams": ["all"],
+      "text": "If FRIEND is coded as HUMJTK, how is CANDLE coded?",
+      "options": ["EDRIRL", "DCPFMG", "ECRIRL", "EDRIRM"],
+      "answer": 0,
+      "explanation": "Each letter is shifted by +2 positions: C→E, A→D, N→R, D→I, L→R, E→L → EDRIRL."
+    },
+    {
+      "id": "ar_006",
+      "domain": "analytical_reasoning",
+      "difficulty": "hard",
+      "streams": ["CS","IT","ECE"],
+      "text": "A clock shows 3:15. What is the angle between the hour and minute hands?",
+      "options": ["0°", "7.5°", "15°", "22.5°"],
+      "answer": 1,
+      "explanation": "At 3:15, minute hand is at 90°. Hour hand is at 3×30 + 15×0.5 = 97.5°. Difference = 7.5°."
+    },
+    {
+      "id": "ps_001",
+      "domain": "problem_solving",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "You need to sort a list of 1000 names alphabetically. Which approach is most efficient?",
+      "options": ["Check each name one by one", "Use a sorting algorithm like merge sort", "Pick random names and place them", "Compare only first letters"],
+      "answer": 1,
+      "explanation": "Sorting algorithms like merge sort have O(n log n) complexity, far more efficient than O(n²) approaches."
+    },
+    {
+      "id": "ps_002",
+      "domain": "problem_solving",
+      "difficulty": "medium",
+      "streams": ["CS","IT"],
+      "text": "A program runs in O(n²) time. If input doubles, how does runtime change approximately?",
+      "options": ["Doubles", "Triples", "Quadruples", "Stays the same"],
+      "answer": 2,
+      "explanation": "O(n²): if n doubles to 2n, time = (2n)² = 4n², so it quadruples."
+    },
+    {
+      "id": "ps_003",
+      "domain": "problem_solving",
+      "difficulty": "hard",
+      "streams": ["CS","IT","ECE"],
+      "text": "Which data structure gives O(1) average-case lookup time?",
+      "options": ["Linked List", "Binary Search Tree", "Hash Table", "Stack"],
+      "answer": 2,
+      "explanation": "Hash tables use a hash function to map keys to buckets, giving O(1) average lookup."
+    },
+    {
+      "id": "ps_004",
+      "domain": "problem_solving",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "A farmer has 17 sheep. All but 9 die. How many are left?",
+      "options": ["8", "9", "17", "0"],
+      "answer": 1,
+      "explanation": "'All but 9 die' means 9 sheep survive."
+    },
+    {
+      "id": "ps_005",
+      "domain": "problem_solving",
+      "difficulty": "medium",
+      "streams": ["all"],
+      "text": "You have a 3-liter jug and a 5-liter jug. How do you measure exactly 4 liters?",
+      "options": ["Fill the 5L, pour into 3L, what remains is 4L", "Fill the 3L twice into 5L, leaving 1L in 3L; fill 5L again and top up from 3L leaving 4L", "It's impossible", "Fill both and combine"],
+      "answer": 1,
+      "explanation": "Fill 3L → pour into 5L. Fill 3L again → pour into 5L (which takes 2L, leaving 1L in 3L). Empty 5L. Pour 1L into 5L. Fill 3L → pour into 5L → 4L."
+    },
+    {
+      "id": "ps_006",
+      "domain": "problem_solving",
+      "difficulty": "hard",
+      "streams": ["CS","IT"],
+      "text": "In a binary tree, what is the maximum number of nodes at level k (root is level 0)?",
+      "options": ["k", "2k", "2^k", "k^2"],
+      "answer": 2,
+      "explanation": "At level k in a full binary tree, the maximum number of nodes is 2^k."
+    },
+    {
+      "id": "dm_001",
+      "domain": "decision_making",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "Your team must deliver a project in 2 days with limited resources. What do you prioritize?",
+      "options": ["Perfect code quality above all", "Core features that meet requirements", "Adding extra features to impress", "Waiting for more resources"],
+      "answer": 1,
+      "explanation": "Under time pressure, focus on must-have requirements. Perfect is the enemy of good."
+    },
+    {
+      "id": "dm_002",
+      "domain": "decision_making",
+      "difficulty": "medium",
+      "streams": ["all"],
+      "text": "A critical bug is found in production 1 hour before a major demo. What do you do?",
+      "options": ["Ignore it and hope for the best", "Immediately roll back to the last stable version", "Try to fix it in production directly", "Cancel the demo"],
+      "answer": 1,
+      "explanation": "Rolling back to a stable version is the safest and most professional approach under time pressure."
+    },
+    {
+      "id": "dm_003",
+      "domain": "decision_making",
+      "difficulty": "hard",
+      "streams": ["all"],
+      "text": "Two algorithms: A is faster but uses more memory; B is slower but memory-efficient. Mobile app with limited RAM — which do you choose?",
+      "options": ["Always choose faster algorithm A", "Choose B — memory is the constraint", "Use both simultaneously", "It doesn't matter"],
+      "answer": 1,
+      "explanation": "On mobile with limited RAM, memory is the binding constraint. Algorithm B is the right trade-off."
+    },
+    {
+      "id": "dm_004",
+      "domain": "decision_making",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "You realize your project plan has a critical flaw midway through execution. What is the best action?",
+      "options": ["Continue as planned to avoid disruption", "Immediately inform stakeholders and adjust the plan", "Abandon the project", "Work overtime to mask the flaw"],
+      "answer": 1,
+      "explanation": "Transparent communication and plan adjustment minimizes long-term damage."
+    },
+    {
+      "id": "dm_005",
+      "domain": "decision_making",
+      "difficulty": "medium",
+      "streams": ["CS","IT","Management"],
+      "text": "Which risk management strategy involves transferring risk to a third party?",
+      "options": ["Avoidance", "Mitigation", "Transference", "Acceptance"],
+      "answer": 2,
+      "explanation": "Transference (e.g., insurance, outsourcing) shifts risk to another party."
+    },
+    {
+      "id": "dm_006",
+      "domain": "decision_making",
+      "difficulty": "hard",
+      "streams": ["all"],
+      "text": "You have 3 options with payoffs under uncertainty: A=$500 certain, B=60% chance $1000, C=40% chance $1500. Which maximizes expected value?",
+      "options": ["A", "B", "C", "All equal"],
+      "answer": 1,
+      "explanation": "EV(A)=$500. EV(B)=0.6×$1000=$600. EV(C)=0.4×$1500=$600. B and C tie at $600, but B has lower variance."
+    },
+    {
+      "id": "ac_001",
+      "domain": "attention_consistency",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "Spot the error: 'The quick brown fox jumps over the lazy dog. The dog was ver happy.'",
+      "options": ["'fox' should be 'Fox'", "'ver' should be 'very'", "'lazy' should be 'sleepy'", "No error"],
+      "answer": 1,
+      "explanation": "'ver' is a typo for 'very' — a classic attention-to-detail test."
+    },
+    {
+      "id": "ac_002",
+      "domain": "attention_consistency",
+      "difficulty": "medium",
+      "streams": ["all"],
+      "text": "Which number does NOT belong: 2, 4, 8, 16, 32, 48, 64?",
+      "options": ["8", "32", "48", "64"],
+      "answer": 2,
+      "explanation": "The sequence doubles each time (powers of 2). 48 is not a power of 2 (should be 32×2=64)."
+    },
+    {
+      "id": "ac_003",
+      "domain": "attention_consistency",
+      "difficulty": "hard",
+      "streams": ["all"],
+      "text": "Count the letter 'F' in: 'FINISHED FILES ARE THE RESULT OF YEARS OF SCIENTIFIC STUDY OF FEDERAL OFFICES'",
+      "options": ["4", "5", "6", "7"],
+      "answer": 2,
+      "explanation": "There are 6 F's. Many people miss 'OF' three times — the brain tends to skip prepositions."
+    },
+    {
+      "id": "ac_004",
+      "domain": "attention_consistency",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "What comes next in the pattern: △ ○ △ △ ○ △ △ △ ○ ?",
+      "options": ["△", "○", "△ △ △ △", "○ △"],
+      "answer": 2,
+      "explanation": "Pattern: 1△, 1○, 2△, 1○, 3△, 1○ — next is 4△."
+    },
+    {
+      "id": "ac_005",
+      "domain": "attention_consistency",
+      "difficulty": "medium",
+      "streams": ["all"],
+      "text": "If you rearrange 'CIFAITNORE', what category does the word belong to?",
+      "options": ["Animal", "Country", "Profession", "Food"],
+      "answer": 1,
+      "explanation": "Rearranged: CALIFORNIA — a US state, which is a Country/Region."
+    },
+    {
+      "id": "ac_006",
+      "domain": "attention_consistency",
+      "difficulty": "hard",
+      "streams": ["CS","IT","ECE"],
+      "text": "In code review: int x = 5; int y = 0; int z = x / y; — what attention issue does this highlight?",
+      "options": ["Wrong variable names", "Missing semicolons", "Unhandled division by zero", "Wrong data type"],
+      "answer": 2,
+      "explanation": "Division by zero (y=0) causes a runtime exception — a critical oversight in code review."
+    },
+    {
+      "id": "kr_001",
+      "domain": "knowledge_recall",
+      "difficulty": "easy",
+      "streams": ["CS","IT"],
+      "text": "What does HTTP stand for?",
+      "options": ["HyperText Transfer Protocol", "High Text Transfer Process", "HyperText Transport Protocol", "Hybrid Transfer Text Protocol"],
+      "answer": 0,
+      "explanation": "HTTP = HyperText Transfer Protocol — the foundation of data communication on the web."
+    },
+    {
+      "id": "kr_002",
+      "domain": "knowledge_recall",
+      "difficulty": "medium",
+      "streams": ["CS","IT"],
+      "text": "Which SQL keyword is used to retrieve unique records?",
+      "options": ["UNIQUE", "DISTINCT", "DIFFERENT", "FILTER"],
+      "answer": 1,
+      "explanation": "SELECT DISTINCT eliminates duplicate rows from query results."
+    },
+    {
+      "id": "kr_003",
+      "domain": "knowledge_recall",
+      "difficulty": "hard",
+      "streams": ["CS","IT"],
+      "text": "What is the time complexity of Dijkstra's algorithm using a min-heap?",
+      "options": ["O(V²)", "O(E log V)", "O(V log E)", "O(VE)"],
+      "answer": 1,
+      "explanation": "With a min-heap (priority queue), Dijkstra runs in O((V+E) log V) ≈ O(E log V) for dense graphs."
+    },
+    {
+      "id": "kr_004",
+      "domain": "knowledge_recall",
+      "difficulty": "easy",
+      "streams": ["ECE","EEE"],
+      "text": "What is Ohm's Law?",
+      "options": ["V = IR", "P = IV", "I = PV", "R = PI"],
+      "answer": 0,
+      "explanation": "Ohm's Law: Voltage (V) = Current (I) × Resistance (R)."
+    },
+    {
+      "id": "kr_005",
+      "domain": "knowledge_recall",
+      "difficulty": "medium",
+      "streams": ["ECE","EEE"],
+      "text": "What does MOSFET stand for?",
+      "options": ["Metal Oxide Semiconductor Field Effect Transistor", "Modulated Output Signal Field Effect Transistor", "Metal Output Switch Function Electronic Transistor", "Modular Oxide Semiconductor Frequency Effect Transistor"],
+      "answer": 0,
+      "explanation": "MOSFET = Metal-Oxide-Semiconductor Field-Effect Transistor — a key component in electronics."
+    },
+    {
+      "id": "kr_006",
+      "domain": "knowledge_recall",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "Which of the following is NOT a programming paradigm?",
+      "options": ["Object-Oriented", "Functional", "Relational", "Procedural"],
+      "answer": 2,
+      "explanation": "Relational is a database model, not a programming paradigm. OOP, Functional, and Procedural are paradigms."
+    },
+    {
+      "id": "kr_007",
+      "domain": "knowledge_recall",
+      "difficulty": "medium",
+      "streams": ["all"],
+      "text": "What is the binary representation of decimal 25?",
+      "options": ["10110", "11001", "10101", "11000"],
+      "answer": 1,
+      "explanation": "25 = 16+8+1 = 2⁴+2³+2⁰ = 11001 in binary."
+    },
+    {
+      "id": "kr_008",
+      "domain": "knowledge_recall",
+      "difficulty": "hard",
+      "streams": ["CS","IT","ECE"],
+      "text": "In OSI model, which layer handles routing?",
+      "options": ["Data Link Layer", "Network Layer", "Transport Layer", "Session Layer"],
+      "answer": 1,
+      "explanation": "The Network Layer (Layer 3) handles logical addressing and routing of packets between networks."
+    },
+    {
+      "id": "ar_007",
+      "domain": "analytical_reasoning",
+      "difficulty": "medium",
+      "streams": ["all"],
+      "text": "If today is Wednesday, what day will it be 100 days from now?",
+      "options": ["Monday", "Tuesday", "Wednesday", "Friday"],
+      "answer": 3,
+      "explanation": "100 mod 7 = 2. Wednesday + 2 = Friday."
+    },
+    {
+      "id": "ps_007",
+      "domain": "problem_solving",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "Which debugging technique involves systematically dividing code in half to find bugs?",
+      "options": ["Rubber duck debugging", "Binary search debugging", "Print statement debugging", "Profiling"],
+      "answer": 1,
+      "explanation": "Binary search debugging: test midpoint, determine which half has the bug, repeat — O(log n) approach."
+    },
+    {
+      "id": "ps_008",
+      "domain": "problem_solving",
+      "difficulty": "hard",
+      "streams": ["CS","IT"],
+      "text": "Given a string, find if it's a palindrome in O(n) time and O(1) space. Which approach works?",
+      "options": ["Reverse string and compare", "Use a stack", "Two-pointer from both ends", "Recursive check"],
+      "answer": 2,
+      "explanation": "Two pointers from both ends, moving inward — O(n) time, O(1) extra space."
+    },
+    {
+      "id": "dm_007",
+      "domain": "decision_making",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "When should you use agile methodology over waterfall?",
+      "options": ["When requirements are fixed and well-defined", "When requirements are likely to change", "When the team is very large", "When budget is unlimited"],
+      "answer": 1,
+      "explanation": "Agile handles changing requirements through iterative sprints. Waterfall suits fixed, well-defined requirements."
+    },
+    {
+      "id": "ac_007",
+      "domain": "attention_consistency",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "Which word is spelled differently: Accommodate, Accomodate, Accommodate, Accommodate?",
+      "options": ["First", "Second", "Third", "Fourth"],
+      "answer": 1,
+      "explanation": "'Accomodate' (second) is misspelled — the correct spelling has double 'c' AND double 'm': Accommodate."
+    },
+    {
+      "id": "kr_009",
+      "domain": "knowledge_recall",
+      "difficulty": "easy",
+      "streams": ["all"],
+      "text": "What does API stand for?",
+      "options": ["Application Programming Interface", "Automated Process Integration", "Application Process Interaction", "Advanced Programming Interface"],
+      "answer": 0,
+      "explanation": "API = Application Programming Interface — a contract for how software components communicate."
+    },
+    {
+      "id": "kr_010",
+      "domain": "knowledge_recall",
+      "difficulty": "medium",
+      "streams": ["CS","IT","Management"],
+      "text": "In Scrum, what is a 'sprint retrospective'?",
+      "options": ["Planning for next sprint", "Review of work done with stakeholders", "Team reflection on process improvements", "Daily standup meeting"],
+      "answer": 2,
+      "explanation": "Sprint Retrospective: team reflects on how to improve processes, tools, and collaboration for future sprints."
+    },
+    {
+      "id": "ar_008",
+      "domain": "analytical_reasoning",
+      "difficulty": "hard",
+      "streams": ["all"],
+      "text": "5 people complete a task in 8 days. How many people are needed to complete it in 2 days?",
+      "options": ["10", "15", "20", "25"],
+      "answer": 2,
+      "explanation": "Total work = 5×8 = 40 person-days. For 2 days: 40/2 = 20 people."
+    },
+    {
+      "id": "ps_009",
+      "domain": "problem_solving",
+      "difficulty": "medium",
+      "streams": ["CS","IT","ECE"],
+      "text": "Which design pattern is used when you want only one instance of a class?",
+      "options": ["Factory", "Observer", "Singleton", "Decorator"],
+      "answer": 2,
+      "explanation": "Singleton pattern ensures a class has only one instance and provides global access to it."
+    },
+    {
+      "id": "dm_008",
+      "domain": "decision_making",
+      "difficulty": "medium",
+      "streams": ["all"],
+      "text": "You are given conflicting feedback from two senior engineers. What is the best approach?",
+      "options": ["Follow the more senior engineer's advice", "Ignore both and do what you think is right", "Analyze both perspectives and discuss trade-offs with both", "Flip a coin"],
+      "answer": 2,
+      "explanation": "Understanding both perspectives and facilitating a discussion leads to better decisions with shared ownership."
+    },
+    {
+      "id": "ac_008",
+      "domain": "attention_consistency",
+      "difficulty": "medium",
+      "streams": ["CS","IT"],
+      "text": "Find the bug: for(int i=0; i<=10; i++) { sum += arr[i]; } — Array has 10 elements (index 0-9).",
+      "options": ["Wrong variable name", "Off-by-one error — i<=10 should be i<10", "Missing semicolon", "Wrong loop type"],
+      "answer": 1,
+      "explanation": "i<=10 accesses arr[10] which is out-of-bounds for a 10-element array. Should be i<10."
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { DatabaseSync } from 'node:sqlite';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
+import { selectQuestions, verifyAnswer, computeResults } from './server/ml/assessmentEngine.js';
 
 dotenv.config();
 
@@ -12,11 +13,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+// Serve React build in production
+app.use(express.static(path.join(__dirname, 'client/dist')));
 
 // Initialize SQLite database
 const dbPath = path.join(__dirname, 'skillswap.db');
@@ -53,460 +56,289 @@ db.exec(`
     skill_gaps TEXT,
     difficulty_level TEXT,
     streaks INTEGER DEFAULT 1,
-    ai_summary TEXT,
+    mentor_summary TEXT,
     assessment_date DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 `);
 
-// --- GEMINI HELPER FUNCTION ---
-async function callGemini(prompt, systemInstruction = '') {
-  if (!GEMINI_API_KEY) {
-    throw new Error('GEMINI_API_KEY is not configured');
-  }
+// In-memory session store for active assessments
+const sessions = new Map();
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-  const payload = {
-    contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: {
-      temperature: 0.4,
-      responseMimeType: "application/json"
-    }
-  };
+// ==================== AUTH ROUTES ====================
 
-  if (systemInstruction) {
-    payload.systemInstruction = { parts: [{ text: systemInstruction }] };
-  }
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`Gemini API error (${res.status}): ${errorText}`);
-  }
-
-  const data = await res.json();
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error('Empty response from Gemini');
-  return JSON.parse(text);
-}
-
-// --- AUTHENTICATION APIS ---
-
-// Dedicated Register API
-app.post('/api/auth/register', (req, res) => {
+// Register
+app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, email, password, role, stream, specialization } = req.body;
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Name, email, and password are required' });
     }
 
-    const checkStmt = db.prepare('SELECT id FROM users WHERE email = ?');
-    const existing = checkStmt.get(email.toLowerCase().trim());
+    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
     if (existing) {
-      return res.status(409).json({ error: 'An account with this email already exists. Please log in.' });
+      return res.status(409).json({ error: 'Email already registered' });
     }
 
-    const salt = bcrypt.genSaltSync(10);
-    const password_hash = bcrypt.hashSync(password, salt);
-
-    const insertStmt = db.prepare(`
+    const password_hash = await bcrypt.hash(password, 12);
+    const stmt = db.prepare(`
       INSERT INTO users (name, email, password_hash, role, stream, specialization)
       VALUES (?, ?, ?, ?, ?, ?)
     `);
-    const info = insertStmt.run(
-      name.trim(),
-      email.toLowerCase().trim(),
-      password_hash,
-      role || 'Student',
-      stream || '',
-      specialization || ''
-    );
+    const result = stmt.run(name, email, password_hash, role || 'Student', stream || '', specialization || '');
 
-    const user = {
-      id: Number(info.lastInsertRowid),
-      name: name.trim(),
-      email: email.toLowerCase().trim(),
-      role: role || 'Student',
-      stream: stream || '',
-      specialization: specialization || ''
-    };
-
-    return res.status(201).json({ success: true, user, message: 'Registration successful!' });
+    res.status(201).json({
+      message: 'Registration successful',
+      user: { id: result.lastInsertRowid, name, email, role: role || 'Student', stream, specialization }
+    });
   } catch (err) {
-    console.error('Registration error:', err);
-    return res.status(500).json({ error: 'Server error during registration' });
+    console.error('Register error:', err);
+    res.status(500).json({ error: 'Registration failed' });
   }
 });
 
-// Dedicated Login API
-app.post('/api/auth/login', (req, res) => {
+// Login
+app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
+      return res.status(400).json({ error: 'Email and password required' });
     }
 
-    const stmt = db.prepare('SELECT * FROM users WHERE email = ?');
-    const user = stmt.get(email.toLowerCase().trim());
+    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
     if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const isMatch = bcrypt.compareSync(password, user.password_hash);
-    if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+    const valid = await bcrypt.compare(password, user.password_hash);
+    if (!valid) {
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const safeUser = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      stream: user.stream,
-      specialization: user.specialization,
-      created_at: user.created_at
-    };
-
-    return res.json({ success: true, user: safeUser, message: 'Logged in successfully!' });
+    res.json({
+      message: 'Login successful',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        stream: user.stream,
+        specialization: user.specialization
+      }
+    });
   } catch (err) {
     console.error('Login error:', err);
-    return res.status(500).json({ error: 'Server error during login' });
+    res.status(500).json({ error: 'Login failed' });
   }
 });
 
-// Current User Session Info
+// Get user by email
 app.get('/api/auth/me', (req, res) => {
   const { email } = req.query;
-  if (!email) return res.status(400).json({ error: 'Email parameter required' });
-  const stmt = db.prepare('SELECT id, name, email, role, stream, specialization, created_at FROM users WHERE email = ?');
-  const user = stmt.get(email.toLowerCase().trim());
+  if (!email) return res.status(400).json({ error: 'Email required' });
+  const user = db.prepare('SELECT id, name, email, role, stream, specialization FROM users WHERE email = ?').get(email);
   if (!user) return res.status(404).json({ error: 'User not found' });
-  return res.json({ success: true, user });
+  res.json(user);
 });
 
-// --- AI AGENT ENDPOINTS (GEMINI 2.5 FLASH) ---
+// ==================== ML ASSESSMENT ROUTES ====================
 
-// 1. AI Start Assessment Session: Generate tailored Question 1
-app.post('/api/ai/start-session', async (req, res) => {
-  const { stream, specialization, role, difficulty = 'medium' } = req.body;
-
-  const prompt = `
-Generate Question 1 of an adaptive skill assessment for a candidate in the field of "${stream || 'General Technology'}" (Specialization: "${specialization || 'General'}", Role: "${role || 'Student'}").
-Difficulty level: ${difficulty}.
-Target Domain: Analytical Reasoning or Core Domain Knowledge.
-
-Respond strictly with valid JSON with this exact schema:
-{
-  "questionNumber": 1,
-  "domain": "analytical_reasoning" (or "knowledge_recall", "problem_solving", "decision_making", "attention_consistency"),
-  "domainTitle": "Analytical Reasoning",
-  "difficulty": "${difficulty}",
-  "text": "Clear, practical, and thoughtful question text here",
-  "options": [
-    "Option A text",
-    "Option B text",
-    "Option C text",
-    "Option D text"
-  ],
-  "answer": 0,
-  "explanation": "Brief explanation why the answer is correct."
-}
-`;
-
+// Start assessment session — returns questions only (no answers)
+app.post('/api/assessment/start', (req, res) => {
   try {
-    const questionData = await callGemini(prompt, "You are SkillSwap AI, an expert adaptive assessment AI examiner.");
-    return res.json({ success: true, question: questionData });
+    const { email, name, stream, role, specialization } = req.body;
+    if (!email) return res.status(400).json({ error: 'Email required' });
+
+    const userProfile = { email, name, stream: stream || 'all', role: role || 'Student', specialization };
+    const questions = selectQuestions(userProfile, 10);
+
+    // Create session
+    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    sessions.set(sessionId, {
+      userProfile,
+      questions,          // full questions WITH answers (server-side only)
+      answers: [],
+      startTime: Date.now(),
+      currentIndex: 0
+    });
+
+    // Return questions WITHOUT answers
+    res.json({
+      sessionId,
+      totalQuestions: questions.length,
+      firstQuestion: {
+        index: 0,
+        total: questions.length,
+        ...questions[0]
+      }
+    });
   } catch (err) {
-    console.warn('Gemini AI fallback triggered:', err.message);
-    // Intelligent fallback question if API unavailable
-    const fallbackQ = {
-      questionNumber: 1,
-      domain: "analytical_reasoning",
-      domainTitle: "Analytical Reasoning",
-      difficulty: difficulty,
-      text: stream && stream.toLowerCase().includes('cs') 
-        ? "Which data structure follows the LIFO (Last In, First Out) principle?" 
-        : "If revenue increases by 20% and expenses remain unchanged, what happens to operating margin?",
-      options: stream && stream.toLowerCase().includes('cs')
-        ? ["Queue", "Stack", "Array", "Linked List"]
-        : ["Decreases", "Increases", "Remains same", "Becomes zero"],
-      answer: 1,
-      explanation: stream && stream.toLowerCase().includes('cs')
-        ? "A Stack operates on Last-In First-Out (LIFO) order."
-        : "Higher revenue with fixed expenses directly increases operating margin."
-    };
-    return res.json({ success: true, question: fallbackQ, isFallback: true });
+    console.error('Start assessment error:', err);
+    res.status(500).json({ error: 'Failed to start assessment' });
   }
 });
 
-// 2. AI Verify Answer & Generate Next Adaptive Question
-app.post('/api/ai/verify-answer', async (req, res) => {
-  const {
-    currentQuestionNumber,
-    totalQuestions = 10,
-    stream,
-    specialization,
-    questionText,
-    selectedOptionText,
-    selectedOptionIndex,
-    correctOptionIndex,
-    domain,
-    pastHistory = []
-  } = req.body;
+// Get a specific question by index
+app.get('/api/assessment/question/:sessionId/:index', (req, res) => {
+  const { sessionId, index } = req.params;
+  const session = sessions.get(sessionId);
+  if (!session) return res.status(404).json({ error: 'Session not found or expired' });
 
-  const isLastQuestion = currentQuestionNumber >= totalQuestions;
-  const isDirectMatch = selectedOptionIndex === correctOptionIndex;
-
-  const prompt = `
-The candidate just answered Question ${currentQuestionNumber} of ${totalQuestions}.
-Domain: ${domain}
-Candidate's Field: ${stream} (${specialization})
-Question: "${questionText}"
-Candidate's Selected Answer: "${selectedOptionText}"
-Expected Correct Option Index: ${correctOptionIndex}
-Candidate Answered Index: ${selectedOptionIndex}
-
-Tasks:
-1. Verify if the answer is conceptually correct or reasonable.
-2. Provide a constructive, encouraging 1-2 sentence AI verification explanation.
-3. Suggest the next question difficulty ('easy', 'medium', or 'hard') based on performance.
-${!isLastQuestion ? `
-4. Generate Question ${currentQuestionNumber + 1} targeting one of the remaining domains (e.g. problem_solving, decision_making, attention_consistency, knowledge_recall) tailored to ${stream}.
-` : ''}
-
-Respond strictly in valid JSON:
-{
-  "isCorrect": ${isDirectMatch},
-  "score": ${isDirectMatch ? 100 : 0},
-  "feedback": "Concise AI explanation of why this answer is right or wrong, and the core concept.",
-  "nextDifficulty": "${isDirectMatch ? 'hard' : 'medium'}",
-  ${!isLastQuestion ? `
-  "nextQuestion": {
-    "questionNumber": ${currentQuestionNumber + 1},
-    "domain": "problem_solving",
-    "domainTitle": "Problem Solving",
-    "difficulty": "medium",
-    "text": "Question text",
-    "options": ["A", "B", "C", "D"],
-    "answer": 0,
-    "explanation": "Why answer is correct"
+  const idx = parseInt(index);
+  if (idx < 0 || idx >= session.questions.length) {
+    return res.status(400).json({ error: 'Invalid question index' });
   }
-  ` : `"nextQuestion": null`}
-}
-`;
+
+  const q = session.questions[idx];
+  res.json({
+    index: idx,
+    total: session.questions.length,
+    id: q.id,
+    domain: q.domain,
+    difficulty: q.difficulty,
+    text: q.text,
+    options: q.options
+  });
+});
+
+// Submit answer for a question
+app.post('/api/assessment/answer', (req, res) => {
+  const { sessionId, questionId, selectedIndex } = req.body;
+  const session = sessions.get(sessionId);
+  if (!session) return res.status(404).json({ error: 'Session not found or expired' });
+
+  // Verify answer using ML engine
+  const result = verifyAnswer(questionId, selectedIndex);
+
+  // Store answer in session
+  session.answers.push({
+    questionId,
+    selectedIndex,
+    correct: result.correct,
+    score: result.score,
+    domain: result.domain
+  });
+
+  const nextIndex = session.currentIndex + 1;
+  session.currentIndex = nextIndex;
+  const hasMore = nextIndex < session.questions.length;
+
+  res.json({
+    correct: result.correct,
+    correctAnswer: result.correctAnswer,
+    correctOptionText: result.correctOptionText,
+    explanation: result.explanation,
+    domain: result.domain,
+    difficulty: result.difficulty,
+    score: result.score,
+    questionNumber: session.answers.length,
+    hasNextQuestion: hasMore,
+    nextIndex: hasMore ? nextIndex : null
+  });
+});
+
+// Finalize assessment and get results
+app.post('/api/assessment/finalize', async (req, res) => {
+  const { sessionId } = req.body;
+  const session = sessions.get(sessionId);
+  if (!session) return res.status(404).json({ error: 'Session not found or expired' });
 
   try {
-    const aiResult = await callGemini(prompt, "You are SkillSwap AI, verifying answers accurately and generating adaptive follow-ups.");
-    return res.json({ success: true, ...aiResult });
-  } catch (err) {
-    console.warn('Gemini verify fallback:', err.message);
-    const fallbackFeedback = isDirectMatch
-      ? "Correct! You identified the right principle."
-      : "Not quite. Check the fundamental mechanics behind this concept.";
-    
-    let nextQ = null;
-    if (!isLastQuestion) {
-      nextQ = {
-        questionNumber: currentQuestionNumber + 1,
-        domain: "problem_solving",
-        domainTitle: "Problem Solving",
-        difficulty: "medium",
-        text: `Given your focus in ${stream || 'Technology'}, what is the most optimal approach to handle sudden latency spikes?`,
-        options: [
-          "Restart the server manually each time",
-          "Profile bottlenecks, enable caching, and auto-scale",
-          "Ignore warnings until users report",
-          "Disable all logging permanently"
-        ],
-        answer: 1,
-        explanation: "Profiling and horizontal auto-scaling with caching handles load spikes without downtime."
-      };
+    const evaluation = computeResults(session.answers, session.userProfile);
+
+    // Save to database
+    const { userProfile } = session;
+    try {
+      const stmt = db.prepare(`
+        INSERT INTO assessments (
+          user_email, user_name, user_role, stream, specialization,
+          overall_score, predicted_level, confidence,
+          analytical_reasoning, problem_solving, decision_making,
+          attention_consistency, knowledge_recall,
+          skill_gaps, difficulty_level, mentor_summary
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      stmt.run(
+        userProfile.email,
+        userProfile.name,
+        userProfile.role,
+        userProfile.stream,
+        userProfile.specialization,
+        evaluation.overallScore,
+        evaluation.predictedLevel,
+        evaluation.confidence,
+        evaluation.domainScores.analytical_reasoning,
+        evaluation.domainScores.problem_solving,
+        evaluation.domainScores.decision_making,
+        evaluation.domainScores.attention_consistency,
+        evaluation.domainScores.knowledge_recall,
+        JSON.stringify(evaluation.skillGaps),
+        evaluation.difficultyLevel,
+        evaluation.mentorSummary
+      );
+    } catch (dbErr) {
+      console.error('DB save error:', dbErr);
+      // Don't fail the response — return results even if DB save fails
     }
 
-    return res.json({
-      success: true,
-      isCorrect: isDirectMatch,
-      score: isDirectMatch ? 100 : 0,
-      feedback: fallbackFeedback,
-      nextDifficulty: isDirectMatch ? "hard" : "medium",
-      nextQuestion: nextQ,
-      isFallback: true
-    });
-  }
-});
+    // Clean up session
+    sessions.delete(sessionId);
 
-// 3. AI Final Assessment Evaluation & Roadmap Assignment
-app.post('/api/ai/finalize', async (req, res) => {
-  const { user, answersHistory = [] } = req.body;
-
-  const correctCount = answersHistory.filter(a => a.isCorrect).length;
-  const totalCount = Math.max(1, answersHistory.length);
-  const rawPercentage = Math.round((correctCount / totalCount) * 100);
-
-  const prompt = `
-Act as an expert AI Examiner evaluating a complete assessment for:
-Candidate: ${user?.name || 'Candidate'}
-Role: ${user?.role || 'Student'}
-Stream: ${user?.stream || 'Computer Science'}
-Specialization: ${user?.specialization || 'General'}
-Raw Correct Answers: ${correctCount} out of ${totalCount} (${rawPercentage}%)
-
-Detailed Answers History:
-${JSON.stringify(answersHistory.map(a => ({ domain: a.domain, isCorrect: a.isCorrect, feedback: a.feedback })), null, 2)}
-
-Provide an authoritative AI evaluation.
-Return strictly valid JSON:
-{
-  "overallScore": ${rawPercentage},
-  "predictedLevel": "${rawPercentage >= 80 ? 'Expert' : rawPercentage >= 60 ? 'Advanced' : rawPercentage >= 40 ? 'Intermediate' : 'Beginner'}",
-  "confidenceScore": ${Math.min(95, 60 + Math.round(rawPercentage * 0.35))},
-  "domainScores": {
-    "analytical_reasoning": ${Math.min(100, Math.max(20, rawPercentage + 5))},
-    "problem_solving": ${Math.min(100, Math.max(20, rawPercentage - 5))},
-    "decision_making": ${Math.min(100, Math.max(20, rawPercentage + 2))},
-    "attention_consistency": ${Math.min(100, Math.max(20, rawPercentage))},
-    "knowledge_recall": ${Math.min(100, Math.max(20, rawPercentage - 2))}
-  },
-  "skillGaps": [
-    "Specific diagnosed skill gap 1",
-    "Specific diagnosed skill gap 2"
-  ],
-  "recommendations": [
-    "Specific actionable recommendation 1",
-    "Specific actionable recommendation 2",
-    "Specific actionable recommendation 3"
-  ],
-  "aiSummary": "A concise 2-sentence summary of the candidate's core strengths and growth trajectory."
-}
-`;
-
-  let evalData;
-  try {
-    evalData = await callGemini(prompt, "You are SkillSwap AI Chief Examiner delivering personalized performance diagnostics.");
+    res.json(evaluation);
   } catch (err) {
-    console.warn('AI finalize fallback:', err.message);
-    evalData = {
-      overallScore: rawPercentage,
-      predictedLevel: rawPercentage >= 80 ? 'Expert' : rawPercentage >= 60 ? 'Advanced' : rawPercentage >= 40 ? 'Intermediate' : 'Beginner',
-      confidenceScore: 85,
-      domainScores: {
-        analytical_reasoning: Math.min(100, rawPercentage + 5),
-        problem_solving: Math.max(20, rawPercentage - 5),
-        decision_making: rawPercentage,
-        attention_consistency: Math.min(100, rawPercentage + 2),
-        knowledge_recall: rawPercentage
-      },
-      skillGaps: rawPercentage < 70 ? ["Deep Systems Architecture", "Edge-Case Problem Solving"] : ["Advanced Performance Optimization"],
-      recommendations: [
-        "Engage in targeted peer workshops in the marketplace",
-        "Practice scenario-based problem solving regularly",
-        "Review core foundational principles weekly"
-      ],
-      aiSummary: `${user?.name || 'The candidate'} showed solid grasp of foundational concepts with clear growth potential in specialized problem-solving.`
-    };
-  }
-
-  // Save to database
-  try {
-    const userEmail = (user?.email || 'guest@skillswap.ai').toLowerCase().trim();
-    const countStmt = db.prepare('SELECT COUNT(*) as count FROM assessments WHERE user_email = ?');
-    const pastCount = countStmt.get(userEmail)?.count || 0;
-    const streak = pastCount + 1;
-
-    const stmt = db.prepare(`
-      INSERT INTO assessments (
-        user_email, user_name, user_role, stream, specialization,
-        overall_score, predicted_level, confidence,
-        analytical_reasoning, problem_solving, decision_making,
-        attention_consistency, knowledge_recall, skill_gaps,
-        difficulty_level, streaks, ai_summary, assessment_date
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    const info = stmt.run(
-      userEmail,
-      user?.name || 'Anonymous',
-      user?.role || 'Student',
-      user?.stream || 'General',
-      user?.specialization || 'General',
-      evalData.overallScore,
-      evalData.predictedLevel,
-      evalData.confidenceScore,
-      evalData.domainScores.analytical_reasoning,
-      evalData.domainScores.problem_solving,
-      evalData.domainScores.decision_making,
-      evalData.domainScores.attention_consistency,
-      evalData.domainScores.knowledge_recall,
-      (evalData.skillGaps || []).join(', ') || 'None',
-      'adaptive',
-      streak,
-      evalData.aiSummary || '',
-      new Date().toISOString()
-    );
-
-    return res.json({
-      success: true,
-      evaluation: evalData,
-      assessmentId: Number(info.lastInsertRowid),
-      streak
-    });
-  } catch (dbErr) {
-    console.error('Failed to save assessment to database:', dbErr);
-    return res.json({ success: true, evaluation: evalData, streak: 1 });
+    console.error('Finalize error:', err);
+    res.status(500).json({ error: 'Failed to compute results' });
   }
 });
 
-// --- GENERAL ENDPOINTS ---
+// ==================== LEADERBOARD & HISTORY ====================
 
-// Get assessments by email or all
-app.get('/api/assessments', (req, res) => {
-  try {
-    const { email } = req.query;
-    let records = [];
-    if (email) {
-      const stmt = db.prepare('SELECT * FROM assessments WHERE user_email = ? ORDER BY id ASC');
-      records = stmt.all(email.toLowerCase().trim());
-    } else {
-      const stmt = db.prepare('SELECT * FROM assessments ORDER BY id DESC LIMIT 100');
-      records = stmt.all();
-    }
-    return res.json({ success: true, data: records });
-  } catch (err) {
-    console.error('Fetch assessments error:', err);
-    return res.status(500).json({ error: 'Failed to fetch assessments' });
-  }
-});
-
-// Dynamic Leaderboard
+// Leaderboard
 app.get('/api/leaderboard', (req, res) => {
   try {
-    const stmt = db.prepare(`
-      SELECT user_name as name, MAX(overall_score) as score, predicted_level as level, MAX(streaks) as streak
+    const rows = db.prepare(`
+      SELECT user_name as name, user_email as email, 
+             MAX(overall_score) as best_score, predicted_level as level,
+             COUNT(*) as attempts
       FROM assessments
       GROUP BY user_email
-      ORDER BY score DESC
+      ORDER BY best_score DESC
       LIMIT 20
-    `);
-    const rows = stmt.all();
-    return res.json({ success: true, data: rows });
+    `).all();
+    res.json(rows);
   } catch (err) {
     console.error('Leaderboard error:', err);
-    return res.status(500).json({ error: 'Failed to fetch leaderboard' });
+    res.status(500).json({ error: 'Failed to get leaderboard' });
   }
 });
 
-// Serve frontend static assets
-app.use(express.static(__dirname));
+// Assessment history for a user
+app.get('/api/assessments', (req, res) => {
+  const { email } = req.query;
+  if (!email) return res.status(400).json({ error: 'Email required' });
+  try {
+    const rows = db.prepare(`
+      SELECT * FROM assessments 
+      WHERE user_email = ? 
+      ORDER BY assessment_date DESC 
+      LIMIT 20
+    `).all(email);
+    res.json(rows.map(r => ({
+      ...r,
+      skill_gaps: r.skill_gaps ? JSON.parse(r.skill_gaps) : []
+    })));
+  } catch (err) {
+    console.error('History error:', err);
+    res.status(500).json({ error: 'Failed to get history' });
+  }
+});
 
-// Fallback to index.html for SPA routes
+// Catch-all: serve React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'client/dist/index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 SkillSwap Backend Server with Gemini AI Agent running on port ${PORT}`);
+  console.log(`\n🚀 SkillSwap Server running on port ${PORT}`);
+  console.log(`   ML Assessment Engine: ACTIVE`);
+  console.log(`   Question Bank loaded from: server/data/questions.json\n`);
 });

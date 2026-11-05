@@ -1,9 +1,10 @@
 services:
   - type: web
-    name: skillswap-ai
-    runtime: node
-    buildCommand: npm install
-    startCommand: npm start
+    name: skillswap-platform
+    env: docker
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: PORT
-        value: 3000
+        value: 3001
+      - key: NODE_ENV
+        value: production

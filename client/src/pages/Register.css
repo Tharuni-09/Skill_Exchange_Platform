@@ -1,0 +1,16 @@
+/* Register extends Login.css */
+@import './Login.css';
+
+.register-box {
+  max-width: 560px;
+}
+
+.register-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+@media (max-width: 480px) {
+  .register-grid { grid-template-columns: 1fr; }
+}
