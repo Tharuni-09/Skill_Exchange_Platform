@@ -3,36 +3,26 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Hero.css';
 
-const PLATFORM_PILLARS = [
+const PLATFORM_STEPS = [
   {
-    icon: '📊',
-    title: 'Multi-Domain Skill Assessment',
-    desc: 'Adaptive evaluations assessing Analytical Reasoning, Problem Solving, Decision Making, Attention Consistency, and Knowledge Recall.'
+    step: '01',
+    title: 'Skill Assessment',
+    desc: 'Take standardized technical assessments evaluating Analytical Reasoning, Problem Solving, Decision Making, and Knowledge Recall.'
   },
   {
-    icon: '🔥',
-    title: 'Daily Learning Streaks',
-    desc: 'Build continuous learning momentum with milestone badges, streak multipliers (1.0x to 1.5x), and verified consistency proof for recruiters.'
+    step: '02',
+    title: 'Masterclasses & Scheduling',
+    desc: 'Attend expert-led live technical workshops and generate synchronized weekly study timetables with direct session integration.'
   },
   {
-    icon: '🎯',
-    title: 'Specific Topic & Requirement Targeting',
-    desc: 'Specify your exact learning requirements (e.g. Supervised Learning Models, Deep Neural Networks, React 19 Microservices, or System Design).'
+    step: '03',
+    title: 'Peer Study & Collaboration',
+    desc: 'Connect with verified study partners matching your stream and specialization to solve challenges and build collaborative momentum.'
   },
   {
-    icon: '🎓',
-    title: 'Live Masterclasses & Schedule Maker',
-    desc: 'Attend interactive live classes and generate personalized weekly study timetables with direct Zoom meeting links.'
-  },
-  {
-    icon: '🏢',
-    title: 'Enterprise Recruiter Directory',
-    desc: 'Companies filter and search talent by verified score index, learning streaks, streams, and specific target topic focus.'
-  },
-  {
-    icon: '🤝',
-    title: 'Peer Study Buddies & Zoom Meet',
-    desc: 'Connect with study partners in your stream, compare performance metrics, join collaborative study sessions, and solve challenges together.'
+    step: '04',
+    title: 'Recruiter Discovery',
+    desc: 'Get discovered by enterprise hiring teams filtering by verified assessment indices, active streak consistency, and specific focus areas.'
   }
 ];
 
@@ -54,28 +44,28 @@ export default function Hero() {
         <div className="hero-grid-main">
           <div>
             <div className="hero-tagline-badge">
-              <span>⚡ Continuous Skill Assessment & Career Talent Exchange</span>
+              <span>Enterprise Skill Exchange & Evaluation Platform</span>
             </div>
             
             <h1 className="hero-main-title">
-              Skill Assessment & Technical Career Talent Platform
+              Skill Evaluation, Peer Learning & Verified Talent Placement
             </h1>
             
             <p className="hero-main-desc">
-              Comprehensive skill evaluation platform for engineering candidates, interactive live masterclasses, personalized study timetables, and verified recruiter talent search.
+              A comprehensive technical growth platform combining standardized skill assessments, live interactive masterclasses, automated study timetables, and direct candidate discovery for enterprise recruiters.
             </p>
 
             <div className="hero-actions-row">
               {user ? (
                 <>
                   <Link to="/assessment" className="btn btn-primary hero-action-btn">
-                    Start Assessment →
+                    Start Skill Assessment →
                   </Link>
                   <Link to="/classes" className="btn btn-secondary hero-action-btn">
-                    🎓 Browse Classes
+                    Browse Masterclasses
                   </Link>
                   <Link to="/company" className="btn btn-secondary hero-action-btn">
-                    🏢 Recruiter Portal
+                    Recruiter Directory
                   </Link>
                 </>
               ) : (
@@ -84,10 +74,10 @@ export default function Hero() {
                     Get Started Free →
                   </Link>
                   <Link to="/classes" className="btn btn-secondary hero-action-btn">
-                    🎓 Browse Classes
+                    Browse Masterclasses
                   </Link>
                   <Link to="/company" className="btn btn-secondary hero-action-btn">
-                    🏢 For Employers & Recruiters
+                    For Employers & Recruiters
                   </Link>
                 </>
               )}
@@ -96,7 +86,7 @@ export default function Hero() {
             <div className="hero-domain-row">
               {DOMAIN_CHIPS.map(chip => (
                 <span key={chip} className="hero-domain-pill">
-                  • {chip}
+                  {chip}
                 </span>
               ))}
             </div>
@@ -106,15 +96,15 @@ export default function Hero() {
           <div className="hero-kpi-panel">
             <div className="kpi-stat-box">
               <div className="kpi-stat-num">5</div>
-              <div className="kpi-stat-lbl">Cognitive Pillars</div>
+              <div className="kpi-stat-lbl">Evaluation Pillars</div>
             </div>
             <div className="kpi-stat-box">
               <div className="kpi-stat-num">40+</div>
-              <div className="kpi-stat-lbl">Question Bank</div>
+              <div className="kpi-stat-lbl">Technical Challenges</div>
             </div>
             <div className="kpi-stat-box">
-              <div className="kpi-stat-num">🔥 30d</div>
-              <div className="kpi-stat-lbl">Streak Tracking</div>
+              <div className="kpi-stat-num">30d</div>
+              <div className="kpi-stat-lbl">Consistency Streaks</div>
             </div>
             <div className="kpi-stat-box">
               <div className="kpi-stat-num">100%</div>
@@ -124,17 +114,21 @@ export default function Hero() {
         </div>
       </section>
 
-      {/* Core Platform Pillars */}
+      {/* Classic 4-Step Flow */}
       <section className="features-section-clean page-container">
-        <h2 className="section-title">Core Platform Capabilities</h2>
-        <div className="features-grid-clean">
-          {PLATFORM_PILLARS.map(p => (
-            <div key={p.title} className="feature-box-clean">
-              <div className="fbc-header">
-                <span className="fbc-icon">{p.icon}</span>
-                <h3 className="fbc-title">{p.title}</h3>
-              </div>
-              <p className="fbc-desc">{p.desc}</p>
+        <div className="section-header-row">
+          <div>
+            <h2 className="section-title">Platform Architecture & Learning Flow</h2>
+            <p className="section-subtitle">A structured, four-step methodology to measure, improve, and showcase engineering capabilities.</p>
+          </div>
+        </div>
+
+        <div className="steps-grid-classic">
+          {PLATFORM_STEPS.map(s => (
+            <div key={s.step} className="step-card-classic">
+              <div className="step-number">{s.step}</div>
+              <h3 className="step-title">{s.title}</h3>
+              <p className="step-desc">{s.desc}</p>
             </div>
           ))}
         </div>
@@ -146,7 +140,7 @@ export default function Hero() {
           <div className="rbc-content">
             <h2>Enterprise Recruiter & Hiring Suite</h2>
             <p>
-              Filter candidates by verified assessment scores, active learning streak days, specific focus topics (e.g. Supervised Learning Models), and university streams. View full audit history and schedule live Zoom interviews directly.
+              Filter candidates by verified assessment scores, active learning streak days, specific focus topics (such as Supervised Learning Models), and degree streams. Review complete assessment histories and schedule interviews directly.
             </p>
           </div>
           <Link to="/company" className="btn btn-primary" style={{ padding: '10px 24px', fontSize: '14px' }}>

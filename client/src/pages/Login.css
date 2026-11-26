@@ -7,22 +7,15 @@
   position: relative;
 }
 
-.auth-bg-blur {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse 60% 50% at 30% 30%, rgba(99,102,241,0.2), transparent),
-              radial-gradient(ellipse 50% 40% at 70% 70%, rgba(16,185,129,0.1), transparent);
-  pointer-events: none;
-  z-index: 0;
-}
-
 .auth-box {
   position: relative;
   z-index: 1;
   width: 100%;
   max-width: 440px;
   padding: 40px;
-  border-radius: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
 }
 

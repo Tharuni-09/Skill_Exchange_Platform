@@ -8,20 +8,36 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/');
     setMenuOpen(false);
+    setMobileNavOpen(false);
   };
 
   const isActive = (path) => location.pathname === path ? 'active' : '';
 
+  const closeAll = () => {
+    setMenuOpen(false);
+    setMobileNavOpen(false);
+  };
+
   return (
     <header className="header">
       <div className="header-inner">
+        {/* Mobile Menu Hamburger Button */}
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setMobileNavOpen(!mobileNavOpen)}
+          aria-label="Toggle navigation menu"
+        >
+          {mobileNavOpen ? '✕' : '☰'}
+        </button>
+
         {/* Logo */}
-        <Link to="/" className="logo">
+        <Link to="/" className="logo" onClick={closeAll}>
           <span className="logo-icon">⚡</span>
           <span className="logo-text">Skill<span className="logo-accent">Swap</span></span>
         </Link>
@@ -32,25 +48,25 @@ export default function Header() {
             <Link to="/dashboard" className={`nav-link ${isActive('/dashboard')}`}>Dashboard</Link>
           )}
           <Link to="/assessment" className={`nav-link ${isActive('/assessment')}`}>
-            🧠 Assessment
+            Assessment
           </Link>
           <Link to="/classes" className={`nav-link ${isActive('/classes')}`}>
-            🎓 Classes
+            Masterclasses
           </Link>
           <Link to="/timetable" className={`nav-link ${isActive('/timetable')}`}>
-            📅 Timetable
+            Schedule
           </Link>
           <Link to="/friends" className={`nav-link ${isActive('/friends')}`}>
-            🤝 Study Buddies
+            Study Partners
           </Link>
           <Link to="/opportunities" className={`nav-link ${isActive('/opportunities')}`}>
-            💼 Opportunities
+            Opportunities
           </Link>
           <Link to="/company" className={`nav-link highlight-nav ${isActive('/company') || isActive('/candidates')}`}>
-            🏢 Company View
+            Recruiter Portal
           </Link>
           <Link to="/leaderboard" className={`nav-link ${isActive('/leaderboard')}`}>
-            🏆 Leaderboard
+            Leaderboard
           </Link>
         </nav>
 
@@ -59,9 +75,9 @@ export default function Header() {
           {user ? (
             <div className="user-menu-wrapper">
               {/* Streak badge */}
-              <div className="header-streak-badge" title={`${user.streak || 1}-day active learning streak!`}>
-                <span>🔥</span>
-                <span className="streak-count">{user.streak || 1}d</span>
+              <div className="header-streak-badge" title={`${user.streak || 1}-day active learning streak`}>
+                <span className="streak-icon">⚡</span>
+                <span className="streak-count">{user.streak || 1}d Streak</span>
               </div>
 
               <div className="user-menu">
@@ -83,37 +99,37 @@ export default function Header() {
                       <div>
                         <p className="dropdown-name">{user.name}</p>
                         <p className="dropdown-email">{user.email}</p>
-                        <span className="dropdown-streak">🔥 {user.streak || 1} Day Streak</span>
+                        <span className="dropdown-streak">{user.streak || 1} Day Streak</span>
                       </div>
                     </div>
                     <hr className="dropdown-divider" />
                     <Link to="/dashboard" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                      📊 Dashboard
+                      Dashboard
                     </Link>
                     <Link to="/assessment" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                      🧠 Take Assessment
+                      Take Assessment
                     </Link>
                     <Link to="/timetable" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                      📅 My Timetable Maker
+                      Weekly Schedule
                     </Link>
                     <Link to="/friends" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                      🤝 Study Buddies & Zoom Meet
+                      Study Partners
                     </Link>
                     <Link to="/classes" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                      🎓 My Masterclasses
+                      Masterclasses
                     </Link>
                     <Link to="/opportunities" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                      💼 Job & Internship Board
+                      Career Opportunities
                     </Link>
                     <Link to="/candidates" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                      🏢 Recruiter Candidate View
+                      Recruiter Candidate View
                     </Link>
                     <Link to="/history" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                      📋 Assessment History
+                      Assessment History
                     </Link>
                     <hr className="dropdown-divider" />
                     <button className="dropdown-item danger" onClick={handleLogout}>
-                      🚪 Logout
+                      Sign Out
                     </button>
                   </div>
                 )}
@@ -127,6 +143,46 @@ export default function Header() {
           )}
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {mobileNavOpen && (
+        <div className="mobile-nav-drawer">
+          <nav className="mobile-nav-list">
+            {user && (
+              <Link to="/dashboard" className={`mobile-nav-link ${isActive('/dashboard')}`} onClick={closeAll}>
+                Dashboard
+              </Link>
+            )}
+            <Link to="/assessment" className={`mobile-nav-link ${isActive('/assessment')}`} onClick={closeAll}>
+              Assessment
+            </Link>
+            <Link to="/classes" className={`mobile-nav-link ${isActive('/classes')}`} onClick={closeAll}>
+              Masterclasses
+            </Link>
+            <Link to="/timetable" className={`mobile-nav-link ${isActive('/timetable')}`} onClick={closeAll}>
+              Schedule
+            </Link>
+            <Link to="/friends" className={`mobile-nav-link ${isActive('/friends')}`} onClick={closeAll}>
+              Study Partners
+            </Link>
+            <Link to="/opportunities" className={`mobile-nav-link ${isActive('/opportunities')}`} onClick={closeAll}>
+              Opportunities
+            </Link>
+            <Link to="/company" className={`mobile-nav-link ${isActive('/company') || isActive('/candidates')}`} onClick={closeAll}>
+              Recruiter Portal
+            </Link>
+            <Link to="/leaderboard" className={`mobile-nav-link ${isActive('/leaderboard')}`} onClick={closeAll}>
+              Leaderboard
+            </Link>
+            {!user && (
+              <div className="mobile-auth-row">
+                <Link to="/login" className="btn btn-secondary btn-sm" onClick={closeAll}>Log In</Link>
+                <Link to="/register" className="btn btn-primary btn-sm" onClick={closeAll}>Sign Up</Link>
+              </div>
+            )}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

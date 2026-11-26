@@ -9,8 +9,8 @@
   align-items: center;
   gap: 24px;
   padding: 32px 36px;
-  background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(99,102,241,0.06));
-  border-color: rgba(16,185,129,0.25);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   margin-bottom: 24px;
   flex-wrap: wrap;
 }
@@ -168,7 +168,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--secondary), #06b6d4);
+  background: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -69,42 +69,41 @@ export default function Dashboard() {
         <div className="dashboard-welcome">
           <div>
             <h1 className="dash-title">
-              Welcome back, <span className="text-gradient">{user.name}</span> 👋
+              Welcome back, <span className="text-gradient">{user.name}</span>
             </h1>
             <p className="dash-subtitle">
-              {user.role} · {user.stream || 'General'} {user.specialization ? `· ${user.specialization}` : ''}
+              {user.role} · {user.stream || 'General Engineering'} {user.specialization ? `· ${user.specialization}` : ''}
             </p>
           </div>
           <div className="dash-welcome-actions">
             <Link to="/assessment" className="btn btn-primary">
-              🧠 Take Assessment
+              Start Assessment →
             </Link>
           </div>
         </div>
 
         {/* User Target Topic / Requirement Card */}
-        <div className="card fade-in" style={{ marginBottom: 24, padding: '20px 24px', borderLeft: '4px solid #38bdf8' }}>
+        <div className="card fade-in" style={{ marginBottom: 24, padding: '20px 24px', borderLeft: '4px solid var(--primary-light)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
             <div>
-              <span style={{ fontSize: '0.8rem', color: '#38bdf8', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>
-                🎯 Your Target Focus Topic & Learning Requirement
+              <span style={{ fontSize: '0.78rem', color: 'var(--primary-light)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>
+                Target Learning Track & Specialization
               </span>
-              <h3 style={{ margin: '4px 0 0', fontSize: '1.2rem', color: '#f8fafc' }}>
+              <h3 style={{ margin: '4px 0 0', fontSize: '1.2rem', color: 'var(--text-primary)' }}>
                 {targetTopic}
               </h3>
             </div>
             <button
               onClick={() => setEditingTopic(!editingTopic)}
               className="btn btn-secondary btn-sm"
-              style={{ fontSize: '0.85rem' }}
             >
-              {editingTopic ? 'Cancel ✕' : 'Change Topic ✎'}
+              {editingTopic ? 'Cancel' : 'Edit Track'}
             </button>
           </div>
           {editingTopic && (
-            <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px solid #334155' }}>
-              <p style={{ fontSize: '0.88rem', color: '#94a3b8', marginBottom: 8 }}>
-                Specify what you need to learn (e.g. In ML: <em>"Supervised learning models"</em>, or in Web: <em>"React Microfrontends"</em>):
+            <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px solid var(--border)' }}>
+              <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: 8 }}>
+                Specify your exact learning requirements (e.g., <em>"Supervised Learning Models"</em>, <em>"Distributed Systems"</em>, <em>"React Microfrontends"</em>):
               </p>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <input
@@ -112,34 +111,34 @@ export default function Dashboard() {
                   value={topicInput}
                   onChange={(e) => setTopicInput(e.target.value)}
                   placeholder="e.g. Supervised Learning Models, Deep Neural Networks"
-                  style={{ flex: 1, minWidth: 260, padding: '10px 14px', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, color: '#f8fafc', fontSize: '0.95rem' }}
+                  style={{ flex: 1, minWidth: 260, padding: '8px 12px', background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', color: 'var(--text-primary)', fontSize: '0.95rem' }}
                 />
-                <button onClick={handleSaveTopic} className="btn btn-primary btn-sm" style={{ padding: '10px 20px' }}>
-                  Save Topic
+                <button onClick={handleSaveTopic} className="btn btn-primary btn-sm" style={{ padding: '8px 18px' }}>
+                  Save
                 </button>
               </div>
             </div>
           )}
         </div>
 
-        {/* Gamified Streak Widget */}
+        {/* Learning Streak Card */}
         <div className="streak-hero-card card fade-in">
           <div className="shc-left">
             <div className="streak-flame-wrapper">
-              <span className="streak-flame-icon">🔥</span>
+              <span className="streak-flame-icon">⚡</span>
             </div>
             <div>
               <div className="shc-header">
                 <span className="shc-num">{currentStreak}</span>
-                <span className="shc-unit">Day Streak</span>
-                <span className="streak-multiplier-badge">{streakData?.streakMultiplier || '1.0x'} Boost</span>
+                <span className="shc-unit">Day Activity Streak</span>
+                <span className="streak-multiplier-badge">{streakData?.streakMultiplier || '1.0x'} Multiplier</span>
               </div>
               <p className="shc-desc">
                 {currentStreak >= 7
-                  ? "Unstoppable! You're in the top 5% most consistent candidates on the platform."
+                  ? "Outstanding consistency. Your streak index is highlighted on recruiter talent searches."
                   : currentStreak >= 3
-                  ? "Great momentum! Take daily assessments or attend classes to keep your streak alive."
-                  : "Complete today's ML assessment or attend a masterclass to build your streak!"}
+                  ? "Solid momentum. Complete assessments and masterclasses daily to maintain your streak."
+                  : "Complete today's assessment or attend a masterclass to build verified consistency."}
               </p>
             </div>
           </div>
@@ -185,24 +184,20 @@ export default function Dashboard() {
         {/* Stats Grid */}
         <div className="dash-stats-grid">
           <div className="dash-stat card">
-            <span className="dash-stat-icon">📊</span>
             <div className="dash-stat-val">{history.length}</div>
-            <div className="dash-stat-label">Assessments Taken</div>
+            <div className="dash-stat-label">Assessments Completed</div>
           </div>
           <div className="dash-stat card">
-            <span className="dash-stat-icon">🏆</span>
-            <div className="dash-stat-val">{bestScore}</div>
-            <div className="dash-stat-label">Best Score</div>
+            <div className="dash-stat-val">{bestScore}%</div>
+            <div className="dash-stat-label">Highest Score</div>
           </div>
           <div className="dash-stat card">
-            <span className="dash-stat-icon">📈</span>
-            <div className="dash-stat-val">{avgScore}</div>
-            <div className="dash-stat-label">Average Score</div>
+            <div className="dash-stat-val">{avgScore}%</div>
+            <div className="dash-stat-label">Average Performance</div>
           </div>
           <div className="dash-stat card">
-            <span className="dash-stat-icon">⭐</span>
-            <div className="dash-stat-val">{latest?.predicted_level || '—'}</div>
-            <div className="dash-stat-label">Current Level</div>
+            <div className="dash-stat-val">{latest?.predicted_level || 'Pending'}</div>
+            <div className="dash-stat-label">Proficiency Tier</div>
           </div>
         </div>
 
@@ -212,8 +207,8 @@ export default function Dashboard() {
         ) : latest ? (
           <div className="dash-latest card fade-in">
             <div className="dash-section-header">
-              <h2>Latest ML Assessment Breakdown</h2>
-              <span className="badge badge-primary">{latest.predicted_level} Level</span>
+              <h2>Latest Assessment Evaluation</h2>
+              <span className="badge badge-primary">{latest.predicted_level} Tier</span>
             </div>
 
             <div className="latest-overview">
@@ -224,16 +219,16 @@ export default function Dashboard() {
               <div className="latest-domains">
                 {Object.keys(DOMAIN_ICONS).map(d => {
                   const val = latest[d] ?? 0;
-                  const color = val >= 75 ? '#10b981' : val >= 50 ? '#6366f1' : '#ef4444';
+                  const color = val >= 75 ? 'var(--secondary)' : val >= 50 ? 'var(--primary-light)' : 'var(--danger)';
                   return (
                     <div key={d} className="latest-domain-row">
                       <span className="latest-domain-label">
-                        {DOMAIN_ICONS[d]} {d.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                        {d.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                       </span>
                       <div className="latest-domain-bar-wrap">
                         <div className="latest-domain-bar" style={{ width: `${val}%`, background: color }} />
                       </div>
-                      <span className="latest-domain-val" style={{ color }}>{val}</span>
+                      <span className="latest-domain-val" style={{ color }}>{val}%</span>
                     </div>
                   );
                 })}
@@ -242,18 +237,16 @@ export default function Dashboard() {
 
             {latest.mentor_summary && (
               <div className="dash-mentor-note">
-                <span>🤖</span>
-                <p>{latest.mentor_summary}</p>
+                <p><strong>Evaluation Note:</strong> {latest.mentor_summary}</p>
               </div>
             )}
           </div>
         ) : (
           <div className="dash-empty card">
-            <div className="empty-icon">📋</div>
-            <h3>No assessments yet</h3>
-            <p>Take your first adaptive ML assessment to unlock your skill card and opportunities.</p>
+            <h3>No assessments completed yet</h3>
+            <p>Take your first evaluation assessment to establish your baseline skill index.</p>
             <Link to="/assessment" className="btn btn-primary" style={{ marginTop: 20 }}>
-              Start First Assessment →
+              Start Assessment →
             </Link>
           </div>
         )}
@@ -261,34 +254,28 @@ export default function Dashboard() {
         {/* Quick Links Grid */}
         <div className="dash-quick-links">
           <Link to="/assessment" className="quick-link card">
-            <span className="ql-icon">🧠</span>
             <span className="ql-label">Take Assessment</span>
-            <span className="ql-sub">10 adaptive questions</span>
+            <span className="ql-sub">Adaptive standardized testing</span>
           </Link>
           <Link to="/classes" className="quick-link card">
-            <span className="ql-icon">🎓</span>
-            <span className="ql-label">Live Masterclasses</span>
-            <span className="ql-sub">8+ industry classes</span>
+            <span className="ql-label">Masterclasses</span>
+            <span className="ql-sub">Interactive technical sessions</span>
           </Link>
-          <Link to="/opportunities" className="quick-link card">
-            <span className="ql-icon">💼</span>
-            <span className="ql-label">Opportunities</span>
-            <span className="ql-sub">Apply with ML Score</span>
+          <Link to="/timetable" className="quick-link card">
+            <span className="ql-label">Weekly Schedule</span>
+            <span className="ql-sub">Study planner & class sync</span>
+          </Link>
+          <Link to="/friends" className="quick-link card">
+            <span className="ql-label">Study Partners</span>
+            <span className="ql-sub">Peer learning & practice</span>
           </Link>
           <Link to="/candidates" className="quick-link card highlight-card">
-            <span className="ql-icon">🏢</span>
-            <span className="ql-label">Candidate Directory</span>
-            <span className="ql-sub">Recruiter screening view</span>
-          </Link>
-          <Link to="/leaderboard" className="quick-link card">
-            <span className="ql-icon">🏆</span>
-            <span className="ql-label">Leaderboard</span>
-            <span className="ql-sub">Top peer ranks</span>
+            <span className="ql-label">Recruiter Directory</span>
+            <span className="ql-sub">Enterprise candidate screening</span>
           </Link>
           <Link to="/history" className="quick-link card">
-            <span className="ql-icon">📋</span>
-            <span className="ql-label">View History</span>
-            <span className="ql-sub">Past attempts</span>
+            <span className="ql-label">Assessment History</span>
+            <span className="ql-sub">Historical score logs</span>
           </Link>
         </div>
       </div>

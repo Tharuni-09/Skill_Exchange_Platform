@@ -7,35 +7,35 @@
 }
 
 :root {
-  /* Balanced mid-tone slate palette (comfortably in between pitch dark and bright white) */
-  --primary:        #3b82f6;
-  --primary-hover:  #2563eb;
-  --primary-light:  #60a5fa;
-  --secondary:      #10b981;
-  --secondary-hover:#059669;
-  --accent:         #f59e0b;
-  --danger:         #ef4444;
-  --danger-hover:   #dc2626;
+  /* Neutral Graphite Charcoal Palette (Pure balanced neutral charcoal, cohesive monochrome slate accents) */
+  --primary:        #0284c7;      /* Clean solid tech blue */
+  --primary-hover:  #0369a1;
+  --primary-light:  #38bdf8;      /* Legible ice blue accent */
+  --secondary:      #059669;
+  --secondary-hover:#047857;
+  --accent:         #d97706;
+  --danger:         #dc2626;
+  --danger-hover:   #b91c1c;
   
-  --bg-dark:        #283340;      /* Mid-tone slate background: neither pitch black nor white */
-  --bg-header:      #1f2732;      /* Elegant structured top navigation */
-  --bg-card:        #334152;      /* Elevated mid-tone slate card surface */
-  --bg-card-light:  #3c4d61;      /* Secondary layer for chips and hovered elements */
-  --bg-card-hover:  #45576e;
-  --bg-input:       #202934;      /* Recessed legible form controls */
+  --bg-dark:        #27272a;      /* Pure balanced neutral charcoal (Zinc-800: comfortable mid-tone, not black, not white) */
+  --bg-header:      #18181b;      /* Elegant structured anchor (Zinc-900) */
+  --bg-card:        #3f3f46;      /* Elevated neutral graphite card (Zinc-700) */
+  --bg-card-light:  #52525b;      /* Secondary layer for chips / active elements (Zinc-600) */
+  --bg-card-hover:  #5a5a64;
+  --bg-input:       #18181b;      /* Recessed clean form control (Zinc-900) */
   
-  --text-primary:   #f8fafc;      /* Crisp, clear, high-contrast text */
-  --text-secondary: #cbd5e1;      /* Readable soft silver slate */
-  --text-muted:     #94a3b8;
+  --text-primary:   #fafafa;      /* Crisp high-contrast text (Zinc-50) */
+  --text-secondary: #d4d4d8;      /* Readable soft neutral silver (Zinc-300) */
+  --text-muted:     #a1a1aa;      /* Subtle labels (Zinc-400) */
   
-  --border:         #4a5b73;      /* Crisp 1px structural border */
-  --border-light:   #617594;
+  --border:         #52525b;      /* Crisp 1px structural border (Zinc-600) */
+  --border-light:   #71717a;      /* Hover border (Zinc-500) */
   
   --radius:         6px;
   --radius-lg:      8px;
   
-  --shadow:         0 1px 3px rgba(0, 0, 0, 0.25);
-  --shadow-lg:      0 6px 18px rgba(0, 0, 0, 0.35);
+  --shadow:         0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-lg:      0 8px 24px rgba(0, 0, 0, 0.4);
   --transition:     0.15s ease;
 
   /* Standard unified full-screen horizontal padding across Header and all screens */
@@ -157,10 +157,59 @@ input, select, textarea {
   font-size: 12.5px;
 }
 
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.btn-outline:hover {
+  background: var(--bg-card-light);
+  border-color: var(--border-light);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none !important;
+}
+
+/* Table Styles - Classic Enterprise Data Tables */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-classic {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13.5px;
+  text-align: left;
+}
+
+.table-classic th {
+  background: var(--bg-card-light);
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.table-classic td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.table-classic tbody tr:hover {
+  background: var(--bg-card-hover);
 }
 
 /* Cards: Solid clean card surface with crisp border */
@@ -184,14 +233,14 @@ input, select, textarea {
   font-weight: 600;
 }
 
-.badge-primary { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); }
-.badge-success { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
-.badge-warning { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
-.badge-danger  { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
+.badge-primary { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); }
+.badge-success { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+.badge-warning { background: rgba(245, 158, 11, 0.15); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
+.badge-danger  { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
 
 /* Text Accent */
 .text-gradient {
-  color: #60a5fa;
+  color: var(--primary-light);
   font-weight: 800;
   background: none;
   -webkit-text-fill-color: initial;
@@ -232,8 +281,8 @@ input, select, textarea {
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
 }
 
 .error-msg {

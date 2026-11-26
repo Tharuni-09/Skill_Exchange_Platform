@@ -9,8 +9,8 @@
   align-items: center;
   gap: 24px;
   padding: 32px 36px;
-  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(6,182,212,0.06));
-  border-color: rgba(99,102,241,0.25);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   margin-bottom: 24px;
   flex-wrap: wrap;
 }
