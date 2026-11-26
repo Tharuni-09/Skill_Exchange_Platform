@@ -269,80 +269,84 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-  padding: 28px;
+  padding: 34px 36px;
 }
 .dash-section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 26px;
 }
 .dash-section-header h2 {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 21px;
+  font-weight: 800;
   color: var(--text-primary);
+  letter-spacing: -0.3px;
 }
 .latest-overview {
   display: flex;
-  gap: 36px;
+  gap: 48px;
   align-items: center;
 }
 .latest-score {
   flex-shrink: 0;
   text-align: center;
-  padding: 10px 24px;
+  padding: 18px 36px;
   background: var(--bg-card-light);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
 }
 .latest-score-num {
-  font-size: 58px;
+  font-size: 68px;
   font-weight: 900;
   line-height: 1;
   color: var(--primary);
+  letter-spacing: -1px;
 }
 .latest-score-denom {
-  font-size: 18px;
+  font-size: 20px;
   color: var(--text-muted);
   display: block;
-  font-weight: 600;
-  margin-top: 4px;
+  font-weight: 700;
+  margin-top: 6px;
 }
 .latest-domains {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 .latest-domain-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
 }
 .latest-domain-label {
-  width: 220px;
-  font-size: 13.5px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  width: 240px;
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 600;
   flex-shrink: 0;
 }
 .latest-domain-bar-wrap {
   flex: 1;
-  height: 9px;
+  height: 14px;
   background: #e2e8f0;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(15, 23, 42, 0.08);
 }
 .latest-domain-bar {
   height: 100%;
-  border-radius: 6px;
+  border-radius: 8px;
   transition: width 1s ease;
 }
 .latest-domain-val {
-  width: 40px;
+  width: 48px;
   text-align: right;
-  font-size: 13.5px;
-  font-weight: 700;
+  font-size: 15.5px;
+  font-weight: 800;
 }
 
 .dash-mentor-note {

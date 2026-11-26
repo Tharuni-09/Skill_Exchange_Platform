@@ -94,14 +94,14 @@
 }
 .chart-card { }
 .chart-title {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   margin-bottom: 20px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 .chart-container {
   position: relative;
-  height: 260px;
+  height: 380px;
 }
 
 /* Domain score cards */
@@ -122,24 +122,24 @@
 }
 .domain-score-icon { font-size: 20px; }
 .domain-score-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 .domain-score-bar-wrap {
-  height: 6px;
-  background: var(--border);
-  border-radius: 3px;
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 6px;
   overflow: hidden;
   margin-bottom: 8px;
 }
 .domain-score-bar {
   height: 100%;
-  border-radius: 3px;
+  border-radius: 6px;
   transition: width 1s ease;
 }
 .domain-score-val {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
 }
 
