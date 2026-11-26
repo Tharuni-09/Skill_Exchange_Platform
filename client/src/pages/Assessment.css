@@ -70,7 +70,7 @@
 }
 .q-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  background: var(--primary);
   border-radius: 2px;
   transition: width 0.4s ease;
 }
@@ -187,12 +187,12 @@
   padding: 40px;
 }
 .feedback-card.correct {
-  border-color: rgba(16,185,129,0.4);
-  background: linear-gradient(135deg, var(--bg-card), rgba(16,185,129,0.05));
+  border-color: rgba(5, 150, 105, 0.4);
+  background: #f0fdf4;
 }
 .feedback-card.incorrect {
-  border-color: rgba(239,68,68,0.4);
-  background: linear-gradient(135deg, var(--bg-card), rgba(239,68,68,0.05));
+  border-color: rgba(220, 38, 38, 0.4);
+  background: #fef2f2;
 }
 .feedback-icon {
   font-size: 56px;

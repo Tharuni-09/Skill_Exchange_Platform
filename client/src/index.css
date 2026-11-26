@@ -1,4 +1,5 @@
-/* Global CSS – In-Between Mid-Tone Slate Theme (Balanced: NOT pitch dark, NOT white) */
+/* SkillSwap Global Styles – Classic Executive Light-Slate Theme
+   Balanced between light and dark: Soothing Slate-Ice canvas, crisp white floating cards, midnight header */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -7,36 +8,42 @@
 }
 
 :root {
-  /* Neutral Graphite Charcoal Palette (Pure balanced neutral charcoal, cohesive monochrome slate accents) */
-  --primary:        #0284c7;      /* Clean solid tech blue */
-  --primary-hover:  #0369a1;
-  --primary-light:  #38bdf8;      /* Legible ice blue accent */
-  --secondary:      #059669;
+  /* Classic Executive Palette (Refined royal sapphire, emerald, amber, soft slate canvas) */
+  --primary:        #2563eb;      /* Confident royal blue */
+  --primary-hover:  #1d4ed8;
+  --primary-light:  #3b82f6;      /* Bright blue accent */
+  --secondary:      #059669;      /* Forest/emerald green */
   --secondary-hover:#047857;
-  --accent:         #d97706;
+  --accent:         #d97706;      /* Rich amber gold */
   --danger:         #dc2626;
   --danger-hover:   #b91c1c;
   
-  --bg-dark:        #27272a;      /* Pure balanced neutral charcoal (Zinc-800: comfortable mid-tone, not black, not white) */
-  --bg-header:      #18181b;      /* Elegant structured anchor (Zinc-900) */
-  --bg-card:        #3f3f46;      /* Elevated neutral graphite card (Zinc-700) */
-  --bg-card-light:  #52525b;      /* Secondary layer for chips / active elements (Zinc-600) */
-  --bg-card-hover:  #5a5a64;
-  --bg-input:       #18181b;      /* Recessed clean form control (Zinc-900) */
+  --bg-dark:        #edf2f7;      /* Refined soft cool-slate canvas (NOT white, NOT dark, in-between) */
+  --bg-header:      #0f172a;      /* Rich midnight slate header anchor */
+  --bg-card:        #ffffff;      /* Crisp pure card surface with soft elevation */
+  --bg-card-light:  #f8fafc;      /* Soft slate-50 secondary layer */
+  --bg-card-hover:  #f1f5f9;      /* Subtle hover highlight */
+  --bg-input:       #ffffff;      /* Clean crisp input field */
   
-  --text-primary:   #fafafa;      /* Crisp high-contrast text (Zinc-50) */
-  --text-secondary: #d4d4d8;      /* Readable soft neutral silver (Zinc-300) */
-  --text-muted:     #a1a1aa;      /* Subtle labels (Zinc-400) */
+  --text-primary:   #0f172a;      /* Slate-900: High-contrast crisp typography */
+  --text-secondary: #334155;      /* Slate-700: Highly legible reading text */
+  --text-muted:     #64748b;      /* Slate-500: Clear subtle labels */
   
-  --border:         #52525b;      /* Crisp 1px structural border (Zinc-600) */
-  --border-light:   #71717a;      /* Hover border (Zinc-500) */
+  --border:         #cbd5e1;      /* Slate-300: Crisp 1px structural border */
+  --border-light:   #94a3b8;      /* Slate-400: Focus/hover border */
   
-  --radius:         6px;
-  --radius-lg:      8px;
+  --radius:         8px;
+  --radius-lg:      12px;
   
-  --shadow:         0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-lg:      0 8px 24px rgba(0, 0, 0, 0.4);
-  --transition:     0.15s ease;
+  --shadow:         0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-card:    0 4px 14px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  --shadow-lg:      0 12px 30px -4px rgba(15, 23, 42, 0.12), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+  --shadow-elevated:0 20px 40px -8px rgba(15, 23, 42, 0.15), 0 8px 16px -4px rgba(15, 23, 42, 0.08);
+  --shadow-glow:    0 0 24px -2px rgba(37, 99, 235, 0.25);
+  
+  --ease-spring:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth:    cubic-bezier(0.4, 0, 0.2, 1);
+  --transition:     0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Standard unified full-screen horizontal padding across Header and all screens */
   --page-padding-x: clamp(20px, 3.5vw, 48px);
@@ -69,10 +76,11 @@ body {
 a {
   color: var(--primary);
   text-decoration: none;
+  transition: color var(--transition);
 }
 a:hover {
   color: var(--primary-hover);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 button {
@@ -93,42 +101,54 @@ input, select, textarea {
   box-sizing: border-box;
 }
 
-/* Buttons: Solid, crisp, professional controls */
+/* Buttons: High-class, responsive, interactive controls */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 8px 18px;
   border-radius: var(--radius);
   font-size: 13.5px;
   font-weight: 600;
   border: 1px solid transparent;
-  transition: all var(--transition);
+  transition: all 0.2s var(--ease-spring);
   text-decoration: none;
   white-space: nowrap;
+  position: relative;
+  user-select: none;
+}
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn-primary {
   background: var(--primary);
   color: #ffffff;
   border-color: var(--primary);
-  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 .btn-primary:hover {
   background: var(--primary-hover);
   border-color: var(--primary-hover);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
   text-decoration: none;
+  color: #ffffff;
 }
 
 .btn-secondary {
   background: var(--bg-card);
   color: var(--text-primary);
   border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 .btn-secondary:hover {
   background: var(--bg-card-hover);
+  border-color: var(--border-light);
   color: var(--text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card);
   text-decoration: none;
 }
 
@@ -212,14 +232,23 @@ input, select, textarea {
   background: var(--bg-card-hover);
 }
 
-/* Cards: Solid clean card surface with crisp border */
+/* Cards: Clean surface with smooth spring elevation */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 22px;
   box-sizing: border-box;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-card);
+  transition: all 0.25s var(--ease-spring);
+}
+.card:hover {
+  border-color: var(--border-light);
+}
+.card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-elevated);
+  border-color: var(--border-light);
 }
 
 /* Badges: Clean pastel chips with strong readable contrast */
@@ -233,14 +262,14 @@ input, select, textarea {
   font-weight: 600;
 }
 
-.badge-primary { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); }
-.badge-success { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
-.badge-warning { background: rgba(245, 158, 11, 0.15); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
-.badge-danger  { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+.badge-primary { background: rgba(37, 99, 235, 0.1); color: #1d4ed8; border: 1px solid rgba(37, 99, 235, 0.25); }
+.badge-success { background: rgba(5, 150, 105, 0.1); color: #047857; border: 1px solid rgba(5, 150, 105, 0.25); }
+.badge-warning { background: rgba(217, 119, 6, 0.1); color: #b45309; border: 1px solid rgba(217, 119, 6, 0.25); }
+.badge-danger  { background: rgba(220, 38, 38, 0.1); color: #b91c1c; border: 1px solid rgba(220, 38, 38, 0.25); }
 
 /* Text Accent */
 .text-gradient {
-  color: var(--primary-light);
+  color: var(--primary);
   font-weight: 800;
   background: none;
   -webkit-text-fill-color: initial;
@@ -281,14 +310,14 @@ input, select, textarea {
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--primary-light);
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .error-msg {
-  background: rgba(239, 68, 68, 0.18);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #fca5a5;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
   padding: 10px 14px;
   border-radius: var(--radius);
   font-size: 13px;
@@ -296,9 +325,9 @@ input, select, textarea {
 }
 
 .success-msg {
-  background: rgba(16, 185, 129, 0.18);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: #6ee7b7;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
   padding: 10px 14px;
   border-radius: var(--radius);
   font-size: 13px;
@@ -329,11 +358,16 @@ input, select, textarea {
   to { transform: rotate(360deg); }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(3px); }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 .fade-in {
-  animation: fadeIn 0.15s ease forwards;
+  animation: fadeInUp 0.25s var(--ease-spring) forwards;
 }

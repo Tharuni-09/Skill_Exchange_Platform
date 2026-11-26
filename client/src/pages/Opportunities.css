@@ -9,8 +9,8 @@
   align-items: center;
   gap: 30px;
   padding: 36px 40px;
-  background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(99,102,241,0.06));
-  border-color: rgba(16,185,129,0.25);
+  background: var(--bg-card);
+  border-color: var(--border);
   margin-bottom: 24px;
   flex-wrap: wrap;
 }
@@ -141,8 +141,8 @@
 }
 
 .opp-card.is-applied {
-  border-color: rgba(16,185,129,0.5);
-  background: linear-gradient(90deg, rgba(16,185,129,0.06), var(--bg-card));
+  border-color: rgba(5, 150, 105, 0.5);
+  background: var(--bg-card);
 }
 
 .opp-main {

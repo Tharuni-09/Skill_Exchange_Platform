@@ -10,8 +10,8 @@
   gap: 40px;
   margin-bottom: 20px;
   padding: 36px 40px;
-  background: linear-gradient(135deg, var(--bg-card), rgba(99,102,241,0.08));
-  border-color: rgba(99,102,241,0.2);
+  background: var(--bg-card);
+  border-color: var(--border);
 }
 .score-ring-wrapper {
   display: flex;
@@ -58,8 +58,8 @@
 /* Mentor card */
 .mentor-card {
   margin-bottom: 20px;
-  background: linear-gradient(135deg, var(--bg-card), rgba(16,185,129,0.05));
-  border-color: rgba(16,185,129,0.2);
+  background: var(--bg-card);
+  border-color: var(--border);
 }
 .mentor-header {
   display: flex;

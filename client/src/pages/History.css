@@ -11,7 +11,7 @@
   padding: 28px 32px;
   gap: 20px;
   flex-wrap: wrap;
-  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(16,185,129,0.06));
+  background: var(--bg-card);
 }
 
 .hh-stats {

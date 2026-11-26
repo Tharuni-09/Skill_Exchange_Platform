@@ -75,11 +75,6 @@ export default function Dashboard() {
               {user.role} · {user.stream || 'General Engineering'} {user.specialization ? `· ${user.specialization}` : ''}
             </p>
           </div>
-          <div className="dash-welcome-actions">
-            <Link to="/assessment" className="btn btn-primary">
-              Start Assessment →
-            </Link>
-          </div>
         </div>
 
         {/* User Target Topic / Requirement Card */}
@@ -250,34 +245,6 @@ export default function Dashboard() {
             </Link>
           </div>
         )}
-
-        {/* Quick Links Grid */}
-        <div className="dash-quick-links">
-          <Link to="/assessment" className="quick-link card">
-            <span className="ql-label">Take Assessment</span>
-            <span className="ql-sub">Adaptive standardized testing</span>
-          </Link>
-          <Link to="/classes" className="quick-link card">
-            <span className="ql-label">Masterclasses</span>
-            <span className="ql-sub">Interactive technical sessions</span>
-          </Link>
-          <Link to="/timetable" className="quick-link card">
-            <span className="ql-label">Weekly Schedule</span>
-            <span className="ql-sub">Study planner & class sync</span>
-          </Link>
-          <Link to="/friends" className="quick-link card">
-            <span className="ql-label">Study Partners</span>
-            <span className="ql-sub">Peer learning & practice</span>
-          </Link>
-          <Link to="/candidates" className="quick-link card highlight-card">
-            <span className="ql-label">Recruiter Directory</span>
-            <span className="ql-sub">Enterprise candidate screening</span>
-          </Link>
-          <Link to="/history" className="quick-link card">
-            <span className="ql-label">Assessment History</span>
-            <span className="ql-sub">Historical score logs</span>
-          </Link>
-        </div>
       </div>
     </div>
   );
