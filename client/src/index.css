@@ -1,4 +1,4 @@
-/* Global CSS – Minimal Mid-Tone Dark Theme (Comfortable slate/charcoal in-between dark & light) */
+/* Global CSS – Soft Muted Light Theme (Gentle mist slate: light, but NOT white) */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -7,35 +7,35 @@
 }
 
 :root {
-  /* Minimal in-between dark palette: balanced, comfortable matte slate */
-  --primary:        #3b82f6;
-  --primary-hover:  #2563eb;
-  --primary-light:  #60a5fa;
-  --secondary:      #10b981;
-  --secondary-hover:#059669;
-  --accent:         #f59e0b;
-  --danger:         #ef4444;
-  --danger-hover:   #dc2626;
+  /* Soft, non-glare light theme palette (Gentle mist slate, distinctly NOT harsh white) */
+  --primary:        #2563eb;
+  --primary-hover:  #1d4ed8;
+  --primary-light:  #1d4ed8;
+  --secondary:      #059669;
+  --secondary-hover:#047857;
+  --accent:         #d97706;
+  --danger:         #dc2626;
+  --danger-hover:   #b91c1c;
   
-  --bg-dark:        #1e232d;      /* Mid-tone slate: not pitch black, pleasant in-between */
-  --bg-header:      #181c24;      /* Recessed header */
-  --bg-card:        #252c38;      /* Clean elevated slate card */
-  --bg-card-light:  #2d3544;      /* Subtle lighter layer */
-  --bg-card-hover:  #343e50;
-  --bg-input:       #191e26;      /* Recessed clean input */
+  --bg-dark:        #eaf0f6;      /* Soft mist slate background: gentle light, NOT harsh white */
+  --bg-header:      #dde5ee;      /* Elegant structured top navigation */
+  --bg-card:        #f8fafc;      /* Clean elevated soft card */
+  --bg-card-light:  #edf3f8;      /* Subtle lighter layer for pills and hover */
+  --bg-card-hover:  #e2ebf3;
+  --bg-input:       #ffffff;      /* Crisp legible form controls */
   
-  --text-primary:   #f1f5f9;      /* Crisp soft white */
-  --text-secondary: #94a3b8;      /* Muted readable slate */
-  --text-muted:     #6b788e;
+  --text-primary:   #0f172a;      /* Deep high-contrast slate navy for maximum legibility */
+  --text-secondary: #334155;      /* Readable mid-slate */
+  --text-muted:     #64748b;
   
-  --border:         #374151;      /* Crisp 1px structural border */
-  --border-light:   #475569;
+  --border:         #cbd5e1;      /* Crisp 1px structural border */
+  --border-light:   #94a3b8;
   
   --radius:         6px;
   --radius-lg:      8px;
   
-  --shadow:         0 1px 3px rgba(0, 0, 0, 0.2);
-  --shadow-lg:      0 6px 18px rgba(0, 0, 0, 0.25);
+  --shadow:         0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-lg:      0 4px 14px rgba(15, 23, 42, 0.12);
   --transition:     0.15s ease;
 
   /* Standard unified full-screen horizontal padding across Header and all screens */
@@ -67,11 +67,11 @@ body {
 }
 
 a {
-  color: var(--primary-light);
+  color: var(--primary);
   text-decoration: none;
 }
 a:hover {
-  color: #93c5fd;
+  color: var(--primary-hover);
   text-decoration: underline;
 }
 
@@ -93,7 +93,7 @@ input, select, textarea {
   box-sizing: border-box;
 }
 
-/* Buttons: Solid, clean, professional controls */
+/* Buttons: Solid, crisp, professional controls */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -113,6 +113,7 @@ input, select, textarea {
   background: var(--primary);
   color: #ffffff;
   border-color: var(--primary);
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
 }
 .btn-primary:hover {
   background: var(--primary-hover);
@@ -121,13 +122,13 @@ input, select, textarea {
 }
 
 .btn-secondary {
-  background: var(--bg-card-light);
-  color: #e2e8f0;
+  background: var(--bg-card);
+  color: var(--text-primary);
   border: 1px solid var(--border);
 }
 .btn-secondary:hover {
   background: var(--bg-card-hover);
-  color: #ffffff;
+  color: var(--text-primary);
   text-decoration: none;
 }
 
@@ -162,16 +163,17 @@ input, select, textarea {
   transform: none !important;
 }
 
-/* Cards: Solid mid-tone slate surface */
+/* Cards: Solid clean card surface with crisp border */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 22px;
   box-sizing: border-box;
+  box-shadow: var(--shadow);
 }
 
-/* Badges */
+/* Badges: Clean pastel chips with strong readable contrast */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -182,15 +184,15 @@ input, select, textarea {
   font-weight: 600;
 }
 
-.badge-primary { background: rgba(59, 130, 246, 0.18); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); }
-.badge-success { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
-.badge-warning { background: rgba(245, 158, 11, 0.18); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.4); }
-.badge-danger  { background: rgba(239, 68, 68, 0.18);  color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
+.badge-primary { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+.badge-success { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+.badge-warning { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+.badge-danger  { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
 
 /* Text Gradient: Solid crisp contrast */
 .text-gradient {
-  color: #60a5fa;
-  font-weight: 700;
+  color: #1d4ed8;
+  font-weight: 800;
   background: none;
   -webkit-text-fill-color: initial;
 }
@@ -198,7 +200,7 @@ input, select, textarea {
 .section-title {
   font-size: 20px;
   font-weight: 700;
-  color: #f1f5f9;
+  color: #0f172a;
   margin-bottom: 18px;
 }
 
@@ -231,13 +233,13 @@ input, select, textarea {
 .form-group textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
 .error-msg {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid var(--danger);
-  color: #fca5a5;
+  background: #fee2e2;
+  border: 1px solid #f87171;
+  color: #991b1b;
   padding: 10px 14px;
   border-radius: var(--radius);
   font-size: 13px;
@@ -245,9 +247,9 @@ input, select, textarea {
 }
 
 .success-msg {
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid var(--secondary);
-  color: #6ee7b7;
+  background: #d1fae5;
+  border: 1px solid #34d399;
+  color: #065f46;
   padding: 10px 14px;
   border-radius: var(--radius);
   font-size: 13px;
@@ -268,7 +270,7 @@ input, select, textarea {
 .spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid var(--border);
+  border: 3px solid #cbd5e1;
   border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
