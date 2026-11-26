@@ -172,17 +172,14 @@ export default function Results() {
           </div>
         </div>
 
-        {/* ML Diagnostic Report */}
-        <div className="mentor-card card fade-in" style={{ borderLeft: '4px solid #38bdf8' }}>
+        {/* Performance Diagnostic Report */}
+        <div className="mentor-card card fade-in" style={{ borderLeft: '4px solid var(--primary-light)' }}>
           <div className="mentor-header">
-            <span className="mentor-avatar" style={{ background: '#0284c7', color: '#fff', fontSize: '20px' }}>📊</span>
+            <span className="mentor-avatar" style={{ background: 'var(--primary)', color: '#fff', fontSize: '18px' }}>📊</span>
             <div style={{ flex: 1 }}>
-              <p className="mentor-name">Machine Learning Diagnostic Evaluation</p>
-              <p className="mentor-role">CART Decision Tree & Ridge Regression • Trained on Kaggle Benchmarks</p>
+              <p className="mentor-name">Performance Diagnostic Evaluation</p>
+              <p className="mentor-role">Multi-Domain Cognitive & Technical Assessment Engine</p>
             </div>
-            <Link to="/ml-models" className="btn btn-secondary btn-sm" style={{ fontSize: '0.8rem' }}>
-              🔬 View ML Formulas
-            </Link>
           </div>
           <p className="mentor-text">"{mentorSummary}"</p>
         </div>

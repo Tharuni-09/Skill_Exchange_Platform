@@ -34,9 +34,6 @@ export default function Header() {
           <Link to="/assessment" className={`nav-link ${isActive('/assessment')}`}>
             🧠 Assessment
           </Link>
-          <Link to="/ml-models" className={`nav-link ml-models-nav ${isActive('/ml-models')}`}>
-            🔬 Kaggle ML Models
-          </Link>
           <Link to="/classes" className={`nav-link ${isActive('/classes')}`}>
             🎓 Classes
           </Link>
@@ -94,10 +91,7 @@ export default function Header() {
                       📊 Dashboard
                     </Link>
                     <Link to="/assessment" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                      🧠 Take ML Assessment
-                    </Link>
-                    <Link to="/ml-models" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                      🔬 Kaggle Datasets & ML Models
+                      🧠 Take Assessment
                     </Link>
                     <Link to="/timetable" className="dropdown-item" onClick={() => setMenuOpen(false)}>
                       📅 My Timetable Maker
