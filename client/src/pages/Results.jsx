@@ -172,14 +172,17 @@ export default function Results() {
           </div>
         </div>
 
-        {/* Mentor Summary */}
-        <div className="mentor-card card fade-in">
+        {/* ML Diagnostic Report */}
+        <div className="mentor-card card fade-in" style={{ borderLeft: '4px solid #38bdf8' }}>
           <div className="mentor-header">
-            <span className="mentor-avatar">🤖</span>
-            <div>
-              <p className="mentor-name">AI Mentor</p>
-              <p className="mentor-role">Skill Assessment Agent</p>
+            <span className="mentor-avatar" style={{ background: '#0284c7', color: '#fff', fontSize: '20px' }}>📊</span>
+            <div style={{ flex: 1 }}>
+              <p className="mentor-name">Machine Learning Diagnostic Evaluation</p>
+              <p className="mentor-role">CART Decision Tree & Ridge Regression • Trained on Kaggle Benchmarks</p>
             </div>
+            <Link to="/ml-models" className="btn btn-secondary btn-sm" style={{ fontSize: '0.8rem' }}>
+              🔬 View ML Formulas
+            </Link>
           </div>
           <p className="mentor-text">"{mentorSummary}"</p>
         </div>

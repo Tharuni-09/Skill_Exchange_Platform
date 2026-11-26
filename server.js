@@ -6,7 +6,7 @@ import { DatabaseSync } from 'node:sqlite';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { readFileSync, existsSync } from 'fs';
-import { selectQuestions, verifyAnswer, computeResults } from './server/ml/assessmentEngine.js';
+import { selectQuestions, verifyAnswer, computeResults, getMLModelMetadata } from './server/ml/assessmentEngine.js';
 
 dotenv.config();
 
@@ -43,9 +43,9 @@ const friendsData = loadJson(path.join(__dirname, 'server/data/friends.json'), {
 const dbPath = path.join(__dirname, 'skillswap.db');
 const db = new DatabaseSync(dbPath);
 
-// Setup database tables
-db.exec(`
-  CREATE TABLE IF NOT EXISTS users (
+// Setup database tables with full audit history
+const DB_SCHEMAS = [
+  `CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
@@ -53,18 +53,28 @@ db.exec(`
     role TEXT DEFAULT 'Student',
     stream TEXT,
     specialization TEXT,
+    target_topic TEXT,
     streak INTEGER DEFAULT 1,
     last_active DATE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
-
-  CREATE TABLE IF NOT EXISTS assessments (
+  )`,
+  `CREATE TABLE IF NOT EXISTS login_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_email TEXT NOT NULL,
+    user_name TEXT,
+    ip_address TEXT,
+    user_agent TEXT,
+    status TEXT DEFAULT 'SUCCESS',
+    login_time DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`,
+  `CREATE TABLE IF NOT EXISTS assessments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_email TEXT NOT NULL,
     user_name TEXT NOT NULL,
     user_role TEXT,
     stream TEXT,
     specialization TEXT,
+    target_topic TEXT,
     overall_score INTEGER NOT NULL,
     predicted_level TEXT,
     confidence INTEGER,
@@ -78,27 +88,39 @@ db.exec(`
     streaks INTEGER DEFAULT 1,
     mentor_summary TEXT,
     assessment_date DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
-
-  CREATE TABLE IF NOT EXISTS class_enrollments (
+  )`,
+  `CREATE TABLE IF NOT EXISTS class_enrollments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_email TEXT NOT NULL,
     class_id TEXT NOT NULL,
     enrolled_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
-
-  CREATE TABLE IF NOT EXISTS job_applications (
+  )`,
+  `CREATE TABLE IF NOT EXISTS class_attendance (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_email TEXT NOT NULL,
+    user_name TEXT,
+    class_id TEXT NOT NULL,
+    class_title TEXT NOT NULL,
+    instructor_name TEXT,
+    zoom_joined BOOLEAN DEFAULT 1,
+    duration_minutes INTEGER DEFAULT 60,
+    status TEXT DEFAULT 'Attended',
+    attended_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`,
+  `CREATE TABLE IF NOT EXISTS job_applications (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_email TEXT NOT NULL,
     user_name TEXT NOT NULL,
     opportunity_id TEXT NOT NULL,
+    company_name TEXT,
+    job_title TEXT,
     score INTEGER,
     level TEXT,
     notes TEXT,
+    status TEXT DEFAULT 'Under Review',
     applied_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
-
-  CREATE TABLE IF NOT EXISTS timetable_slots (
+  )`,
+  `CREATE TABLE IF NOT EXISTS timetable_slots (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_email TEXT NOT NULL,
     title TEXT NOT NULL,
@@ -108,34 +130,80 @@ db.exec(`
     type TEXT DEFAULT 'Study Session',
     zoom_url TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
-
-  CREATE TABLE IF NOT EXISTS friend_connections (
+  )`,
+  `CREATE TABLE IF NOT EXISTS friend_connections (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_email TEXT NOT NULL,
     friend_id TEXT NOT NULL,
     status TEXT DEFAULT 'connected',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
-`);
+  )`
+];
+
+DB_SCHEMAS.forEach(schema => {
+  try {
+    db.exec(schema);
+  } catch (err) {
+    console.error('Table init error:', err);
+  }
+});
+console.log('✓ SQLite Database tables verified and initialized.');
 
 // Safe column updates for existing database instances
+try { db.exec(`ALTER TABLE users ADD COLUMN streak INTEGER DEFAULT 1;`); } catch (e) {}
+try { db.exec(`ALTER TABLE users ADD COLUMN last_active DATE;`); } catch (e) {}
+try { db.exec(`ALTER TABLE users ADD COLUMN target_topic TEXT;`); } catch (e) {}
+try { db.exec(`ALTER TABLE assessments ADD COLUMN target_topic TEXT;`); } catch (e) {}
+try { db.exec(`ALTER TABLE job_applications ADD COLUMN status TEXT DEFAULT 'Under Review';`); } catch (e) {}
+try { db.exec(`ALTER TABLE job_applications ADD COLUMN company_name TEXT;`); } catch (e) {}
+try { db.exec(`ALTER TABLE job_applications ADD COLUMN job_title TEXT;`); } catch (e) {}
+
+// Seed realistic candidate applications if job_applications is empty
 try {
-  db.exec(`ALTER TABLE users ADD COLUMN streak INTEGER DEFAULT 1;`);
-} catch (e) {}
-try {
-  db.exec(`ALTER TABLE users ADD COLUMN last_active DATE;`);
-} catch (e) {}
+  const count = db.prepare('SELECT COUNT(*) as count FROM job_applications').get()?.count || 0;
+  if (count === 0) {
+    const seedApps = [
+      { email: 'aditya.v@example.com', name: 'Aditya Varma', oppId: 'opp_001', company: 'Google', title: 'Software Engineering Intern', score: 94, level: 'Expert', notes: 'Winner of National Hackathon 2025. 28-day streak on SkillSwap.', status: 'Shortlisted' },
+      { email: 'sneha.k@example.com', name: 'Sneha Kulkarni', oppId: 'opp_002', company: 'Microsoft', title: 'Junior Full-Stack Engineer', score: 88, level: 'Advanced', notes: 'Production React 19 and Node.js microservices. 19-day streak.', status: 'Interview Scheduled' },
+      { email: 'rohan.d@example.com', name: 'Rohan Deshpande', oppId: 'opp_003', company: 'Razorpay', title: 'Backend Engineering Fellow', score: 84, level: 'Advanced', notes: 'Certified Kubernetes Application Developer. 14-day streak.', status: 'Under Review' },
+      { email: 'priyanka.n@example.com', name: 'Priyanka Nair', oppId: 'opp_006', company: 'Texas Instruments', title: 'Embedded Software Engineer', score: 79, level: 'Advanced', notes: 'IoT smart energy monitoring hardware & firmware. 22-day streak.', status: 'Under Review' },
+      { email: 'karthik.r@example.com', name: 'Karthik Raja', oppId: 'opp_004', company: 'Stripe', title: 'Data Science & Risk Analytics Intern', score: 76, level: 'Advanced', notes: 'NLP & anomaly detection research project. 11-day streak.', status: 'Under Review' },
+      { email: 'meera.s@example.com', name: 'Meera Sen', oppId: 'opp_005', company: 'Swiggy', title: 'Associate Product Analyst', score: 72, level: 'Advanced', notes: 'Top decision-making score (85%) & funnel analytics. 16-day streak.', status: 'Shortlisted' }
+    ];
+    const stmt = db.prepare(`
+      INSERT INTO job_applications (user_email, user_name, opportunity_id, company_name, job_title, score, level, notes, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    seedApps.forEach(a => stmt.run(a.email, a.name, a.oppId, a.company, a.title, a.score, a.level, a.notes, a.status));
+  }
+} catch (e) {
+  console.error('Seed app error:', e);
+}
 
 // In-memory session store for active assessments
 const sessions = new Map();
+
+// Helper to log user login history into the database
+function recordLoginHistory(email, name, req, status = 'SUCCESS') {
+  try {
+    const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
+    const ua = req.headers['user-agent'] || 'Web Browser';
+    db.prepare(`
+      INSERT INTO login_history (user_email, user_name, ip_address, user_agent, status)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(email, name || 'User', String(ip), String(ua), status);
+    console.log(`[AUDIT] Login recorded in SQLite for ${email} (${status})`);
+  } catch (err) {
+    console.error('[AUDIT ERROR] Failed to record login history:', err);
+  }
+}
 
 // ==================== AUTH ROUTES ====================
 
 // Register
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { name, email, password, role, stream, specialization } = req.body;
+    const { name, email, password, role, stream, specialization, targetTopic, target_topic } = req.body;
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Name, email, and password are required' });
     }
@@ -147,15 +215,28 @@ app.post('/api/auth/register', async (req, res) => {
 
     const password_hash = await bcrypt.hash(password, 12);
     const today = new Date().toISOString().split('T')[0];
+    const userTopic = targetTopic || target_topic || '';
     const stmt = db.prepare(`
-      INSERT INTO users (name, email, password_hash, role, stream, specialization, streak, last_active)
-      VALUES (?, ?, ?, ?, ?, ?, 1, ?)
+      INSERT INTO users (name, email, password_hash, role, stream, specialization, target_topic, streak, last_active)
+      VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)
     `);
-    const result = stmt.run(name, email, password_hash, role || 'Student', stream || '', specialization || '', today);
+    const result = stmt.run(name, email, password_hash, role || 'Student', stream || '', specialization || '', userTopic, today);
+
+    // Save login history
+    recordLoginHistory(email, name, req, 'REGISTER_LOGIN');
 
     res.status(201).json({
       message: 'Registration successful',
-      user: { id: result.lastInsertRowid, name, email, role: role || 'Student', stream, specialization, streak: 1 }
+      user: {
+        id: result.lastInsertRowid,
+        name,
+        email,
+        role: role || 'Student',
+        stream,
+        specialization,
+        targetTopic: userTopic,
+        streak: 1
+      }
     });
   } catch (err) {
     console.error('Register error:', err);
@@ -173,11 +254,13 @@ app.post('/api/auth/login', async (req, res) => {
 
     const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
     if (!user) {
+      recordLoginHistory(email, 'Unknown', req, 'FAILED_USER_NOT_FOUND');
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) {
+      recordLoginHistory(email, user.name, req, 'FAILED_WRONG_PASSWORD');
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
@@ -196,6 +279,9 @@ app.post('/api/auth/login', async (req, res) => {
     }
     db.prepare('UPDATE users SET streak = ?, last_active = ? WHERE email = ?').run(streak, today, email);
 
+    // Record login history in database
+    recordLoginHistory(email, user.name, req, 'SUCCESS');
+
     res.json({
       message: 'Login successful',
       user: {
@@ -205,6 +291,7 @@ app.post('/api/auth/login', async (req, res) => {
         role: user.role,
         stream: user.stream,
         specialization: user.specialization,
+        targetTopic: user.target_topic || '',
         streak
       }
     });
@@ -218,9 +305,24 @@ app.post('/api/auth/login', async (req, res) => {
 app.get('/api/auth/me', (req, res) => {
   const { email } = req.query;
   if (!email) return res.status(400).json({ error: 'Email required' });
-  const user = db.prepare('SELECT id, name, email, role, stream, specialization, streak, last_active FROM users WHERE email = ?').get(email);
+  const user = db.prepare('SELECT id, name, email, role, stream, specialization, target_topic, streak, last_active FROM users WHERE email = ?').get(email);
   if (!user) return res.status(404).json({ error: 'User not found' });
-  res.json(user);
+  res.json({ ...user, targetTopic: user.target_topic || '' });
+});
+
+// Update user target focus topic
+app.post('/api/user/update-topic', (req, res) => {
+  const { email, targetTopic } = req.body;
+  if (!email || targetTopic === undefined) {
+    return res.status(400).json({ error: 'Email and targetTopic are required' });
+  }
+  try {
+    db.prepare('UPDATE users SET target_topic = ? WHERE email = ?').run(targetTopic, email);
+    res.json({ message: 'Target topic updated successfully', targetTopic });
+  } catch (err) {
+    console.error('Update topic error:', err);
+    res.status(500).json({ error: 'Failed to update target topic' });
+  }
 });
 
 // ==================== USER STREAK DETAILS ====================
@@ -234,9 +336,8 @@ app.get('/api/user/streak', (req, res) => {
   
   const currentStreak = user?.streak || Math.max(1, assessmentsCount);
   
-  // Compute week activity (Mon - Sun)
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  const todayIdx = (new Date().getDay() + 6) % 7; // Mon = 0
+  const todayIdx = (new Date().getDay() + 6) % 7;
   const weekMap = days.map((day, idx) => ({
     day,
     active: idx <= todayIdx && (todayIdx - idx < currentStreak)
@@ -259,9 +360,8 @@ app.get('/api/user/streak', (req, res) => {
   });
 });
 
-// ==================== ML ASSESSMENT ROUTES ====================
+// ==================== ML ASSESSMENT & ASSIGNMENTS RESULTS ====================
 
-// Start assessment session — returns questions only (no answers)
 app.post('/api/assessment/start', (req, res) => {
   try {
     const { email, name, stream, role, specialization } = req.body;
@@ -294,7 +394,6 @@ app.post('/api/assessment/start', (req, res) => {
   }
 });
 
-// Get a specific question by index
 app.get('/api/assessment/question/:sessionId/:index', (req, res) => {
   const { sessionId, index } = req.params;
   const session = sessions.get(sessionId);
@@ -317,7 +416,6 @@ app.get('/api/assessment/question/:sessionId/:index', (req, res) => {
   });
 });
 
-// Submit answer for a question
 app.post('/api/assessment/answer', (req, res) => {
   const { sessionId, questionId, selectedIndex } = req.body;
   const session = sessions.get(sessionId);
@@ -351,7 +449,6 @@ app.post('/api/assessment/answer', (req, res) => {
   });
 });
 
-// Finalize assessment and get results
 app.post('/api/assessment/finalize', async (req, res) => {
   const { sessionId } = req.body;
   const session = sessions.get(sessionId);
@@ -374,7 +471,7 @@ app.post('/api/assessment/finalize', async (req, res) => {
       console.error('Streak update error:', streakErr);
     }
 
-    // Save assessment to database
+    // Save assessment results history to database
     try {
       const stmt = db.prepare(`
         INSERT INTO assessments (
@@ -420,7 +517,19 @@ app.post('/api/assessment/finalize', async (req, res) => {
   }
 });
 
-// ==================== CLASSES / MASTERCLASSES WITH ZOOM ====================
+// ==================== ML MODEL & KAGGLE DATASETS METADATA ====================
+
+app.get('/api/ml/model-info', (req, res) => {
+  try {
+    const metadata = getMLModelMetadata();
+    res.json(metadata);
+  } catch (err) {
+    console.error('Error fetching ML model info:', err);
+    res.status(500).json({ error: 'Failed to fetch ML model metadata' });
+  }
+});
+
+// ==================== CLASSES & ATTENDANCE HISTORY ====================
 
 app.get('/api/classes', (req, res) => {
   const { email } = req.query;
@@ -462,6 +571,77 @@ app.post('/api/classes/enroll', (req, res) => {
   }
 });
 
+// Save class attendance into database when user joins or marks attended
+app.post('/api/classes/attend', (req, res) => {
+  const { email, name, classId, classTitle, instructorName, durationMinutes } = req.body;
+  if (!email || !classId) {
+    return res.status(400).json({ error: 'Email and classId are required' });
+  }
+
+  try {
+    db.prepare(`
+      INSERT INTO class_attendance (user_email, user_name, class_id, class_title, instructor_name, zoom_joined, duration_minutes)
+      VALUES (?, ?, ?, ?, ?, 1, ?)
+    `).run(email, name || 'Student', classId, classTitle || 'Live Masterclass', instructorName || 'Instructor', durationMinutes || 60);
+
+    res.json({ message: 'Class attendance recorded successfully in database!' });
+  } catch (err) {
+    console.error('Attendance error:', err);
+    res.status(500).json({ error: 'Failed to record attendance' });
+  }
+});
+
+// ==================== UNIFIED HISTORY ENDPOINT ====================
+
+app.get('/api/history/all', (req, res) => {
+  const { email } = req.query;
+  if (!email) return res.status(400).json({ error: 'Email required' });
+
+  try {
+    // 1. Assessment / Assignment results
+    const assessments = db.prepare(`
+      SELECT * FROM assessments WHERE user_email = ? ORDER BY assessment_date DESC LIMIT 25
+    `).all(email).map(r => ({
+      ...r,
+      skill_gaps: r.skill_gaps ? JSON.parse(r.skill_gaps) : []
+    }));
+
+    // 2. Classes attended history
+    const classesAttended = db.prepare(`
+      SELECT * FROM class_attendance WHERE user_email = ? ORDER BY attended_at DESC LIMIT 25
+    `).all(email);
+
+    // If attendance is empty, populate sample past attended classes for display
+    let finalClasses = classesAttended;
+    if (finalClasses.length === 0) {
+      finalClasses = [
+        { id: 1, class_title: 'Mastering Advanced Data Structures & Graph Algorithms', instructor_name: 'Dr. Arvind Ramesh', zoom_joined: 1, duration_minutes: 90, attended_at: new Date(Date.now() - 86400000).toISOString() },
+        { id: 2, class_title: 'Full-Stack React & Node.js Production Architecture', instructor_name: 'Pooja Hegde', zoom_joined: 1, duration_minutes: 60, attended_at: new Date(Date.now() - 3 * 86400000).toISOString() }
+      ];
+    }
+
+    // 3. Login history
+    const logins = db.prepare(`
+      SELECT * FROM login_history WHERE user_email = ? ORDER BY login_time DESC LIMIT 25
+    `).all(email);
+
+    // 4. Job applications
+    const applications = db.prepare(`
+      SELECT * FROM job_applications WHERE user_email = ? ORDER BY applied_at DESC LIMIT 25
+    `).all(email);
+
+    res.json({
+      assessments,
+      classesAttended: finalClasses,
+      logins,
+      applications
+    });
+  } catch (err) {
+    console.error('History fetch error:', err);
+    res.status(500).json({ error: 'Failed to fetch history' });
+  }
+});
+
 // ==================== TIMETABLE MAKER ====================
 
 app.get('/api/timetable', (req, res) => {
@@ -469,7 +649,6 @@ app.get('/api/timetable', (req, res) => {
   if (!email) return res.status(400).json({ error: 'Email required' });
 
   try {
-    // 1. Get user's custom created slots
     const userSlots = db.prepare(`
       SELECT id, title, day_of_week as day, start_time as startTime, duration, type, zoom_url as zoomUrl
       FROM timetable_slots
@@ -477,7 +656,6 @@ app.get('/api/timetable', (req, res) => {
       ORDER BY start_time ASC
     `).all(email);
 
-    // 2. Auto-import slots from enrolled masterclasses with Zoom!
     const enrolledRows = db.prepare('SELECT class_id FROM class_enrollments WHERE user_email = ?').all(email);
     const enrolledIds = new Set(enrolledRows.map(r => r.class_id));
     
@@ -503,7 +681,6 @@ app.get('/api/timetable', (req, res) => {
       }
     });
 
-    // 3. If user has no slots at all, seed with high value default study timetable
     let defaultSlots = [];
     if (userSlots.length === 0 && enrolledClassSlots.length === 0) {
       defaultSlots = [
@@ -609,7 +786,6 @@ app.post('/api/friends/connect', (req, res) => {
   }
 });
 
-// Create Instant Peer Zoom Room
 app.post('/api/zoom/instant-room', (req, res) => {
   const { topic } = req.body;
   const meetingId = `${Math.floor(100 + Math.random() * 900)} ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(1000 + Math.random() * 9000)}`;
@@ -625,7 +801,7 @@ app.post('/api/zoom/instant-room', (req, res) => {
   });
 });
 
-// ==================== OPPORTUNITIES / CAREER ====================
+// ==================== OPPORTUNITIES & APPLICATIONS ====================
 
 app.get('/api/opportunities', (req, res) => {
   const { email } = req.query;
@@ -653,6 +829,10 @@ app.post('/api/opportunities/apply', (req, res) => {
   }
 
   try {
+    const opp = opportunitiesData.opportunities.find(o => o.id === opportunityId);
+    const company = opp?.company || 'Tech Partner';
+    const title = opp?.title || 'Engineering Role';
+
     const latestAssessment = db.prepare(`
       SELECT overall_score, predicted_level 
       FROM assessments 
@@ -669,9 +849,9 @@ app.post('/api/opportunities/apply', (req, res) => {
     }
 
     db.prepare(`
-      INSERT INTO job_applications (user_email, user_name, opportunity_id, score, level, notes)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `).run(email, name || 'Applicant', opportunityId, score, level, notes || '');
+      INSERT INTO job_applications (user_email, user_name, opportunity_id, company_name, job_title, score, level, notes, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Under Review')
+    `).run(email, name || 'Applicant', opportunityId, company, title, score, level, notes || '');
 
     res.json({
       message: 'Application submitted successfully with your verified SkillSwap ML score!',
@@ -685,13 +865,60 @@ app.post('/api/opportunities/apply', (req, res) => {
   }
 });
 
-// ==================== CANDIDATE RECRUITER DIRECTORY ====================
+// ==================== COMPANY VIEW & APPLICANT SCREENING ====================
 
+// Returns candidates who applied ("candidates in the application")
+app.get('/api/company/applications', (req, res) => {
+  try {
+    const apps = db.prepare(`
+      SELECT 
+        ja.id as applicationId,
+        ja.user_email as email,
+        ja.user_name as name,
+        ja.opportunity_id as opportunityId,
+        ja.company_name as company,
+        ja.job_title as jobTitle,
+        ja.score,
+        ja.level,
+        ja.notes,
+        ja.status,
+        ja.applied_at as appliedAt,
+        COALESCE(u.stream, 'CS') as stream,
+        COALESCE(u.specialization, 'Software Engineering') as specialization,
+        COALESCE(u.streak, 1) as streak
+      FROM job_applications ja
+      LEFT JOIN users u ON ja.user_email = u.email
+      ORDER BY ja.applied_at DESC
+    `).all();
+
+    res.json(apps);
+  } catch (err) {
+    console.error('Fetch applications error:', err);
+    res.status(500).json({ error: 'Failed to load applications' });
+  }
+});
+
+// Recruiter updates application status
+app.post('/api/company/application-status', (req, res) => {
+  const { applicationId, status } = req.body;
+  if (!applicationId || !status) {
+    return res.status(400).json({ error: 'applicationId and status are required' });
+  }
+
+  try {
+    db.prepare('UPDATE job_applications SET status = ? WHERE id = ?').run(status, applicationId);
+    res.json({ message: `Applicant status updated to '${status}' successfully!` });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update status' });
+  }
+});
+
+// Returns all candidates for recruiter directory
 app.get('/api/candidates', (req, res) => {
   try {
     const dbCandidates = db.prepare(`
       SELECT 
-        u.id, u.name, u.email, u.role, u.stream, u.specialization,
+        u.id, u.name, u.email, u.role, u.stream, u.specialization, u.target_topic,
         COALESCE(u.streak, 1) as streak,
         COALESCE(MAX(a.overall_score), 0) as overallScore,
         COALESCE(a.predicted_level, 'Intermediate') as predictedLevel,
@@ -715,6 +942,7 @@ app.get('/api/candidates', (req, res) => {
       role: c.role || 'Student',
       stream: c.stream || 'CS',
       specialization: c.specialization || 'Software Engineering',
+      targetTopic: c.target_topic || 'Supervised Learning & Algorithms',
       overallScore: c.overallScore || 70,
       predictedLevel: c.predictedLevel || 'Intermediate',
       streak: Math.max(c.streak, 1),
@@ -729,10 +957,10 @@ app.get('/api/candidates', (req, res) => {
         knowledge_recall: c.knowledge_recall || 70
       },
       strengths: c.overallScore >= 70 ? ['Consistent Learner', 'Problem Solving'] : ['Active Learner'],
-      skills: [c.stream || 'CS', c.specialization || 'Software', 'Algorithms', 'Web'],
+      skills: [c.stream || 'CS', c.specialization || 'Software', c.target_topic || 'Algorithms'].filter(Boolean),
       verified: c.attempts > 0,
       attempts: c.attempts || 1,
-      bio: `SkillSwap candidate in ${c.stream || 'Computer Science'}. Verified skills and consistent streak.`
+      bio: `SkillSwap candidate in ${c.stream || 'Computer Science'}${c.target_topic ? ` focusing on ${c.target_topic}` : ''}. Verified skills and consistent streak.`
     }));
 
     const seed = seedCandidatesData.candidates || [];
@@ -749,7 +977,7 @@ app.get('/api/candidates', (req, res) => {
   }
 });
 
-// ==================== LEADERBOARD & HISTORY ====================
+// ==================== LEADERBOARD ====================
 
 app.get('/api/leaderboard', (req, res) => {
   try {
@@ -770,26 +998,6 @@ app.get('/api/leaderboard', (req, res) => {
   }
 });
 
-app.get('/api/assessments', (req, res) => {
-  const { email } = req.query;
-  if (!email) return res.status(400).json({ error: 'Email required' });
-  try {
-    const rows = db.prepare(`
-      SELECT * FROM assessments 
-      WHERE user_email = ? 
-      ORDER BY assessment_date DESC 
-      LIMIT 20
-    `).all(email);
-    res.json(rows.map(r => ({
-      ...r,
-      skill_gaps: r.skill_gaps ? JSON.parse(r.skill_gaps) : []
-    })));
-  } catch (err) {
-    console.error('History error:', err);
-    res.status(500).json({ error: 'Failed to get history' });
-  }
-});
-
 // Catch-all: serve React app
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/dist/index.html'));
@@ -797,6 +1005,6 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`\n🚀 SkillSwap Server running on port ${PORT}`);
-  console.log(`   ML Assessment Engine: ACTIVE`);
-  console.log(`   Classes with Zoom, Timetable Maker, Friend Suggestions & Streaks: READY\n`);
+  console.log(`   Database: SQLite audit history active (Logins, Assessments, Classes, Applications)`);
+  console.log(`   Company View & Search/Filter Portal: READY\n`);
 });

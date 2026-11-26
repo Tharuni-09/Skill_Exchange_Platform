@@ -14,9 +14,10 @@ import Leaderboard       from './pages/Leaderboard';
 import History           from './pages/History';
 import Classes           from './pages/Classes';
 import Opportunities     from './pages/Opportunities';
-import CompanyCandidates from './pages/CompanyCandidates';
+import CompanyPortal     from './pages/CompanyPortal';
 import Timetable         from './pages/Timetable';
 import FriendSuggestions from './pages/FriendSuggestions';
+import MLModelInfo       from './pages/MLModelInfo';
 
 export default function App() {
   return (
@@ -28,11 +29,13 @@ export default function App() {
           <Route path="/"              element={<Hero />} />
           <Route path="/login"         element={<Login />} />
           <Route path="/register"      element={<Register />} />
+          <Route path="/ml-models"     element={<MLModelInfo />} />
           <Route path="/classes"       element={<Classes />} />
           <Route path="/timetable"     element={<Timetable />} />
           <Route path="/friends"       element={<FriendSuggestions />} />
           <Route path="/opportunities" element={<Opportunities />} />
-          <Route path="/candidates"    element={<CompanyCandidates />} />
+          <Route path="/company"       element={<CompanyPortal />} />
+          <Route path="/candidates"    element={<CompanyPortal />} />
           <Route path="/leaderboard"   element={<Leaderboard />} />
 
           {/* Protected routes */}

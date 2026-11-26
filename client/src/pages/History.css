@@ -2,23 +2,85 @@
   min-height: calc(100vh - 64px);
   padding: 32px 0 80px;
 }
+
 .history-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 24px;
+  padding: 28px 32px;
   gap: 20px;
   flex-wrap: wrap;
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(16,185,129,0.06));
 }
+
+.hh-stats {
+  display: flex;
+  gap: 14px;
+}
+
+.hhs-box {
+  background: var(--bg-card-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 18px;
+  text-align: center;
+  min-width: 90px;
+}
+
+.hhs-val {
+  display: block;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.hhs-lbl {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Tabs */
+.history-tabs-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.history-tab-btn {
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 700;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.history-tab-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--primary);
+}
+
+.history-tab-btn.active {
+  background: rgba(99,102,241,0.2);
+  border-color: var(--primary);
+  color: var(--primary-light);
+}
+
 .history-empty {
   text-align: center;
   padding: 60px 20px;
 }
+
 .history-list {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
+
 .history-card {
   transition: box-shadow var(--transition);
 }
@@ -29,6 +91,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 .hc-left {
   display: flex;
@@ -130,4 +193,37 @@
   color: var(--text-secondary);
   line-height: 1.6;
   font-style: italic;
+}
+
+/* History Tables */
+.history-table-card {
+  padding: 0;
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th {
+  background: rgba(15, 23, 42, 0.6);
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.history-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.history-table tr:hover td {
+  background: var(--bg-card-light);
 }

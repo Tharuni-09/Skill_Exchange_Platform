@@ -16,19 +16,43 @@ export default function Dashboard() {
   const [history, setHistory] = useState([]);
   const [streakData, setStreakData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [targetTopic, setTargetTopic] = useState(user?.targetTopic || 'Supervised Learning Models (Regression, Classification)');
+  const [editingTopic, setEditingTopic] = useState(false);
+  const [topicInput, setTopicInput] = useState(user?.targetTopic || 'Supervised Learning Models (Regression, Classification)');
 
   useEffect(() => {
     Promise.all([
       fetch(`/api/assessments?email=${encodeURIComponent(user.email)}`).then(r => r.json()),
-      fetch(`/api/user/streak?email=${encodeURIComponent(user.email)}`).then(r => r.json())
+      fetch(`/api/user/streak?email=${encodeURIComponent(user.email)}`).then(r => r.json()),
+      fetch(`/api/auth/me?email=${encodeURIComponent(user.email)}`).then(r => r.json())
     ])
-      .then(([histData, sData]) => {
+      .then(([histData, sData, meData]) => {
         setHistory(Array.isArray(histData) ? histData : []);
         setStreakData(sData);
+        if (meData?.targetTopic) {
+          setTargetTopic(meData.targetTopic);
+          setTopicInput(meData.targetTopic);
+        }
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, [user.email]);
+
+  const handleSaveTopic = async () => {
+    try {
+      const res = await fetch('/api/user/update-topic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: user.email, targetTopic: topicInput })
+      });
+      if (res.ok) {
+        setTargetTopic(topicInput);
+        setEditingTopic(false);
+      }
+    } catch (e) {
+      console.error('Failed to update topic:', e);
+    }
+  };
 
   const latest = history[0];
   const bestScore = history.length > 0 ? Math.max(...history.map(h => h.overall_score)) : 0;
@@ -56,6 +80,46 @@ export default function Dashboard() {
               🧠 Take Assessment
             </Link>
           </div>
+        </div>
+
+        {/* User Target Topic / Requirement Card */}
+        <div className="card fade-in" style={{ marginBottom: 24, padding: '20px 24px', borderLeft: '4px solid #38bdf8' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+            <div>
+              <span style={{ fontSize: '0.8rem', color: '#38bdf8', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>
+                🎯 Your Target Focus Topic & Learning Requirement
+              </span>
+              <h3 style={{ margin: '4px 0 0', fontSize: '1.2rem', color: '#f8fafc' }}>
+                {targetTopic}
+              </h3>
+            </div>
+            <button
+              onClick={() => setEditingTopic(!editingTopic)}
+              className="btn btn-secondary btn-sm"
+              style={{ fontSize: '0.85rem' }}
+            >
+              {editingTopic ? 'Cancel ✕' : 'Change Topic ✎'}
+            </button>
+          </div>
+          {editingTopic && (
+            <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px solid #334155' }}>
+              <p style={{ fontSize: '0.88rem', color: '#94a3b8', marginBottom: 8 }}>
+                Specify what you need to learn (e.g. In ML: <em>"Supervised learning models"</em>, or in Web: <em>"React Microfrontends"</em>):
+              </p>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <input
+                  type="text"
+                  value={topicInput}
+                  onChange={(e) => setTopicInput(e.target.value)}
+                  placeholder="e.g. Supervised Learning Models, Deep Neural Networks"
+                  style={{ flex: 1, minWidth: 260, padding: '10px 14px', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, color: '#f8fafc', fontSize: '0.95rem' }}
+                />
+                <button onClick={handleSaveTopic} className="btn btn-primary btn-sm" style={{ padding: '10px 20px' }}>
+                  Save Topic
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Gamified Streak Widget */}

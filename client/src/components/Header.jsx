@@ -34,6 +34,9 @@ export default function Header() {
           <Link to="/assessment" className={`nav-link ${isActive('/assessment')}`}>
             🧠 Assessment
           </Link>
+          <Link to="/ml-models" className={`nav-link ml-models-nav ${isActive('/ml-models')}`}>
+            🔬 Kaggle ML Models
+          </Link>
           <Link to="/classes" className={`nav-link ${isActive('/classes')}`}>
             🎓 Classes
           </Link>
@@ -46,8 +49,8 @@ export default function Header() {
           <Link to="/opportunities" className={`nav-link ${isActive('/opportunities')}`}>
             💼 Opportunities
           </Link>
-          <Link to="/candidates" className={`nav-link highlight-nav ${isActive('/candidates')}`}>
-            🏢 Candidates
+          <Link to="/company" className={`nav-link highlight-nav ${isActive('/company') || isActive('/candidates')}`}>
+            🏢 Company View
           </Link>
           <Link to="/leaderboard" className={`nav-link ${isActive('/leaderboard')}`}>
             🏆 Leaderboard
@@ -92,6 +95,9 @@ export default function Header() {
                     </Link>
                     <Link to="/assessment" className="dropdown-item" onClick={() => setMenuOpen(false)}>
                       🧠 Take ML Assessment
+                    </Link>
+                    <Link to="/ml-models" className="dropdown-item" onClick={() => setMenuOpen(false)}>
+                      🔬 Kaggle Datasets & ML Models
                     </Link>
                     <Link to="/timetable" className="dropdown-item" onClick={() => setMenuOpen(false)}>
                       📅 My Timetable Maker

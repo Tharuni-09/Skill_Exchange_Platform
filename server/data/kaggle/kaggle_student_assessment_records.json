@@ -1,0 +1,24 @@
+{
+  "records": [
+    { "id": 1, "analytical": 92, "problem_solving": 95, "decision": 88, "attention": 90, "knowledge": 85, "study_hours": 18, "streak": 28, "overall": 91, "level": "Expert" },
+    { "id": 2, "analytical": 88, "problem_solving": 90, "decision": 84, "attention": 86, "knowledge": 88, "study_hours": 15, "streak": 22, "overall": 87, "level": "Expert" },
+    { "id": 3, "analytical": 85, "problem_solving": 88, "decision": 82, "attention": 80, "knowledge": 84, "study_hours": 14, "streak": 19, "overall": 84, "level": "Advanced" },
+    { "id": 4, "analytical": 78, "problem_solving": 82, "decision": 76, "attention": 80, "knowledge": 75, "study_hours": 12, "streak": 16, "overall": 79, "level": "Advanced" },
+    { "id": 5, "analytical": 74, "problem_solving": 78, "decision": 80, "attention": 72, "knowledge": 76, "study_hours": 10, "streak": 14, "overall": 76, "level": "Advanced" },
+    { "id": 6, "analytical": 80, "problem_solving": 72, "decision": 75, "attention": 78, "knowledge": 70, "study_hours": 11, "streak": 12, "overall": 75, "level": "Advanced" },
+    { "id": 7, "analytical": 70, "problem_solving": 75, "decision": 68, "attention": 74, "knowledge": 72, "study_hours": 9, "streak": 10, "overall": 72, "level": "Advanced" },
+    { "id": 8, "analytical": 66, "problem_solving": 68, "decision": 70, "attention": 65, "knowledge": 68, "study_hours": 8, "streak": 8, "overall": 67, "level": "Intermediate" },
+    { "id": 9, "analytical": 62, "problem_solving": 65, "decision": 64, "attention": 68, "knowledge": 62, "study_hours": 7, "streak": 7, "overall": 64, "level": "Intermediate" },
+    { "id": 10, "analytical": 58, "problem_solving": 62, "decision": 60, "attention": 55, "knowledge": 60, "study_hours": 6, "streak": 6, "overall": 59, "level": "Intermediate" },
+    { "id": 11, "analytical": 55, "problem_solving": 58, "decision": 54, "attention": 58, "knowledge": 52, "study_hours": 5, "streak": 5, "overall": 56, "level": "Intermediate" },
+    { "id": 12, "analytical": 50, "problem_solving": 52, "decision": 48, "attention": 52, "knowledge": 50, "study_hours": 4, "streak": 4, "overall": 51, "level": "Intermediate" },
+    { "id": 13, "analytical": 45, "problem_solving": 48, "decision": 44, "attention": 46, "knowledge": 42, "study_hours": 3, "streak": 2, "overall": 45, "level": "Beginner" },
+    { "id": 14, "analytical": 40, "problem_solving": 42, "decision": 38, "attention": 44, "knowledge": 40, "study_hours": 2, "streak": 1, "overall": 41, "level": "Beginner" },
+    { "id": 15, "analytical": 35, "problem_solving": 38, "decision": 35, "attention": 36, "knowledge": 34, "study_hours": 2, "streak": 1, "overall": 36, "level": "Beginner" },
+    { "id": 16, "analytical": 95, "problem_solving": 98, "decision": 92, "attention": 94, "knowledge": 90, "study_hours": 20, "streak": 30, "overall": 95, "level": "Expert" },
+    { "id": 17, "analytical": 86, "problem_solving": 84, "decision": 86, "attention": 82, "knowledge": 85, "study_hours": 13, "streak": 18, "overall": 85, "level": "Expert" },
+    { "id": 18, "analytical": 72, "problem_solving": 80, "decision": 74, "attention": 70, "knowledge": 74, "study_hours": 10, "streak": 11, "overall": 75, "level": "Advanced" },
+    { "id": 19, "analytical": 64, "problem_solving": 60, "decision": 62, "attention": 66, "knowledge": 65, "study_hours": 6, "streak": 6, "overall": 63, "level": "Intermediate" },
+    { "id": 20, "analytical": 42, "problem_solving": 40, "decision": 45, "attention": 40, "knowledge": 38, "study_hours": 2, "streak": 1, "overall": 41, "level": "Beginner" }
+  ]
+}

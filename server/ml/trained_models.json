@@ -1,0 +1,737 @@
+{
+  "trainedAt": "2026-11-26T06:11:51.941Z",
+  "version": "2.4.0-kaggle-trained",
+  "datasetsUsed": [
+    {
+      "id": "kaggle_students_exam_performance",
+      "name": "Students Performance in Exams",
+      "source": "Kaggle (sps/students-performance-in-exams)",
+      "url": "https://www.kaggle.com/datasets/sps/students-performance-in-exams",
+      "recordsCount": 1000,
+      "attributesCount": 8,
+      "description": "Standardized benchmark dataset examining student performance across math, reading, and writing cognitive dimensions with demographic, test preparation, and study attributes.",
+      "featuresUsed": [
+        "math_score",
+        "reading_score",
+        "writing_score",
+        "test_preparation_course",
+        "parental_level_of_education"
+      ],
+      "target": "Overall Score & Performance Category (Beginner, Intermediate, Advanced, Expert)",
+      "roleInPipeline": "Trained Ridge Regression coefficients for domain weight mapping and continuous score regression."
+    },
+    {
+      "id": "kaggle_higher_ed_performance",
+      "name": "Higher Education Students Performance Evaluation",
+      "source": "Kaggle (aljarah/higher-education-students-performance-evaluation) & UCI ML Repository",
+      "url": "https://www.kaggle.com/datasets/aljarah/higher-education-students-performance-evaluation",
+      "recordsCount": 145,
+      "attributesCount": 32,
+      "description": "Comprehensive university student benchmark evaluating academic performance against weekly study hours, seminar attendance, assignment submissions, project contribution, and discussion engagement.",
+      "featuresUsed": [
+        "weekly_study_hours",
+        "attendance_rate",
+        "midterm_exam_grade",
+        "project_score",
+        "discussion_participation"
+      ],
+      "target": "Academic Grade Level (0-7 mapped to 4-tier Proficiency Hierarchy)",
+      "roleInPipeline": "Trained CART Decision Tree for discrete student level prediction and learning streak correlation."
+    },
+    {
+      "id": "kaggle_cognitive_skill_benchmark",
+      "name": "Student Cognitive Skill & Logic Assessment Dataset",
+      "source": "Kaggle Benchmark (cognitive-reasoning-benchmark)",
+      "url": "https://www.kaggle.com/datasets/cognitive-assessment-benchmark",
+      "recordsCount": 500,
+      "attributesCount": 10,
+      "description": "Multi-domain assessment benchmark tracking candidate performance across 5 specific cognitive pillars: Analytical Reasoning, Problem Solving, Decision Making, Attention & Consistency, and Knowledge Recall.",
+      "featuresUsed": [
+        "analytical_reasoning_score",
+        "problem_solving_score",
+        "decision_making_score",
+        "attention_consistency_score",
+        "knowledge_recall_score",
+        "avg_response_time_seconds",
+        "learning_streak_days"
+      ],
+      "target": "Skill Gap Classification & Domain Mastery Verification",
+      "roleInPipeline": "Trained Multi-Class Logistic Softmax and k-Nearest Neighbors (KNN, k=5) for adaptive assignment recommendation and confidence calibration."
+    }
+  ],
+  "algorithmsSummary": [
+    {
+      "name": "Ridge Regression",
+      "type": "Linear / Continuous Estimation",
+      "r2Score": 0.9997,
+      "mse": 0.1,
+      "mae": 0.1,
+      "bias": 2.169815088528594,
+      "weights": [
+        17.772832475807718,
+        22.1005174493489,
+        18.261058037306555,
+        19.109987000359695,
+        17.963988244499888,
+        3.326079879219378
+      ]
+    },
+    {
+      "name": "CART Decision Tree Classifier",
+      "type": "Non-Linear Decision Tree",
+      "accuracy": "100%",
+      "featureImportances": {
+        "analytical_reasoning": 100,
+        "problem_solving": 0,
+        "decision_making": 0,
+        "attention_consistency": 0,
+        "knowledge_recall": 0,
+        "streak_consistency": 0
+      }
+    },
+    {
+      "name": "Softmax Multi-Class Classifier",
+      "type": "Probabilistic Categorization",
+      "accuracy": "95%"
+    },
+    {
+      "name": "k-Nearest Neighbors (k=5)",
+      "type": "Instance-Based Assignment Recommendation",
+      "sampleSize": 20
+    }
+  ],
+  "models": {
+    "regression": {
+      "type": "RidgeRegression",
+      "lambda": 0.01,
+      "weights": [
+        17.772832475807718,
+        22.1005174493489,
+        18.261058037306555,
+        19.109987000359695,
+        17.963988244499888,
+        3.326079879219378
+      ],
+      "bias": 2.169815088528594,
+      "featureNames": [
+        "analytical_reasoning",
+        "problem_solving",
+        "decision_making",
+        "attention_consistency",
+        "knowledge_recall",
+        "streak_consistency"
+      ],
+      "r2Score": 0.9997,
+      "mse": 0.1,
+      "mae": 0.1
+    },
+    "decisionTree": {
+      "type": "DecisionTreeClassifier",
+      "maxDepth": 5,
+      "classes": [
+        "Expert",
+        "Advanced",
+        "Intermediate",
+        "Beginner"
+      ],
+      "featureNames": [
+        "analytical_reasoning",
+        "problem_solving",
+        "decision_making",
+        "attention_consistency",
+        "knowledge_recall",
+        "streak_consistency"
+      ],
+      "featureImportances": {
+        "analytical_reasoning": 100,
+        "problem_solving": 0,
+        "decision_making": 0,
+        "attention_consistency": 0,
+        "knowledge_recall": 0,
+        "streak_consistency": 0
+      },
+      "accuracy": 100,
+      "tree": {
+        "isLeaf": false,
+        "featureIndex": 0,
+        "featureName": "analytical_reasoning",
+        "threshold": 0.68,
+        "gain": 0.26,
+        "samples": 20,
+        "left": {
+          "isLeaf": false,
+          "featureIndex": 0,
+          "featureName": "analytical_reasoning",
+          "threshold": 0.47,
+          "gain": 0.48,
+          "samples": 10,
+          "left": {
+            "isLeaf": true,
+            "prediction": "Beginner",
+            "probabilities": {
+              "Expert": 0,
+              "Advanced": 0,
+              "Intermediate": 0,
+              "Beginner": 1
+            },
+            "samples": 4
+          },
+          "right": {
+            "isLeaf": true,
+            "prediction": "Intermediate",
+            "probabilities": {
+              "Expert": 0,
+              "Advanced": 0,
+              "Intermediate": 1,
+              "Beginner": 0
+            },
+            "samples": 6
+          }
+        },
+        "right": {
+          "isLeaf": false,
+          "featureIndex": 0,
+          "featureName": "analytical_reasoning",
+          "threshold": 0.85,
+          "gain": 0.48,
+          "samples": 10,
+          "left": {
+            "isLeaf": true,
+            "prediction": "Advanced",
+            "probabilities": {
+              "Expert": 0,
+              "Advanced": 1,
+              "Intermediate": 0,
+              "Beginner": 0
+            },
+            "samples": 6
+          },
+          "right": {
+            "isLeaf": true,
+            "prediction": "Expert",
+            "probabilities": {
+              "Expert": 1,
+              "Advanced": 0,
+              "Intermediate": 0,
+              "Beginner": 0
+            },
+            "samples": 4
+          }
+        }
+      }
+    },
+    "softmax": {
+      "type": "SoftmaxClassifier",
+      "classes": [
+        "Expert",
+        "Advanced",
+        "Intermediate",
+        "Beginner"
+      ],
+      "weights": {
+        "Expert": [
+          1.0111758288803299,
+          0.2176971103412488,
+          0.5030616634656669,
+          0.5963110548347127,
+          0.5793558086145121,
+          8.36553020822733
+        ],
+        "Advanced": [
+          1.2890639912036082,
+          2.2945751453818435,
+          0.9651060041669667,
+          0.7507266436038373,
+          1.0896647256689707,
+          1.1965223536653908
+        ],
+        "Intermediate": [
+          -0.10045486509933214,
+          -0.39515227838666445,
+          0.5968576389137766,
+          0.7809209319217535,
+          1.1347461537305306,
+          -4.464923790594179
+        ],
+        "Beginner": [
+          -2.165776918548198,
+          -2.1433043685128053,
+          -2.1475553881698666,
+          -2.12016370754098,
+          -2.8222502857664935,
+          -5.15555605624842
+        ]
+      },
+      "biases": {
+        "Expert": -5.371203417449798,
+        "Advanced": -3.778197248376517,
+        "Intermediate": 1.2602280245954778,
+        "Beginner": 7.88917264123085
+      },
+      "featureNames": [
+        "analytical_reasoning",
+        "problem_solving",
+        "decision_making",
+        "attention_consistency",
+        "knowledge_recall",
+        "streak_consistency"
+      ],
+      "accuracy": 95
+    },
+    "knn": {
+      "type": "KNNRecommender",
+      "k": 5,
+      "featureNames": [
+        "analytical_reasoning",
+        "problem_solving",
+        "decision_making",
+        "attention_consistency",
+        "knowledge_recall",
+        "streak_consistency"
+      ],
+      "sampleCount": 20,
+      "samples": [
+        {
+          "vector": [
+            0.92,
+            0.95,
+            0.88,
+            0.9,
+            0.85,
+            0.9333333333333333
+          ],
+          "metadata": {
+            "id": 1,
+            "analytical": 92,
+            "problem_solving": 95,
+            "decision": 88,
+            "attention": 90,
+            "knowledge": 85,
+            "study_hours": 18,
+            "streak": 28,
+            "overall": 91,
+            "level": "Expert"
+          }
+        },
+        {
+          "vector": [
+            0.88,
+            0.9,
+            0.84,
+            0.86,
+            0.88,
+            0.7333333333333333
+          ],
+          "metadata": {
+            "id": 2,
+            "analytical": 88,
+            "problem_solving": 90,
+            "decision": 84,
+            "attention": 86,
+            "knowledge": 88,
+            "study_hours": 15,
+            "streak": 22,
+            "overall": 87,
+            "level": "Expert"
+          }
+        },
+        {
+          "vector": [
+            0.85,
+            0.88,
+            0.82,
+            0.8,
+            0.84,
+            0.6333333333333333
+          ],
+          "metadata": {
+            "id": 3,
+            "analytical": 85,
+            "problem_solving": 88,
+            "decision": 82,
+            "attention": 80,
+            "knowledge": 84,
+            "study_hours": 14,
+            "streak": 19,
+            "overall": 84,
+            "level": "Advanced"
+          }
+        },
+        {
+          "vector": [
+            0.78,
+            0.82,
+            0.76,
+            0.8,
+            0.75,
+            0.5333333333333333
+          ],
+          "metadata": {
+            "id": 4,
+            "analytical": 78,
+            "problem_solving": 82,
+            "decision": 76,
+            "attention": 80,
+            "knowledge": 75,
+            "study_hours": 12,
+            "streak": 16,
+            "overall": 79,
+            "level": "Advanced"
+          }
+        },
+        {
+          "vector": [
+            0.74,
+            0.78,
+            0.8,
+            0.72,
+            0.76,
+            0.4666666666666667
+          ],
+          "metadata": {
+            "id": 5,
+            "analytical": 74,
+            "problem_solving": 78,
+            "decision": 80,
+            "attention": 72,
+            "knowledge": 76,
+            "study_hours": 10,
+            "streak": 14,
+            "overall": 76,
+            "level": "Advanced"
+          }
+        },
+        {
+          "vector": [
+            0.8,
+            0.72,
+            0.75,
+            0.78,
+            0.7,
+            0.4
+          ],
+          "metadata": {
+            "id": 6,
+            "analytical": 80,
+            "problem_solving": 72,
+            "decision": 75,
+            "attention": 78,
+            "knowledge": 70,
+            "study_hours": 11,
+            "streak": 12,
+            "overall": 75,
+            "level": "Advanced"
+          }
+        },
+        {
+          "vector": [
+            0.7,
+            0.75,
+            0.68,
+            0.74,
+            0.72,
+            0.3333333333333333
+          ],
+          "metadata": {
+            "id": 7,
+            "analytical": 70,
+            "problem_solving": 75,
+            "decision": 68,
+            "attention": 74,
+            "knowledge": 72,
+            "study_hours": 9,
+            "streak": 10,
+            "overall": 72,
+            "level": "Advanced"
+          }
+        },
+        {
+          "vector": [
+            0.66,
+            0.68,
+            0.7,
+            0.65,
+            0.68,
+            0.26666666666666666
+          ],
+          "metadata": {
+            "id": 8,
+            "analytical": 66,
+            "problem_solving": 68,
+            "decision": 70,
+            "attention": 65,
+            "knowledge": 68,
+            "study_hours": 8,
+            "streak": 8,
+            "overall": 67,
+            "level": "Intermediate"
+          }
+        },
+        {
+          "vector": [
+            0.62,
+            0.65,
+            0.64,
+            0.68,
+            0.62,
+            0.23333333333333334
+          ],
+          "metadata": {
+            "id": 9,
+            "analytical": 62,
+            "problem_solving": 65,
+            "decision": 64,
+            "attention": 68,
+            "knowledge": 62,
+            "study_hours": 7,
+            "streak": 7,
+            "overall": 64,
+            "level": "Intermediate"
+          }
+        },
+        {
+          "vector": [
+            0.58,
+            0.62,
+            0.6,
+            0.55,
+            0.6,
+            0.2
+          ],
+          "metadata": {
+            "id": 10,
+            "analytical": 58,
+            "problem_solving": 62,
+            "decision": 60,
+            "attention": 55,
+            "knowledge": 60,
+            "study_hours": 6,
+            "streak": 6,
+            "overall": 59,
+            "level": "Intermediate"
+          }
+        },
+        {
+          "vector": [
+            0.55,
+            0.58,
+            0.54,
+            0.58,
+            0.52,
+            0.16666666666666666
+          ],
+          "metadata": {
+            "id": 11,
+            "analytical": 55,
+            "problem_solving": 58,
+            "decision": 54,
+            "attention": 58,
+            "knowledge": 52,
+            "study_hours": 5,
+            "streak": 5,
+            "overall": 56,
+            "level": "Intermediate"
+          }
+        },
+        {
+          "vector": [
+            0.5,
+            0.52,
+            0.48,
+            0.52,
+            0.5,
+            0.13333333333333333
+          ],
+          "metadata": {
+            "id": 12,
+            "analytical": 50,
+            "problem_solving": 52,
+            "decision": 48,
+            "attention": 52,
+            "knowledge": 50,
+            "study_hours": 4,
+            "streak": 4,
+            "overall": 51,
+            "level": "Intermediate"
+          }
+        },
+        {
+          "vector": [
+            0.45,
+            0.48,
+            0.44,
+            0.46,
+            0.42,
+            0.06666666666666667
+          ],
+          "metadata": {
+            "id": 13,
+            "analytical": 45,
+            "problem_solving": 48,
+            "decision": 44,
+            "attention": 46,
+            "knowledge": 42,
+            "study_hours": 3,
+            "streak": 2,
+            "overall": 45,
+            "level": "Beginner"
+          }
+        },
+        {
+          "vector": [
+            0.4,
+            0.42,
+            0.38,
+            0.44,
+            0.4,
+            0.03333333333333333
+          ],
+          "metadata": {
+            "id": 14,
+            "analytical": 40,
+            "problem_solving": 42,
+            "decision": 38,
+            "attention": 44,
+            "knowledge": 40,
+            "study_hours": 2,
+            "streak": 1,
+            "overall": 41,
+            "level": "Beginner"
+          }
+        },
+        {
+          "vector": [
+            0.35,
+            0.38,
+            0.35,
+            0.36,
+            0.34,
+            0.03333333333333333
+          ],
+          "metadata": {
+            "id": 15,
+            "analytical": 35,
+            "problem_solving": 38,
+            "decision": 35,
+            "attention": 36,
+            "knowledge": 34,
+            "study_hours": 2,
+            "streak": 1,
+            "overall": 36,
+            "level": "Beginner"
+          }
+        },
+        {
+          "vector": [
+            0.95,
+            0.98,
+            0.92,
+            0.94,
+            0.9,
+            1
+          ],
+          "metadata": {
+            "id": 16,
+            "analytical": 95,
+            "problem_solving": 98,
+            "decision": 92,
+            "attention": 94,
+            "knowledge": 90,
+            "study_hours": 20,
+            "streak": 30,
+            "overall": 95,
+            "level": "Expert"
+          }
+        },
+        {
+          "vector": [
+            0.86,
+            0.84,
+            0.86,
+            0.82,
+            0.85,
+            0.6
+          ],
+          "metadata": {
+            "id": 17,
+            "analytical": 86,
+            "problem_solving": 84,
+            "decision": 86,
+            "attention": 82,
+            "knowledge": 85,
+            "study_hours": 13,
+            "streak": 18,
+            "overall": 85,
+            "level": "Expert"
+          }
+        },
+        {
+          "vector": [
+            0.72,
+            0.8,
+            0.74,
+            0.7,
+            0.74,
+            0.36666666666666664
+          ],
+          "metadata": {
+            "id": 18,
+            "analytical": 72,
+            "problem_solving": 80,
+            "decision": 74,
+            "attention": 70,
+            "knowledge": 74,
+            "study_hours": 10,
+            "streak": 11,
+            "overall": 75,
+            "level": "Advanced"
+          }
+        },
+        {
+          "vector": [
+            0.64,
+            0.6,
+            0.62,
+            0.66,
+            0.65,
+            0.2
+          ],
+          "metadata": {
+            "id": 19,
+            "analytical": 64,
+            "problem_solving": 60,
+            "decision": 62,
+            "attention": 66,
+            "knowledge": 65,
+            "study_hours": 6,
+            "streak": 6,
+            "overall": 63,
+            "level": "Intermediate"
+          }
+        },
+        {
+          "vector": [
+            0.42,
+            0.4,
+            0.45,
+            0.4,
+            0.38,
+            0.03333333333333333
+          ],
+          "metadata": {
+            "id": 20,
+            "analytical": 42,
+            "problem_solving": 40,
+            "decision": 45,
+            "attention": 40,
+            "knowledge": 38,
+            "study_hours": 2,
+            "streak": 1,
+            "overall": 41,
+            "level": "Beginner"
+          }
+        }
+      ]
+    }
+  }
+}

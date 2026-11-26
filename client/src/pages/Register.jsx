@@ -6,10 +6,23 @@ import './Register.css';
 const STREAMS = ['CS', 'IT', 'ECE', 'EEE', 'Mechanical', 'Civil', 'Management', 'Other'];
 const ROLES   = ['Student', 'Fresher', 'Working Professional', 'Educator', 'Researcher'];
 
+const SUGGESTED_TOPICS = [
+  'Supervised Learning Models (Regression, Classification)',
+  'Neural Networks & Deep Learning',
+  'Natural Language Processing (NLP)',
+  'Dynamic Programming & Graph Algorithms',
+  'React 19 & Full-Stack Node.js Microservices',
+  'System Design & Distributed Scalability',
+  'Database Query Optimization & PostgreSQL',
+  'Computer Vision & Convolutional Networks',
+  'Docker, Kubernetes & CI/CD Pipelines (DevOps)',
+  'Embedded Systems & IoT Firmware'
+];
+
 export default function Register() {
   const [form, setForm] = useState({
     name: '', email: '', password: '', confirm: '',
-    role: '', stream: '', specialization: ''
+    role: '', stream: '', specialization: '', targetTopic: ''
   });
   const [error, setError]     = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,6 +31,11 @@ export default function Register() {
 
   const handleChange = (e) => {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+    setError('');
+  };
+
+  const handleSelectPill = (topic) => {
+    setForm(f => ({ ...f, targetTopic: topic }));
     setError('');
   };
 
@@ -41,9 +59,13 @@ export default function Register() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: form.name, email: form.email,
-          password: form.password, role: form.role,
-          stream: form.stream, specialization: form.specialization
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          role: form.role,
+          stream: form.stream,
+          specialization: form.specialization,
+          targetTopic: form.targetTopic
         })
       });
       const data = await res.json();
@@ -65,7 +87,7 @@ export default function Register() {
         <div className="auth-header">
           <div className="auth-logo">⚡</div>
           <h1 className="auth-title">Create Account</h1>
-          <p className="auth-subtitle">Join SkillSwap and discover your skill level</p>
+          <p className="auth-subtitle">Join SkillSwap and benchmark your skills with Machine Learning</p>
         </div>
 
         {/* Form */}
@@ -113,9 +135,36 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label>Specialization (optional)</label>
-            <input name="specialization" type="text" placeholder="e.g. Machine Learning, Web Dev"
+            <label>Field / Specialization</label>
+            <input name="specialization" type="text" placeholder="e.g. Machine Learning, Full-Stack Web, Data Science"
               value={form.specialization} onChange={handleChange} />
+          </div>
+
+          {/* Specific Topic / Requirement Selection */}
+          <div className="form-group">
+            <label>🎯 Specific Topic / Learning Requirement</label>
+            <input
+              name="targetTopic"
+              type="text"
+              placeholder="e.g. Supervised Learning Models, Deep Neural Networks, Dynamic Programming"
+              value={form.targetTopic}
+              onChange={handleChange}
+            />
+            <div className="topic-hint">
+              Select a popular learning topic below or type your custom requirement:
+            </div>
+            <div className="topic-pills-container">
+              {SUGGESTED_TOPICS.map(topic => (
+                <button
+                  type="button"
+                  key={topic}
+                  className={`topic-pill ${form.targetTopic === topic ? 'active' : ''}`}
+                  onClick={() => handleSelectPill(topic)}
+                >
+                  {topic}
+                </button>
+              ))}
+            </div>
           </div>
 
           <button type="submit" className="btn btn-primary auth-submit" disabled={loading}>
